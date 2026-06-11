@@ -112,18 +112,13 @@ export default function Hero({ name = "JOHN DOE" }: { name?: string }) {
       {/* Dynamic Noise Overlay */}
       <div className="absolute inset-0 z-50 pointer-events-none opacity-[0.03] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')] repeat" />
 
-      {/* Reactive Wave Grid Background */}
+      {/* Epic Portrait Background */}
       <div 
         ref={gridRef}
-        className="absolute inset-[-20%] w-[140%] h-[140%] opacity-[0.15] pointer-events-none will-change-transform"
+        className="absolute inset-[-10%] w-[120%] h-[120%] pointer-events-none will-change-transform opacity-60 mix-blend-luminosity bg-[url('/ibraheem.png')] bg-cover bg-center grayscale"
         style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(255,255,255,0.8) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255,255,255,0.8) 1px, transparent 1px)
-          `,
-          backgroundSize: '4vw 4vw',
-          maskImage: 'radial-gradient(ellipse at center, black 10%, transparent 70%)',
-          WebkitMaskImage: 'radial-gradient(ellipse at center, black 10%, transparent 70%)'
+          maskImage: 'radial-gradient(ellipse at center, black 10%, transparent 80%)',
+          WebkitMaskImage: 'radial-gradient(ellipse at center, black 10%, transparent 80%)'
         }}
       />
       

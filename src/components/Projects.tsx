@@ -9,21 +9,18 @@ const PROJECTS = [
     title: "PROJECT ZERO",
     tags: ["WEBGL", "AWWWARDS", "CREATIVE"],
     color: "#ff3300",
-    image: "/project-1.png"
   },
   {
     id: 2,
     title: "NEON VOID",
     tags: ["NEXT.JS", "GSAP", "BRUTALIST"],
     color: "#0033ff",
-    image: "/project-1.png"
   },
   {
     id: 3,
     title: "ACID DREAMS",
     tags: ["THREE.JS", "SHADERS", "EXPERIENCE"],
     color: "#ccff00",
-    image: "/project-1.png"
   }
 ];
 
@@ -168,10 +165,8 @@ export default function Projects() {
             style={{ border: `1px solid rgba(255,255,255,0.05)` }}
           >
             <div className="inner-parallax absolute inset-[-20%] w-[140%] h-[140%] bg-neutral-900 will-change-transform">
-              <div 
-                className="absolute inset-0 opacity-60 bg-cover bg-center mix-blend-overlay transition-opacity duration-500 hover:opacity-100" 
-                style={{ backgroundImage: `url('${project.image}')` }}
-              />
+              {/* IMAGE PLACEHOLDER */}
+              <div className="absolute inset-0 opacity-60 bg-[url('https://picsum.photos/1920/1080')] bg-cover bg-center mix-blend-overlay transition-opacity duration-500 hover:opacity-100" />
             </div>
 
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10 px-4">
