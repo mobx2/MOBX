@@ -17,36 +17,15 @@ export default function HeroSlider() {
   const textRef = useRef<HTMLHeadingElement>(null);
 
   useGSAP(() => {
-    // Scroll Velocity Skewing (The Grime Effect) ONLY on Foreground
-    const proxy = { skew: 0 };
-    const skewSetter = gsap.quickSetter(fgRef.current, "skewY", "deg");
-    const clamp = gsap.utils.clamp(-20, 20);
-    
-    ScrollTrigger.create({
-      onUpdate: (self) => {
-        const skew = clamp(self.getVelocity() / -100);
-        if (Math.abs(skew) > Math.abs(proxy.skew)) {
-          proxy.skew = skew;
-          gsap.to(proxy, {
-            skew: 0,
-            duration: 0.8,
-            ease: "elastic.out(1, 0.3)",
-            overwrite: true,
-            onUpdate: () => skewSetter(proxy.skew)
-          });
-        }
-      }
-    });
-
-    // Deep Parallax on Background ONLY during scroll
+    // Master Pinned Scroll Timeline for the Background Zoom
     gsap.to(bgRef.current, {
-      scale: 1.3,
-      yPercent: 30, // Moves down while scrolling
-      ease: "none",
+      scale: 1.5, // The background grows massively
+      ease: "power2.inOut",
       scrollTrigger: {
         trigger: containerRef.current,
+        pin: true, // Lock the user here
         start: "top top",
-        end: "bottom top",
+        end: "+=1500", // Force 1500px of scrolling to complete the zoom
         scrub: 1.5, // Buttery smooth trailing inertia
       }
     });
