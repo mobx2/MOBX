@@ -3,6 +3,28 @@
 import { useRef } from "react";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 
+const PROJECT_SCREENSHOTS = [
+  "Screenshot from 2026-06-12 01-59-35.png",
+  "Screenshot from 2026-06-12 02-00-00.png",
+  "Screenshot from 2026-06-12 02-00-13.png",
+  "Screenshot from 2026-06-12 02-00-20.png",
+  "Screenshot from 2026-06-12 02-00-40.png",
+  "Screenshot from 2026-06-12 02-03-19.png",
+  "Screenshot from 2026-06-12 02-03-28.png",
+  "Screenshot from 2026-06-12 02-03-39.png",
+  "Screenshot from 2026-06-12 02-03-43.png",
+  "Screenshot from 2026-06-12 02-03-46.png",
+  "Screenshot from 2026-06-12 02-03-48.png",
+  "Screenshot from 2026-06-12 02-03-56.png",
+  "Screenshot from 2026-06-12 02-04-02.png",
+  "Screenshot from 2026-06-12 02-04-08.png",
+  "Screenshot from 2026-06-12 02-04-22.png",
+  "Screenshot from 2026-06-12 02-05-08.png",
+  "Screenshot from 2026-06-12 02-05-13.png",
+  "Screenshot from 2026-06-12 02-05-17.png",
+  "Screenshot from 2026-06-12 02-05-22.png"
+];
+
 const MISSIONS = [
   {
     id: 1,
@@ -196,7 +218,29 @@ export default function MissionList() {
 
       {/* Intro Header Section */}
       <section className="archive-header level-section relative w-full h-screen bg-gta-black flex flex-col justify-center items-center overflow-hidden perspective-1000">
-        <div className="absolute inset-0 gta-noise z-0 pointer-events-none" />
+        
+        {/* Background Collage of Screenshots */}
+        <div className="absolute inset-0 z-0 opacity-20 overflow-hidden grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-2 p-2 pointer-events-none" style={{ filter: 'grayscale(80%) sepia(50%) hue-rotate(5deg)' }}>
+          {PROJECT_SCREENSHOTS.map((src, i) => (
+            <div key={i} className="relative aspect-video w-full rounded overflow-hidden border border-gta-sepia/20">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={`/projects/${src}`} alt="Project" className="object-cover w-full h-full" />
+            </div>
+          ))}
+          {/* Duplicate some to fill the screen if needed */}
+          {PROJECT_SCREENSHOTS.slice(0, 10).map((src, i) => (
+            <div key={`dup-${i}`} className="relative aspect-video w-full rounded overflow-hidden border border-gta-sepia/20">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={`/projects/${src}`} alt="Project" className="object-cover w-full h-full" />
+            </div>
+          ))}
+        </div>
+
+        {/* CRT Scanlines over the Collage */}
+        <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] z-[1] animate-crt-scroll" />
+        
+        <div className="absolute inset-0 gta-noise z-[2] pointer-events-none" />
+        <div className="absolute inset-0 gta-vignette z-[3] pointer-events-none" />
         
         {/* Header Police Tapes (Highly Visible) */}
         <div className="absolute top-[10%] -left-10 rotate-[-3deg] w-[200vw] h-14 bg-[#e6b800] z-10 flex items-center overflow-hidden pointer-events-none border-y-4 border-black drop-shadow-xl">
