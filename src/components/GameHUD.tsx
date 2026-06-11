@@ -3,10 +3,17 @@
 import { useEffect, useState } from "react";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 
+const RADIO_STATIONS = [
+  { id: 0, name: "SAN ANDREAS FM", src: "/theme.mp3" },
+  { id: 1, name: "LIBERTY CITY FM", src: "/gta4.mp3" },
+  { id: 2, name: "HEAD RADIO", src: "/gta3.mp3" }
+];
+
 export default function GameHUD() {
   const [missionText, setMissionText] = useState("MISSION: SURVIVE THE CITY");
   const [time, setTime] = useState("08:00");
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const [currentStation, setCurrentStation] = useState(0);
 
   useEffect(() => {
     // Clock simulation
@@ -113,8 +120,13 @@ export default function GameHUD() {
         <button 
           className="text-gta-sepia hover:text-white text-xl"
           onClick={() => {
-            // Next track logic will go here
-            console.log("Prev Station");
+            const nextIdx = (currentStation - 1 + RADIO_STATIONS.length) % RADIO_STATIONS.length;
+            setCurrentStation(nextIdx);
+            const audio = document.getElementById('bg-music') as HTMLAudioElement;
+            if (audio) {
+              audio.src = RADIO_STATIONS[nextIdx].src;
+              if (isMusicPlaying) audio.play();
+            }
           }}
         >
           ◀
@@ -137,7 +149,7 @@ export default function GameHUD() {
         >
           <span className="text-white text-xs tracking-widest">RADIO STATION</span>
           <div className="flex items-center gap-2">
-            <span className="text-gta-sepia font-bold">SAN ANDREAS FM</span>
+            <span className="text-gta-sepia font-bold">{RADIO_STATIONS[currentStation].name}</span>
             <span className="text-gta-sepia text-xs">{isMusicPlaying ? "||" : "▶"}</span>
           </div>
         </div>
@@ -145,8 +157,13 @@ export default function GameHUD() {
         <button 
           className="text-gta-sepia hover:text-white text-xl"
           onClick={() => {
-            // Prev track logic will go here
-            console.log("Next Station");
+            const nextIdx = (currentStation + 1) % RADIO_STATIONS.length;
+            setCurrentStation(nextIdx);
+            const audio = document.getElementById('bg-music') as HTMLAudioElement;
+            if (audio) {
+              audio.src = RADIO_STATIONS[nextIdx].src;
+              if (isMusicPlaying) audio.play();
+            }
           }}
         >
           ▶
