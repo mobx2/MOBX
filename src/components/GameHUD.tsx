@@ -39,6 +39,20 @@ export default function GameHUD() {
         }
         setMissionText(newMission);
       }
+
+      // Move the crosshair!
+      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollY / totalScroll;
+      
+      const crosshair = document.getElementById("scroll-crosshair");
+      if (crosshair) {
+        // Calculate the height of the track line (it's 100% of its parent minus some padding)
+        gsap.to(crosshair, {
+          top: `${progress * 100}%`,
+          duration: 0.1,
+          ease: "none"
+        });
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -102,6 +116,23 @@ export default function GameHUD() {
         <h3 className="gta-hud text-gta-sepia/70 text-lg drop-shadow-[2px_2px_0_#050505] text-center">
           SCROLL TO NAVIGATE LIBERTY CITY
         </h3>
+      </div>
+
+      {/* The Sniper Crosshair Scroll Tracker */}
+      <div className="absolute top-0 right-4 bottom-0 w-8 flex justify-center py-32 pointer-events-none">
+        {/* Track Line */}
+        <div className="w-[2px] h-full bg-gta-brown/30 relative">
+          {/* Moving Crosshair */}
+          <div 
+            id="scroll-crosshair" 
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-12 flex items-center justify-center will-change-transform"
+          >
+            <div className="w-full h-[2px] bg-gta-red absolute" />
+            <div className="w-[2px] h-full bg-gta-red absolute" />
+            <div className="w-8 h-8 border-2 border-gta-red rounded-full absolute" />
+            <div className="w-1 h-1 bg-white rounded-full absolute z-10 shadow-[0_0_5px_white]" />
+          </div>
+        </div>
       </div>
 
     </div>

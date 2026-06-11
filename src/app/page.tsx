@@ -26,31 +26,56 @@ export default function Home() {
   useGSAP(() => {
     if (loading) return;
 
-    // Pinning logic to make sections stack like levels
+    // Remove old pinning logic. 
+    // Instead, let's create a crazy vertical parallax effect where sections overlap dynamically.
     const sections = gsap.utils.toArray<HTMLElement>(".level-section");
     
     sections.forEach((section, i) => {
-      // Don't pin the last section
-      if (i === sections.length - 1) return;
+      // Skip the first section (Hero) from sliding up
+      if (i === 0) return;
       
-      ScrollTrigger.create({
-        trigger: section,
-        start: "top top",
-        pin: true,
-        pinSpacing: false, // The next section will slide over this one!
-      });
+      // We start the section slightly lower and move it up faster than the scroll
+      gsap.fromTo(section, 
+        { yPercent: 20, boxShadow: "0px -50px 100px rgba(0,0,0,1)" },
+        {
+          yPercent: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom", // When top of section hits bottom of viewport
+            end: "top top",      // Until it reaches its natural position
+            scrub: true,
+          }
+        }
+      );
+      
+      // We push the previous section down slightly to create an overlapping parallax!
+      const prevSection = sections[i - 1];
+      if (prevSection) {
+        gsap.to(prevSection, {
+          yPercent: 30, // Push it down
+          filter: "brightness(0.2) grayscale(100%)", // Fade it to black
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "top top",
+            scrub: true,
+          }
+        });
+      }
     });
 
   }, { scope: containerRef, dependencies: [loading] });
 
   return (
-    <main ref={containerRef} className="bg-gta-black min-h-screen selection:bg-gta-sepia selection:text-gta-black">
+    <main ref={containerRef} className="bg-gta-black min-h-screen selection:bg-gta-sepia selection:text-gta-black relative overflow-hidden">
       {loading && <BootLoader onComplete={() => setLoading(false)} />}
       
       {!loading && <GameHUD />}
 
       <div 
-        className="w-full relative" 
+        className="w-full relative z-10" 
         style={{ visibility: loading ? "hidden" : "visible" }}
       >
         <HeroSlider />
