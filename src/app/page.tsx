@@ -32,7 +32,7 @@ export default function Home() {
         className="w-full relative" 
         style={{ visibility: loading ? "hidden" : "visible" }}
       >
-        <Hero name="YOUR NAME" />
+        <Hero name="IBRAHEEM SHAHEEN" />
         <Projects />
         <Marquee />
         <About />

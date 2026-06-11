@@ -4,7 +4,7 @@ import CustomCursor from "@/components/CustomCursor";
 import SmoothScroll from "@/components/SmoothScroll";
 
 export const metadata: Metadata = {
-  title: "Avant-Garde Portfolio",
+  title: "Ibraheem Shaheen | Visual Artist & Developer",
   description: "A mind-blowing, god-tier personal portfolio driven by Scroll-driven Innovations.",
 };
 
