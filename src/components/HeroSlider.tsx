@@ -14,13 +14,13 @@ const SLIDES = [
     id: 2,
     title: "FRONT-END DEV",
     bg: "https://images.unsplash.com/photo-1514565131-fce0801e5785?q=80&w=2070", // Wide urban street view
-    fg: "",
+    fg: "/fg2.jpeg",
   },
   {
     id: 3,
     title: "REACT EXPERT",
     bg: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?q=80&w=2070", // Wide aerial city intersection
-    fg: "",
+    fg: "/fg3.jpeg",
   }
 ];
 
@@ -136,8 +136,8 @@ export default function HeroSlider() {
 
             {/* Layer 1.5: Police Sirens */}
             <div className="absolute inset-0 z-[5] pointer-events-none mix-blend-screen opacity-90">
-              <div className="absolute inset-0 w-[50%] h-full bg-[radial-gradient(ellipse_at_0%_50%,rgba(255,0,0,0.8)_0%,transparent_50%)] animate-cop-red" />
-              <div className="absolute inset-0 w-[50%] h-full bg-[radial-gradient(ellipse_at_0%_50%,rgba(0,100,255,1)_0%,transparent_50%)] animate-cop-blue" />
+              <div className="absolute inset-0 w-full h-full bg-[radial-gradient(ellipse_at_left,rgba(255,0,0,0.8)_0%,transparent_50%)] animate-cop-red" />
+              <div className="absolute inset-0 w-full h-full bg-[radial-gradient(ellipse_at_right,rgba(0,100,255,1)_0%,transparent_50%)] animate-cop-blue" />
             </div>
 
             {/* Foreground Cutout */}
