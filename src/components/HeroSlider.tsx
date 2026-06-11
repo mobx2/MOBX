@@ -41,6 +41,14 @@ export default function HeroSlider() {
       ease: "power3.in",
     }, 0);
 
+    // Text moves up and fades out
+    tl.to(textRef.current, {
+      y: -150,
+      scale: 1.1,
+      opacity: 0,
+      ease: "power2.inOut",
+    }, 0);
+
     // Intro Text Slam (On Page Load)
     const chars = textRef.current?.querySelectorAll(".char");
     if (chars) {
