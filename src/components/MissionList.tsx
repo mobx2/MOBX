@@ -209,9 +209,9 @@ export default function MissionList() {
       // Alternate movement direction based on column index approximation
       const direction = i % 2 === 0 ? 1 : -1;
       gsap.fromTo(el, 
-        { y: direction * 50 },
+        { y: direction * 150 },
         {
-          y: direction * -50,
+          y: direction * -150,
           ease: "none",
           scrollTrigger: {
             trigger: ".archive-header",
