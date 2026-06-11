@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { gsap } from "@/lib/gsap";
+import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 
 export default function GameHUD() {
   const [missionText, setMissionText] = useState("MISSION: SURVIVE THE CITY");
