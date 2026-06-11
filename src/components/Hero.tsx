@@ -9,16 +9,27 @@ export default function Hero({ name = "JOHN DOE" }: { name?: string }) {
   const gridRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    // Wave Grid Mouse Parallax
+    // 1. Extreme Wave Grid Mouse Parallax & Distortion
     const handleMouseMove = (e: MouseEvent) => {
-      if (!gridRef.current) return;
+      if (!gridRef.current || !textRef.current) return;
       const { clientX, clientY } = e;
-      const xPos = (clientX / window.innerWidth - 0.5) * 40;
-      const yPos = (clientY / window.innerHeight - 0.5) * 40;
+      const xPos = (clientX / window.innerWidth - 0.5);
+      const yPos = (clientY / window.innerHeight - 0.5);
 
+      // Grid moves opposite to mouse
       gsap.to(gridRef.current, {
-        x: xPos,
-        y: yPos,
+        x: xPos * -100,
+        y: yPos * -100,
+        skewX: xPos * 10,
+        skewY: yPos * 10,
+        duration: 1.5,
+        ease: "power3.out",
+      });
+
+      // 2. Magnetic 3D Text Tilt
+      gsap.to(textRef.current, {
+        rotationY: xPos * 30, // 30 degrees tilt max
+        rotationX: -yPos * 30,
         duration: 1,
         ease: "power2.out",
       });
@@ -31,22 +42,22 @@ export default function Hero({ name = "JOHN DOE" }: { name?: string }) {
   useGSAP(() => {
     if (!textRef.current) return;
     
-    // Split text into characters manually to avoid external dependencies like SplitText
     const chars = textRef.current.querySelectorAll('.char');
     
-    // Set initial shattered state
+    // 3. Savage Glitch Scatter on Start
     gsap.set(chars, {
-      x: () => gsap.utils.random(-400, 400),
-      y: () => gsap.utils.random(-400, 400),
-      z: () => gsap.utils.random(-400, 400),
-      rotationX: () => gsap.utils.random(-90, 90),
-      rotationY: () => gsap.utils.random(-90, 90),
-      rotationZ: () => gsap.utils.random(-90, 90),
+      x: () => gsap.utils.random(-800, 800),
+      y: () => gsap.utils.random(-800, 800),
+      z: () => gsap.utils.random(-1000, 500),
+      rotationX: () => gsap.utils.random(-360, 360),
+      rotationY: () => gsap.utils.random(-360, 360),
+      rotationZ: () => gsap.utils.random(-360, 360),
       opacity: 0,
-      scale: () => gsap.utils.random(0.5, 2.5),
+      scale: () => gsap.utils.random(0.1, 4),
+      filter: "blur(20px)",
     });
 
-    // Reassemble animation triggered by scroll
+    // Brutal Snap Assembly on scroll
     gsap.to(chars, {
       x: 0,
       y: 0,
@@ -56,52 +67,76 @@ export default function Hero({ name = "JOHN DOE" }: { name?: string }) {
       rotationZ: 0,
       opacity: 1,
       scale: 1,
-      duration: 1.5,
-      ease: "power4.out",
+      filter: "blur(0px)",
+      duration: 2,
+      ease: "expo.out",
       stagger: {
-        amount: 0.8,
+        amount: 1.5,
         from: "random",
       },
       scrollTrigger: {
         trigger: container.current,
-        start: "top 80%", // Starts assembling when section comes into view
+        start: "top 80%", 
         end: "center center",
-        scrub: 1,
+        scrub: 1.5, // Smoother scrub for heavy 3D
       }
     });
+
+    // 4. Random Glitch Effect loop
+    const glitchLoop = () => {
+      const randomChar = chars[Math.floor(Math.random() * chars.length)];
+      gsap.to(randomChar, {
+        x: () => gsap.utils.random(-10, 10),
+        y: () => gsap.utils.random(-10, 10),
+        skewX: () => gsap.utils.random(-20, 20),
+        duration: 0.1,
+        yoyo: true,
+        repeat: 3,
+        ease: "rough({ template: none.out, strength: 1, points: 20, taper: none, randomize: true, clamp: false })",
+        onComplete: () => {
+          gsap.set(randomChar, { x: 0, y: 0, skewX: 0 });
+          setTimeout(glitchLoop, gsap.utils.random(2000, 5000)); // Glitch every 2-5 seconds
+        }
+      });
+    };
+    
+    setTimeout(glitchLoop, 3000);
 
   }, { scope: container });
 
   return (
     <section 
       ref={container} 
-      className="relative w-full h-screen bg-brand-black flex items-center justify-center overflow-hidden perspective-1000"
+      className="relative w-full h-screen bg-brand-black flex items-center justify-center overflow-hidden perspective-[2000px]"
     >
-      {/* Wave Grid Background */}
+      {/* Dynamic Noise Overlay */}
+      <div className="absolute inset-0 z-50 pointer-events-none opacity-[0.03] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')] repeat" />
+
+      {/* Reactive Wave Grid Background */}
       <div 
         ref={gridRef}
-        className="absolute inset-[-10%] w-[120%] h-[120%] opacity-20 pointer-events-none"
+        className="absolute inset-[-20%] w-[140%] h-[140%] opacity-[0.15] pointer-events-none will-change-transform"
         style={{
           backgroundImage: `
-            linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px)
+            linear-gradient(to right, rgba(255,255,255,0.8) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255,255,255,0.8) 1px, transparent 1px)
           `,
           backgroundSize: '4vw 4vw',
-          maskImage: 'radial-gradient(circle at center, black 20%, transparent 80%)',
-          WebkitMaskImage: 'radial-gradient(circle at center, black 20%, transparent 80%)'
+          maskImage: 'radial-gradient(ellipse at center, black 10%, transparent 70%)',
+          WebkitMaskImage: 'radial-gradient(ellipse at center, black 10%, transparent 70%)'
         }}
       />
       
-      {/* Kinetic Typography */}
+      {/* 3D Kinetic Typography */}
       <h1 
         ref={textRef} 
-        className="relative z-10 text-[15vw] text-brand-white brutalist-text flex flex-wrap justify-center pointer-events-none transform-style-3d"
+        className="relative z-10 text-[18vw] leading-[0.8] text-brand-white brutalist-text flex flex-wrap justify-center pointer-events-none transform-style-3d will-change-transform drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]"
         aria-label={name}
       >
         {name.split("").map((char, i) => (
           <span 
             key={i} 
-            className="char inline-block gpu-accelerated"
+            className="char inline-block gpu-accelerated will-change-transform origin-center"
             style={{ whiteSpace: char === ' ' ? 'pre' : 'normal' }}
           >
             {char}
