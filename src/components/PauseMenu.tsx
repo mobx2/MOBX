@@ -228,7 +228,7 @@ function StatBar({ label, value, color = "#cc9933" }: { label: string, value: nu
     if (barRef.current) {
       gsap.fromTo(barRef.current, 
         { width: "0%" },
-        { width: \`\${value}%\`, duration: 1.5, ease: "steps(12)", delay: Math.random() * 0.5 }
+        { width: `${value}%`, duration: 1.5, ease: "steps(12)", delay: Math.random() * 0.5 }
       );
     }
   }, [value]);
