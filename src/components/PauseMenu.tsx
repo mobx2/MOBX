@@ -214,8 +214,52 @@ export default function PauseMenu() {
           </div>
         )}
 
-        {/* Placeholder for other tabs */}
-        {["BRIEF", "AUDIO", "DISPLAY", "GAME", "PROJECTS"].includes(activeTab) && (
+        {/* AUDIO TAB */}
+        {activeTab === "AUDIO" && (
+          <div className="w-full h-full flex flex-col items-center justify-center p-8">
+            <div className="w-full max-w-2xl bg-black/50 border border-gta-sepia/30 p-8 flex flex-col gap-8">
+              <h2 className="text-3xl font-bold tracking-widest text-gta-sepia border-b-2 border-gta-sepia/30 pb-4">AUDIO SETTINGS</h2>
+              
+              <div className="flex justify-between items-center text-xl text-gray-300">
+                <span>RADIO STATION</span>
+                <span className="text-white bg-gta-sepia text-black px-4 font-bold">VLADIVOSTOK FM</span>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <div className="flex justify-between text-xl text-gray-300">
+                  <span>MUSIC VOLUME</span>
+                  <span>100%</span>
+                </div>
+                {/* Fake slider */}
+                <div className="w-full h-4 bg-gray-800 border border-gray-600 relative flex">
+                  {[...Array(20)].map((_, i) => (
+                    <div key={i} className="flex-1 border-r border-black bg-[#cc9933]" />
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <div className="flex justify-between text-xl text-gray-300">
+                  <span>SFX VOLUME</span>
+                  <span>80%</span>
+                </div>
+                {/* Fake slider */}
+                <div className="w-full h-4 bg-gray-800 border border-gray-600 relative flex">
+                  {[...Array(20)].map((_, i) => (
+                    <div key={i} className={`flex-1 border-r border-black ${i < 16 ? 'bg-[#cc9933]' : 'bg-transparent'}`} />
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-8 text-center text-gray-500 text-sm">
+                * You can easily drop any .mp3 file into the public folder and we will link it to play here!
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Placeholder for remaining tabs */}
+        {["BRIEF", "DISPLAY", "GAME", "PROJECTS"].includes(activeTab) && (
           <div className="w-full h-full flex items-center justify-center text-4xl text-gray-600 tracking-widest">
             {activeTab} LOG DATA UNAVAILABLE
           </div>
