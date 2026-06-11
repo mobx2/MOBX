@@ -100,7 +100,10 @@ export default function GameHUD() {
       </div>
 
       {/* Bottom Left: Mini Map (Interactive Navigation) */}
-      <div className="absolute bottom-8 left-8 w-48 h-48 rounded-full border-[6px] border-gta-black/90 bg-gta-black/50 overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.8)] pointer-events-auto group">
+      <div 
+        onClick={() => window.dispatchEvent(new CustomEvent('togglePauseMenu'))}
+        className="absolute bottom-8 left-8 w-48 h-48 rounded-full border-[6px] border-gta-black/90 bg-gta-black/50 overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.8)] pointer-events-auto group cursor-pointer"
+      >
         {/* Map Background (Radar) */}
         <div 
           className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2074')] bg-cover bg-center opacity-40 mix-blend-screen transition-transform duration-500 group-hover:scale-110"
@@ -113,27 +116,23 @@ export default function GameHUD() {
         <div className="absolute top-1/2 left-1/2 w-1/2 h-[2px] bg-gta-green/50 origin-left animate-[spin_4s_linear_infinite] z-0" />
         
         {/* Navigation Waypoints */}
-        <button 
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="absolute top-[20%] left-[30%] w-4 h-4 bg-[#cc9933] rounded-full border-2 border-gta-black shadow-[0_0_5px_#cc9933] hover:scale-150 transition-transform z-20 cursor-pointer peer/home"
-        />
+        <div className="absolute top-[20%] left-[30%] w-4 h-4 bg-[#cc9933] rounded-full border-2 border-gta-black shadow-[0_0_5px_#cc9933] hover:scale-150 transition-transform z-20 peer/home" />
         <span className="absolute top-[10%] left-[30%] -translate-x-1/2 text-[10px] font-bold text-white bg-black/80 px-1 rounded opacity-0 peer-hover/home:opacity-100 transition-opacity z-30 pointer-events-none">HOME</span>
 
-        <button 
-          onClick={() => window.scrollTo({ top: window.innerHeight * 1.5, behavior: 'smooth' })}
-          className="absolute top-[60%] right-[20%] w-4 h-4 bg-[#ff3333] rounded-full border-2 border-gta-black shadow-[0_0_5px_#ff3333] hover:scale-150 transition-transform z-20 cursor-pointer peer/projects"
-        >
+        <div className="absolute top-[60%] right-[20%] w-4 h-4 bg-[#ff3333] rounded-full border-2 border-gta-black shadow-[0_0_5px_#ff3333] hover:scale-150 transition-transform z-20 peer/projects">
           <span className="absolute inset-0 flex items-center justify-center text-[8px] font-bold text-white">M</span>
-        </button>
+        </div>
         <span className="absolute top-[50%] right-[20%] translate-x-1/2 text-[10px] font-bold text-white bg-black/80 px-1 rounded opacity-0 peer-hover/projects:opacity-100 transition-opacity z-30 pointer-events-none">MISSIONS</span>
 
-        <button 
-          onClick={() => window.scrollTo({ top: window.innerHeight * 3, behavior: 'smooth' })}
-          className="absolute bottom-[20%] left-[40%] w-4 h-4 bg-[#3399ff] rounded-full border-2 border-gta-black shadow-[0_0_5px_#3399ff] hover:scale-150 transition-transform z-20 cursor-pointer peer/skills"
-        >
+        <div className="absolute bottom-[20%] left-[40%] w-4 h-4 bg-[#3399ff] rounded-full border-2 border-gta-black shadow-[0_0_5px_#3399ff] hover:scale-150 transition-transform z-20 peer/skills">
           <span className="absolute inset-0 flex items-center justify-center text-[8px] font-bold text-white">W</span>
-        </button>
+        </div>
         <span className="absolute bottom-[10%] left-[40%] -translate-x-1/2 text-[10px] font-bold text-white bg-black/80 px-1 rounded opacity-0 peer-hover/skills:opacity-100 transition-opacity z-30 pointer-events-none">WEAPONS</span>
+        
+        {/* Click to open menu overlay text */}
+        <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity z-40">
+          <span className="text-white font-bold tracking-widest text-sm bg-black/80 px-2 py-1 border border-white">OPEN MAP</span>
+        </div>
       </div>
 
       {/* Action Text (Bottom Center) */}
