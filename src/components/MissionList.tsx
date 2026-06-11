@@ -177,12 +177,14 @@ export default function MissionList() {
         <div className="absolute inset-0 gta-noise z-0 pointer-events-none" />
         <div className="relative z-10 text-center px-4 flex flex-col items-center w-full">
           <div className="flex flex-col gap-8 items-center w-full">
-            <img 
-              src="/pngfind.com-gta-png-2851262.png" 
-              alt="Mission Passed Respect +" 
-              className="archive-title-word w-[80vw] md:w-[600px] object-contain drop-shadow-[10px_10px_0_#050505]"
-            />
-            <span className="archive-title-word gta-hud text-gta-brown text-xl md:text-2xl tracking-[0.2em] animate-pulse">
+            <div className="archive-title-word origin-center will-change-transform">
+              <img 
+                src="/pngfind.com-gta-png-2851262.png" 
+                alt="Mission Passed Respect +" 
+                className="w-[80vw] md:w-[600px] object-contain drop-shadow-[10px_10px_0_#050505]"
+              />
+            </div>
+            <span className="archive-title-word block origin-center will-change-transform gta-hud text-gta-brown text-xl md:text-2xl tracking-[0.2em] animate-pulse">
               ACCESSING LCPD DATABASE...
             </span>
           </div>
