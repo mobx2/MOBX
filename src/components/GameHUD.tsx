@@ -6,6 +6,7 @@ import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 export default function GameHUD() {
   const [missionText, setMissionText] = useState("MISSION: SURVIVE THE CITY");
   const [time, setTime] = useState("08:00");
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
 
   useEffect(() => {
     // Clock simulation
@@ -14,7 +15,15 @@ export default function GameHUD() {
       setTime(`${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`);
     }, 1000);
 
-    return () => clearInterval(interval);
+    const handleMusicState = (e: any) => {
+      setIsMusicPlaying(e.detail.playing);
+    };
+    document.addEventListener('musicStateChange', handleMusicState);
+
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('musicStateChange', handleMusicState);
+    };
   }, []);
 
   useGSAP(() => {
@@ -99,6 +108,51 @@ export default function GameHUD() {
         </div>
       </div>
 
+      {/* Top Center: Radio Station Player */}
+      <div className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center gap-4 bg-black/60 border-2 border-gta-sepia/30 px-6 py-2 pointer-events-auto">
+        <button 
+          className="text-gta-sepia hover:text-white text-xl"
+          onClick={() => {
+            // Next track logic will go here
+            console.log("Prev Station");
+          }}
+        >
+          ◀
+        </button>
+        
+        <div 
+          className="flex flex-col items-center cursor-pointer min-w-[150px]"
+          onClick={() => {
+            const audio = document.getElementById('bg-music') as HTMLAudioElement;
+            if (audio) {
+              if (audio.paused) {
+                audio.play();
+                document.dispatchEvent(new CustomEvent('musicStateChange', { detail: { playing: true } }));
+              } else {
+                audio.pause();
+                document.dispatchEvent(new CustomEvent('musicStateChange', { detail: { playing: false } }));
+              }
+            }
+          }}
+        >
+          <span className="text-white text-xs tracking-widest">RADIO STATION</span>
+          <div className="flex items-center gap-2">
+            <span className="text-gta-sepia font-bold">SAN ANDREAS FM</span>
+            <span className="text-gta-sepia text-xs">{isMusicPlaying ? "||" : "▶"}</span>
+          </div>
+        </div>
+
+        <button 
+          className="text-gta-sepia hover:text-white text-xl"
+          onClick={() => {
+            // Prev track logic will go here
+            console.log("Next Station");
+          }}
+        >
+          ▶
+        </button>
+      </div>
+
       {/* Bottom Left: Mini Map (Interactive Navigation) */}
       <div 
         onClick={() => window.dispatchEvent(new CustomEvent('togglePauseMenu'))}
@@ -158,7 +212,7 @@ export default function GameHUD() {
           </div>
         </div>
       </div>
-
+      <audio id="bg-music" src="/theme.mp3" loop />
     </div>
   );
 }

@@ -30,8 +30,17 @@ export default function PauseMenu() {
     };
   }, []);
 
+  const isInitialMount = useRef(true);
+
   // Animation for opening/closing the menu
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      gsap.set(menuRef.current, { autoAlpha: 0, scale: 1.1 });
+      // Don't animate on first render
+      return;
+    }
+
     if (isOpen) {
       document.body.style.overflow = "hidden";
       gsap.fromTo(menuRef.current, 
@@ -234,10 +243,15 @@ export default function PauseMenu() {
                     onClick={() => {
                       const audio = document.getElementById('bg-music') as HTMLAudioElement;
                       if (audio) {
-                        if (audio.paused) audio.play();
-                        else audio.pause();
-                        // Force re-render just to show status if we had a state, but let's just let it be toggle
-                        audio.paused ? setMusicPlaying(false) : setMusicPlaying(true);
+                        if (audio.paused) {
+                          audio.play();
+                          setMusicPlaying(true);
+                          document.dispatchEvent(new CustomEvent('musicStateChange', { detail: { playing: true } }));
+                        } else {
+                          audio.pause();
+                          setMusicPlaying(false);
+                          document.dispatchEvent(new CustomEvent('musicStateChange', { detail: { playing: false } }));
+                        }
                       }
                     }}
                     className="text-white hover:text-gta-sepia uppercase"
@@ -272,8 +286,84 @@ export default function PauseMenu() {
           </div>
         )}
 
+        {/* BRIEF TAB (Mission Log / CV) */}
+        {activeTab === "BRIEF" && (
+          <div className="w-full h-full p-8 overflow-y-auto">
+            <div className="max-w-4xl mx-auto flex flex-col gap-8 pb-20">
+              
+              <div className="border-l-4 border-gta-sepia pl-6">
+                <h2 className="text-4xl font-bold tracking-widest text-gta-sepia mb-2">TARGET DOSSIER: IBRAHEEM SHAHEEN</h2>
+                <p className="text-xl text-gray-300 leading-relaxed font-sans">
+                  I&apos;m a Front-End Developer focused on building clean, responsive, and user-friendly interfaces. While I&apos;m still early in my career, I&apos;ve been actively working on personal projects and practicing with modern technologies like React, Tailwind CSS, and JavaScript. I enjoy turning UI/UX designs into real web experiences, and I&apos;m constantly learning to write better, scalable code and stay updated with the latest front-end trends.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {/* Skills Sector */}
+                <div className="bg-black/40 border border-gray-800 p-6">
+                  <h3 className="text-2xl font-bold tracking-widest text-white mb-4 border-b border-gray-800 pb-2">WEAPONS & SKILLS</h3>
+                  <ul className="space-y-4 text-gray-400 font-sans">
+                    <li><strong className="text-gta-sepia">Front-End:</strong> HTML, CSS, JavaScript, React.js, JSX, Next.js, Responsive Design</li>
+                    <li><strong className="text-gta-sepia">State Management:</strong> Redux (Classic & Toolkit), Context API, useReducer</li>
+                    <li><strong className="text-gta-sepia">Tools & Workflow:</strong> Vite, Git & GitHub, VS Code, DevTools, NPM, Yarn, PNPM</li>
+                    <li><strong className="text-gta-sepia">Other:</strong> API Integration (REST), Local Storage, Routing, Deployment (Netlify/Vercel)</li>
+                  </ul>
+                </div>
+
+                {/* Experience & Education */}
+                <div className="flex flex-col gap-8">
+                  <div className="bg-black/40 border border-gray-800 p-6">
+                    <h3 className="text-2xl font-bold tracking-widest text-white mb-4 border-b border-gray-800 pb-2">CRIMINAL RECORD (EXPERIENCE)</h3>
+                    <div className="font-sans">
+                      <div className="text-gta-sepia font-bold text-lg">Full-Stack Developer @ Start Agency</div>
+                      <div className="text-gray-500 mb-2">August 2025 – Present</div>
+                      <ul className="list-disc list-inside text-gray-300 space-y-1">
+                        <li>Front-end development with React.js & Next.js, focusing on performance and UX.</li>
+                        <li>Back-end work with Supabase for database and API management.</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="bg-black/40 border border-gray-800 p-6">
+                    <h3 className="text-2xl font-bold tracking-widest text-white mb-4 border-b border-gray-800 pb-2">TRAINING (EDUCATION)</h3>
+                    <div className="font-sans">
+                      <div className="text-white font-bold text-lg">Faculty of Specific Education</div>
+                      <div className="text-gta-sepia">Mansoura University</div>
+                      <div className="text-gray-500">09/2022 – Present | Mansoura, Egypt</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Projects (Recent Hits) */}
+              <div className="bg-black/40 border border-gray-800 p-6">
+                <h3 className="text-2xl font-bold tracking-widest text-white mb-4 border-b border-gray-800 pb-2">RECENT HITS (PROJECTS)</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-sans">
+                  <div>
+                    <div className="text-gta-sepia font-bold text-lg">Pizza Plaza Menu</div>
+                    <p className="text-gray-400 text-sm mt-1">A mobile-first React app, responsive on all devices, with interactive menu browsing and smooth UX, including a dashboard to manage menu items.</p>
+                  </div>
+                  <div>
+                    <div className="text-gta-sepia font-bold text-lg">El Fakharany Pastry</div>
+                    <p className="text-gray-400 text-sm mt-1">A mobile-first pastry menu application built with Next.js, designed like a mobile app, fully responsive with a management dashboard.</p>
+                  </div>
+                  <div>
+                    <div className="text-gta-sepia font-bold text-lg">The Wild Oasis</div>
+                    <p className="text-gray-400 text-sm mt-1">A hotel management application built with React.js, handling room bookings, guest management, with a focus on clean UI and efficient workflow.</p>
+                  </div>
+                  <div>
+                    <div className="text-gta-sepia font-bold text-lg">WorldWise</div>
+                    <p className="text-gray-400 text-sm mt-1">A React app for tracking visited cities on an interactive map. Features geolocation, protected routes, note-taking using Context API and Leaflet.</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        )}
+
         {/* Placeholder for remaining tabs */}
-        {["BRIEF", "DISPLAY", "GAME", "PROJECTS"].includes(activeTab) && (
+        {["DISPLAY", "GAME", "PROJECTS"].includes(activeTab) && (
           <div className="w-full h-full flex items-center justify-center text-4xl text-gray-600 tracking-widest">
             {activeTab} LOG DATA UNAVAILABLE
           </div>
@@ -286,8 +376,6 @@ export default function PauseMenu() {
           <span className="border border-white px-2 rounded bg-white text-black text-sm">ESC</span> BACK / RESUME
         </button>
       </div>
-
-      <audio id="bg-music" src="/theme.mp3" loop />
     </div>
   );
 }
