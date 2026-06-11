@@ -32,7 +32,7 @@ const MISSIONS = [
     client: "UNKNOWN",
     status: "COMPLETED",
     desc: "Infiltrate the mainframe and establish a WebGL beachhead.",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000"
+    image: "https://images.unsplash.com/photo-1444723121867-7a241cacace9?q=80&w=2000" // Moody city architecture
   },
   {
     id: 2,
@@ -40,7 +40,7 @@ const MISSIONS = [
     client: "SYNDICATE",
     status: "IN PROGRESS",
     desc: "Extract the React components before the deadline hits.",
-    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2000"
+    image: "https://images.unsplash.com/photo-1514565131-fce0801e5785?q=80&w=2000" // Urban street lights
   },
   {
     id: 3,
@@ -48,7 +48,7 @@ const MISSIONS = [
     client: "CARTEL",
     status: "WANTED",
     desc: "Develop a high-performance shader pipeline. Leave no trace.",
-    image: "https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=2000"
+    image: "https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?q=80&w=2000" // Urban grit / NYC
   }
 ];
 

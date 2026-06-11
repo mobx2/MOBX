@@ -13,13 +13,13 @@ const SLIDES = [
   {
     id: 2,
     title: "FRONT-END DEV",
-    bg: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070",
+    bg: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?q=80&w=2070", // Aerial city streets
     fg: "",
   },
   {
     id: 3,
     title: "REACT EXPERT",
-    bg: "https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=2070",
+    bg: "https://images.unsplash.com/photo-1496568816309-51d7c20e3b21?q=80&w=2070", // Dramatic city sunset
     fg: "",
   }
 ];
