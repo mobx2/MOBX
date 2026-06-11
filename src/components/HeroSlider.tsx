@@ -97,9 +97,11 @@ export default function HeroSlider() {
         `}</style>
 
         {/* Layer 1.5: Police Sirens Behind Character */}
-        <div className="absolute inset-0 z-[5] pointer-events-none mix-blend-color-dodge">
-          <div className="absolute top-0 left-[10%] w-[50%] h-[100%] bg-[radial-gradient(circle_at_center,rgba(255,0,0,0.7)_0%,transparent_60%)] animate-cop-red" />
-          <div className="absolute top-0 right-[10%] w-[50%] h-[100%] bg-[radial-gradient(circle_at_center,rgba(0,100,255,0.7)_0%,transparent_60%)] animate-cop-blue" />
+        <div className="absolute inset-0 z-[5] pointer-events-none mix-blend-screen opacity-90">
+          {/* Red flashes from the far left */}
+          <div className="absolute top-0 -left-[10%] w-[80%] h-[100%] bg-[radial-gradient(circle_at_center,rgba(255,0,0,0.8)_0%,transparent_60%)] animate-cop-red" />
+          {/* Blue flashes from the center-left so it spills out from behind the character */}
+          <div className="absolute top-0 left-[15%] w-[80%] h-[100%] bg-[radial-gradient(circle_at_center,rgba(0,100,255,0.9)_0%,transparent_60%)] animate-cop-blue" />
         </div>
 
         {/* Layer 2: Foreground Cutout */}
