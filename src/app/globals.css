@@ -1,88 +1,74 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-black: #050505;
-  --color-brand-white: #fdfdfd;
-  --color-brand-yellow: #FFDE00;
-  --color-brand-cyan: #00F0FF;
-  --color-brand-magenta: #FF00E5;
+  --color-gta-black: #050505;
+  --color-gta-brown: #3B2F23;
+  --color-gta-green: #2D362A;
+  --color-gta-sepia: #D1C7AC;
+  --color-gta-red: #8B0000;
   
-  --font-comic: var(--font-bangers), 'Bangers', 'Oswald', 'Inter', system-ui, sans-serif;
+  --font-gta-title: 'Pricedown', 'Impact', 'Arial Narrow', 'Helvetica Condensed', sans-serif;
+  --font-gta-hud: 'Courier New', 'Monaco', monospace;
+  --font-gta-sans: 'Arial Narrow', 'Helvetica Condensed', sans-serif;
 }
 
 :root {
-  --foreground-rgb: 5, 5, 5;
-  --background-start-rgb: 253, 253, 253;
-  --background-end-rgb: 253, 253, 253;
+  --foreground-rgb: 209, 199, 172; /* Sepia */
+  --background-start-rgb: 5, 5, 5; /* Black */
+  --background-end-rgb: 5, 5, 5;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-start-rgb));
-  font-family: var(--font-comic);
+  font-family: var(--font-gta-sans);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Comic Book Typography */
-.comic-text {
-  font-weight: 900;
+/* Typography styles */
+.gta-title {
+  font-family: var(--font-gta-title);
   text-transform: uppercase;
-  letter-spacing: 0.02em;
+  letter-spacing: -0.02em;
   line-height: 0.9;
-  -webkit-text-stroke: 2px var(--color-brand-black);
-  text-shadow: 6px 6px 0px var(--color-brand-black);
+  -webkit-text-stroke: 2px var(--color-gta-black);
+  text-shadow: 4px 4px 0px var(--color-gta-black), 8px 8px 0px rgba(0,0,0,0.5);
 }
 
-.comic-text-sm {
-  font-weight: 900;
+.gta-hud {
+  font-family: var(--font-gta-hud);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  -webkit-text-stroke: 1px var(--color-brand-black);
-  text-shadow: 3px 3px 0px var(--color-brand-black);
+  letter-spacing: 0.1em;
 }
 
-/* Thick Comic Borders */
-.comic-border {
-  border: 4px solid var(--color-brand-black);
-  box-shadow: 8px 8px 0px var(--color-brand-black);
+/* Gritty Global Overlays */
+.gta-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.08;
+  mix-blend-mode: overlay;
+  pointer-events: none;
 }
 
-/* Dynamic Shadow for JS */
-.comic-shadow-dynamic {
-  filter: drop-shadow(0px 0px 0px var(--color-brand-black));
+.gta-vignette {
+  background: radial-gradient(circle at center, transparent 30%, rgba(5,5,5,0.9) 100%);
+  pointer-events: none;
 }
 
-/* Halftone Patterns */
-.halftone-bg {
-  background-image: radial-gradient(var(--color-brand-black) 20%, transparent 20%);
-  background-size: 10px 10px;
-  background-position: 0 0, 5px 5px;
-}
-
-.halftone-bg-light {
-  background-image: radial-gradient(rgba(0,0,0,0.2) 20%, transparent 20%);
-  background-size: 8px 8px;
-}
-
-.halftone-bg-white {
-  background-image: radial-gradient(rgba(255,255,255,0.3) 20%, transparent 20%);
-  background-size: 8px 8px;
-}
-
-/* Action/Speed Lines */
-.speed-lines {
-  background: repeating-linear-gradient(
-    90deg,
-    transparent,
-    transparent 10px,
-    rgba(0,0,0,0.1) 10px,
-    rgba(0,0,0,0.1) 12px
+/* CRT Scanlines */
+.scanlines {
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0),
+    rgba(255,255,255,0) 50%,
+    rgba(0,0,0,0.1) 50%,
+    rgba(0,0,0,0.1)
   );
+  background-size: 100% 4px;
 }
 
-/* Hardware acceleration classes */
+/* Hardware acceleration */
 .gpu-accelerated {
   transform: translateZ(0);
   will-change: transform, opacity;

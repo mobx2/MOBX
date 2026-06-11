@@ -1,18 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Loader from "@/components/Loader";
-import Hero from "@/components/Hero";
-import Projects from "@/components/Projects";
-import Marquee from "@/components/Marquee";
-import About from "@/components/About";
-import Contact from "@/components/Contact";
+import BootLoader from "@/components/BootLoader";
+import HeroSlider from "@/components/HeroSlider";
+import MissionList from "@/components/MissionList";
+import StatsHUD from "@/components/StatsHUD";
+import FinalCutscene from "@/components/FinalCutscene";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
-
-  // Smooth scroll wrapper could be added here (like Lenis) for an even better experience, 
-  // but for GSAP ScrollTrigger out of the box, we just render the sections.
 
   useEffect(() => {
     // Prevent scrolling while loader is active
@@ -25,18 +21,17 @@ export default function Home() {
   }, [loading]);
 
   return (
-    <main className="bg-brand-black min-h-screen selection:bg-brand-magenta selection:text-brand-white">
-      {loading && <Loader onComplete={() => setLoading(false)} />}
+    <main className="bg-gta-black min-h-screen selection:bg-gta-sepia selection:text-gta-black">
+      {loading && <BootLoader onComplete={() => setLoading(false)} />}
       
       <div 
         className="w-full relative" 
         style={{ visibility: loading ? "hidden" : "visible" }}
       >
-        <Hero />
-        <Projects />
-        <Marquee />
-        <About />
-        <Contact />
+        <HeroSlider />
+        <MissionList />
+        <StatsHUD />
+        <FinalCutscene />
       </div>
     </main>
   );
