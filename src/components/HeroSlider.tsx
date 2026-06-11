@@ -105,9 +105,8 @@ export default function HeroSlider() {
             key={slide.id} 
             className="hero-slide absolute inset-0 w-full h-full will-change-transform"
             style={{ 
-              opacity: 1, 
-              visibility: 'visible',
-              transform: idx === 0 ? 'translateX(0%)' : 'translateX(100%)' 
+              opacity: idx === 0 ? 1 : 0, 
+              visibility: idx === 0 ? 'visible' : 'hidden'
             }}
           >
             {/* Background */}

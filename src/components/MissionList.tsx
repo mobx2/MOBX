@@ -57,6 +57,25 @@ export default function MissionList() {
   const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useGSAP(() => {
+    // 0. Parallax Collage Images (Continuous movement through the pin)
+    // Create this BEFORE the pinned trigger so GSAP calculates the layout correctly
+    gsap.utils.toArray('.collage-img').forEach((el: any, i) => {
+      const direction = i % 2 === 0 ? 1 : -1;
+      gsap.fromTo(el, 
+        { y: direction * 400 },
+        {
+          y: direction * -400,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".archive-header",
+            start: "top bottom",
+            end: "+=3000",
+            scrub: 1,
+          }
+        }
+      );
+    });
+
     // 1. Aggressive Title Pinning & Slam
     const headerTl = gsap.timeline({
       scrollTrigger: {
@@ -79,6 +98,19 @@ export default function MissionList() {
     ).to(".archive-title-word", {
       scale: 1.2, opacity: 0, y: -100, stagger: 0.1, ease: "power2.inOut"
     }, "+=1.5");
+
+    // Header Tapes moving continuously while pinned
+    headerTl.to(".header-tape-left", {
+      x: "-50vw", // Move noticeably
+      ease: "none",
+      duration: 5.5 // Span across the whole timeline
+    }, 0);
+    
+    headerTl.to(".header-tape-right", {
+      x: "50vw",
+      ease: "none",
+      duration: 5.5
+    }, 0);
 
     // Scroll Velocity Skewing (Grime Effect) for Projects
     const proxy = { skew: 0 };
@@ -182,46 +214,9 @@ export default function MissionList() {
       }
     });
 
-    // Header Tapes moving continuously while pinned
-    gsap.to(".header-tape-left", {
-      x: "-50vw", // Move noticeably
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".archive-header",
-        start: "top top",
-        end: "+=1500",
-        scrub: 1.5,
-      }
-    });
-    gsap.to(".header-tape-right", {
-      x: "50vw",
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".archive-header",
-        start: "top top",
-        end: "+=1500",
-        scrub: 1.5,
-      }
-    });
+    // Removed duplicate Header Tapes scrollTriggers
 
-    // Parallax Collage Images (Continuous movement through the pin)
-    gsap.utils.toArray('.collage-img').forEach((el: any, i) => {
-      // Alternate movement direction based on column index approximation
-      const direction = i % 2 === 0 ? 1 : -1;
-      gsap.fromTo(el, 
-        { y: direction * 400 },
-        {
-          y: direction * -400,
-          ease: "none",
-          scrollTrigger: {
-            trigger: ".archive-header",
-            start: "top bottom",
-            end: "+=3000", // Cover the enter, the pin, and the exit
-            scrub: 1,
-          }
-        }
-      );
-    });
+    // Removed parallax block to reorder it at top
 
   }, { scope: containerRef });
 
