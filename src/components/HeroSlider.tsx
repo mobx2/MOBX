@@ -7,19 +7,19 @@ const SLIDES = [
   {
     id: 1,
     title: "IBRAHEEM SHAHEEN",
-    bg: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?q=80&w=2070",
+    bg: "https://images.unsplash.com/photo-1496568816309-51d7c20e3b21?q=80&w=2070", // Wide city skyline at night
     fg: "/ibraheem.png",
   },
   {
     id: 2,
     title: "FRONT-END DEV",
-    bg: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?q=80&w=2070", // Aerial city streets
+    bg: "https://images.unsplash.com/photo-1514565131-fce0801e5785?q=80&w=2070", // Wide urban street view
     fg: "",
   },
   {
     id: 3,
     title: "REACT EXPERT",
-    bg: "https://images.unsplash.com/photo-1496568816309-51d7c20e3b21?q=80&w=2070", // Dramatic city sunset
+    bg: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?q=80&w=2070", // Wide aerial city intersection
     fg: "",
   }
 ];
