@@ -47,19 +47,19 @@ export default function HeroSlider() {
       const text = slide.querySelector('.hero-text');
       const crosshair = slide.querySelector('.hero-crosshair');
 
-      // 1. Wipe/Push slide container one by one
+      // 1. Fade transition to prevent any horizontal layout shifts
       if (index > 0) {
-        // Push the previous slide out to the left
-        tl.to(slides[index - 1], { xPercent: -100, duration: 1.5, ease: "power2.inOut" }, `slide${index}`);
-        // Bring this slide in from the right
-        tl.fromTo(slide, { xPercent: 100, autoAlpha: 1 }, { xPercent: 0, duration: 1.5, ease: "power2.inOut" }, `slide${index}`);
+        // Fade out previous slide
+        tl.to(slides[index - 1], { autoAlpha: 0, duration: 1, ease: "power2.inOut" }, `slide${index}`);
+        // Fade in current slide
+        tl.fromTo(slide, { autoAlpha: 0, scale: 1.1 }, { autoAlpha: 1, scale: 1, duration: 1, ease: "power2.out" }, `slide${index}`);
       } else {
         tl.addLabel(`slide${index}`);
       }
 
       // 2. Zoom background slowly over the duration of this slide
       if (bg) {
-        tl.to(bg, { scale: 1.5, ease: "none", duration: 2.5 }, `slide${index}`);
+        tl.to(bg, { scale: 1.2, ease: "none", duration: 2.5 }, `slide${index}`);
       }
 
       // 3. Move/Scale foreground slightly differently for parallax

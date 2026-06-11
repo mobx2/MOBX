@@ -31,6 +31,13 @@ export default function Home() {
     // because animating the actual DOM containers while scrolling past them 
     // fights Lenis and creates a "dragging" / "torture" scroll feeling.
     // Parallax should only be applied to inner elements, never the wrapper!
+
+    // Refresh ScrollTrigger after the layout is fully unlocked
+    const timeout = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 500);
+
+    return () => clearTimeout(timeout);
   }, { scope: containerRef, dependencies: [loading] });
 
   return (
