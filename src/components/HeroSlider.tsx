@@ -85,23 +85,29 @@ export default function HeroSlider() {
 
         {/* Custom Police Strobe Animation */}
         <style>{`
-          @keyframes cop-light {
+          @keyframes cop-red {
             0%, 100% { opacity: 0; }
-            5% { opacity: 0.8; }
+            0% { opacity: 1; }
             10% { opacity: 0; }
-            15% { opacity: 0.8; }
-            50% { opacity: 0; }
+            20% { opacity: 1; }
+            30% { opacity: 0; }
           }
-          .animate-cop-red { animation: cop-light 1.2s infinite; }
-          .animate-cop-blue { animation: cop-light 1.2s infinite 0.6s; }
+          @keyframes cop-blue {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+            60% { opacity: 0; }
+            70% { opacity: 1; }
+            80% { opacity: 0; }
+          }
+          .animate-cop-red { animation: cop-red 1.5s infinite; }
+          .animate-cop-blue { animation: cop-blue 1.5s infinite; }
         `}</style>
 
         {/* Layer 1.5: Police Sirens Behind Character */}
-        <div className="absolute inset-0 z-[5] pointer-events-none mix-blend-screen opacity-90">
-          {/* Red flashes from the far left */}
-          <div className="absolute top-0 -left-[10%] w-[80%] h-[100%] bg-[radial-gradient(circle_at_center,rgba(255,0,0,0.8)_0%,transparent_60%)] animate-cop-red" />
-          {/* Blue flashes from the center-left so it spills out from behind the character */}
-          <div className="absolute top-0 left-[15%] w-[80%] h-[100%] bg-[radial-gradient(circle_at_center,rgba(0,100,255,0.9)_0%,transparent_60%)] animate-cop-blue" />
+        <div className="absolute inset-0 z-[5] pointer-events-none mix-blend-screen opacity-100">
+          {/* Red and Blue strobes perfectly stacked on the left side (behind the character's empty space) */}
+          <div className="absolute inset-0 w-full h-full bg-[radial-gradient(circle_at_20%_50%,rgba(255,0,0,0.9)_0%,transparent_60%)] animate-cop-red" />
+          <div className="absolute inset-0 w-full h-full bg-[radial-gradient(circle_at_20%_50%,rgba(0,100,255,1)_0%,transparent_60%)] animate-cop-blue" />
         </div>
 
         {/* Layer 2: Foreground Cutout */}
