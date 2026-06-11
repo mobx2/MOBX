@@ -96,7 +96,7 @@ body {
   -webkit-text-stroke: 0px;
 }
 
-/* CRT Scanlines */
+/* CRT Scanlines & Animations */
 .scanlines {
   background: linear-gradient(
     to bottom,
@@ -106,6 +106,14 @@ body {
     rgba(0,0,0,0.1)
   );
   background-size: 100% 4px;
+}
+
+@keyframes crt-scroll {
+  0% { background-position: 0 0, 0 0; }
+  100% { background-position: 0 4px, 0 0; }
+}
+.animate-crt-scroll {
+  animation: crt-scroll 0.2s linear infinite;
 }
 
 /* Hardware acceleration */
