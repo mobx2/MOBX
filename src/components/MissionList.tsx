@@ -176,11 +176,11 @@ export default function MissionList() {
       <section className="archive-header level-section relative w-full h-screen bg-gta-black flex flex-col justify-center items-center overflow-hidden perspective-1000">
         <div className="absolute inset-0 gta-noise z-0 pointer-events-none" />
         <div className="relative z-10 text-center px-4 overflow-hidden flex flex-col items-center">
-          <h2 className="gta-title leading-none drop-shadow-[10px_10px_0_#050505] flex flex-col gap-4 overflow-hidden items-center">
-            <span className="archive-title-word block text-[#cc9933] text-[12vw] origin-bottom tracking-wider">
+          <h2 className="gta-title leading-none drop-shadow-[5px_5px_0_#050505] flex flex-col gap-4 overflow-hidden items-center">
+            <span className="archive-title-word block text-[#cc9933] text-5xl md:text-7xl origin-bottom tracking-wider whitespace-nowrap">
               MISSION PASSED!
             </span>
-            <span className="archive-title-word block text-[#e6e6e6] text-[8vw] origin-bottom tracking-widest">
+            <span className="archive-title-word block text-[#e6e6e6] text-3xl md:text-5xl origin-bottom tracking-widest whitespace-nowrap">
               RESPECT +
             </span>
           </h2>
