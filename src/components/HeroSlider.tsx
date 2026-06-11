@@ -15,12 +15,11 @@ export default function HeroSlider() {
   const bgRef = useRef<HTMLDivElement>(null);
   const fgRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLHeadingElement>(null);
+  const crosshairRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    // Master Pinned Scroll Timeline for the Background Zoom
-    gsap.to(bgRef.current, {
-      scale: 1.5, // The background grows massively
-      ease: "power2.inOut",
+    // Master Pinned Scroll Timeline for the Background Zoom & Crosshair Scale
+    const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
         pin: true, // Lock the user here
@@ -29,6 +28,18 @@ export default function HeroSlider() {
         scrub: 1.5, // Buttery smooth trailing inertia
       }
     });
+
+    tl.to(bgRef.current, {
+      scale: 1.5, // The background grows massively
+      ease: "power2.inOut",
+    }, 0);
+
+    // Crosshair gets bigger and locks onto the head
+    tl.to(crosshairRef.current, {
+      scale: 8,
+      opacity: 0, // Fades out as it gets huge
+      ease: "power3.in",
+    }, 0);
 
     // Intro Text Slam (On Page Load)
     const chars = textRef.current?.querySelectorAll(".char");
@@ -80,7 +91,19 @@ export default function HeroSlider() {
             backgroundImage: `url('${SLIDE.fg}')`,
             filter: 'sepia(40%) contrast(120%) brightness(0.8)'
           }}
-        />
+        >
+          {/* Target Crosshair on Head */}
+          <div 
+            ref={crosshairRef} 
+            className="absolute top-[20%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-16 h-16 border-[3px] border-[#cc9933] rounded-full flex items-center justify-center opacity-80 z-20 will-change-transform mix-blend-screen"
+          >
+            <div className="w-2 h-2 bg-[#cc9933] rounded-full animate-pulse" />
+            <div className="absolute top-1/2 left-[-15px] w-5 h-[3px] bg-[#cc9933]" />
+            <div className="absolute top-1/2 right-[-15px] w-5 h-[3px] bg-[#cc9933]" />
+            <div className="absolute left-1/2 top-[-15px] w-[3px] h-5 bg-[#cc9933]" />
+            <div className="absolute left-1/2 bottom-[-15px] w-[3px] h-5 bg-[#cc9933]" />
+          </div>
+        </div>
 
         {/* Layer 3: Bold Typography */}
         <div className="absolute inset-0 flex items-center justify-start pl-8 md:pl-24 z-20 pointer-events-none">
