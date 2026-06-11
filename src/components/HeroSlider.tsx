@@ -130,7 +130,7 @@ export default function HeroSlider() {
         <div className="absolute inset-0 flex items-center justify-start pl-8 md:pl-24 z-20 pointer-events-none">
           <h1 
             ref={textRef}
-            className="text-[12vw] gta-title leading-[0.85] text-gta-sepia will-change-transform perspective-1000"
+            className="text-[8vw] gta-title leading-[0.85] text-gta-sepia will-change-transform perspective-1000"
           >
             {SLIDE.title.split(" ").map((word, wIndex) => (
               <span key={wIndex} className="block overflow-hidden pb-4">
