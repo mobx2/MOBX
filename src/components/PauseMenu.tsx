@@ -65,13 +65,18 @@ export default function PauseMenu() {
       duration: 1.2,
       ease: "power4.inOut",
       onComplete: () => {
-        // Here we would navigate to the section or switch tabs
-        if (section === "Profile") setActiveTab("STATS");
-        if (section === "Projects") setActiveTab("PROJECTS");
-        if (section === "Skills") setActiveTab("STATS");
+        // Close the menu
+        setIsOpen(false);
         
-        // Reset map zoom after "navigation"
-        gsap.to(svgMapRef.current, { scale: 1, x: 0, y: 0, duration: 0 });
+        // Scroll the page to the appropriate section
+        setTimeout(() => {
+          if (section === "Profile") window.scrollTo({ top: 0, behavior: 'smooth' });
+          if (section === "Projects") window.scrollTo({ top: window.innerHeight * 1.5, behavior: 'smooth' });
+          if (section === "Skills") window.scrollTo({ top: window.innerHeight * 3, behavior: 'smooth' });
+          
+          // Reset map zoom so it's normal next time we open it
+          gsap.set(svgMapRef.current, { scale: 1, x: 0, y: 0 });
+        }, 300);
       }
     });
   };
