@@ -99,22 +99,41 @@ export default function GameHUD() {
         </div>
       </div>
 
-      {/* Bottom Left: Mini Map */}
-      <div className="absolute bottom-8 left-8 w-48 h-48 rounded-full border-[6px] border-gta-black/90 bg-gta-black/50 overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.8)]">
+      {/* Bottom Left: Mini Map (Interactive Navigation) */}
+      <div className="absolute bottom-8 left-8 w-48 h-48 rounded-full border-[6px] border-gta-black/90 bg-gta-black/50 overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.8)] pointer-events-auto group">
         {/* Map Background (Radar) */}
         <div 
-          className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2074')] bg-cover bg-center opacity-40 mix-blend-screen"
+          className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2074')] bg-cover bg-center opacity-40 mix-blend-screen transition-transform duration-500 group-hover:scale-110"
           style={{ filter: 'grayscale(100%) sepia(100%) hue-rotate(60deg)' }}
         />
         {/* Player Icon (Center) */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-white rotate-45 border-2 border-gta-black shadow-[0_0_10px_white]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-white rotate-45 border-2 border-gta-black shadow-[0_0_10px_white] z-10" />
         
         {/* Radar Scanner Line */}
-        <div className="absolute top-1/2 left-1/2 w-1/2 h-[2px] bg-gta-green/50 origin-left animate-[spin_4s_linear_infinite]" />
+        <div className="absolute top-1/2 left-1/2 w-1/2 h-[2px] bg-gta-green/50 origin-left animate-[spin_4s_linear_infinite] z-0" />
         
-        {/* Mission Waypoints (Yellow dots) */}
-        <div className="absolute top-1/4 left-1/3 w-3 h-3 bg-gta-sepia rounded-full border border-gta-black shadow-[0_0_5px_#D1C7AC]" />
-        <div className="absolute bottom-1/3 right-1/4 w-3 h-3 bg-gta-sepia rounded-full border border-gta-black shadow-[0_0_5px_#D1C7AC]" />
+        {/* Navigation Waypoints */}
+        <button 
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="absolute top-[20%] left-[30%] w-4 h-4 bg-[#cc9933] rounded-full border-2 border-gta-black shadow-[0_0_5px_#cc9933] hover:scale-150 transition-transform z-20 cursor-pointer peer/home"
+        />
+        <span className="absolute top-[10%] left-[30%] -translate-x-1/2 text-[10px] font-bold text-white bg-black/80 px-1 rounded opacity-0 peer-hover/home:opacity-100 transition-opacity z-30 pointer-events-none">HOME</span>
+
+        <button 
+          onClick={() => window.scrollTo({ top: window.innerHeight * 1.5, behavior: 'smooth' })}
+          className="absolute top-[60%] right-[20%] w-4 h-4 bg-[#ff3333] rounded-full border-2 border-gta-black shadow-[0_0_5px_#ff3333] hover:scale-150 transition-transform z-20 cursor-pointer peer/projects"
+        >
+          <span className="absolute inset-0 flex items-center justify-center text-[8px] font-bold text-white">M</span>
+        </button>
+        <span className="absolute top-[50%] right-[20%] translate-x-1/2 text-[10px] font-bold text-white bg-black/80 px-1 rounded opacity-0 peer-hover/projects:opacity-100 transition-opacity z-30 pointer-events-none">MISSIONS</span>
+
+        <button 
+          onClick={() => window.scrollTo({ top: window.innerHeight * 3, behavior: 'smooth' })}
+          className="absolute bottom-[20%] left-[40%] w-4 h-4 bg-[#3399ff] rounded-full border-2 border-gta-black shadow-[0_0_5px_#3399ff] hover:scale-150 transition-transform z-20 cursor-pointer peer/skills"
+        >
+          <span className="absolute inset-0 flex items-center justify-center text-[8px] font-bold text-white">W</span>
+        </button>
+        <span className="absolute bottom-[10%] left-[40%] -translate-x-1/2 text-[10px] font-bold text-white bg-black/80 px-1 rounded opacity-0 peer-hover/skills:opacity-100 transition-opacity z-30 pointer-events-none">WEAPONS</span>
       </div>
 
       {/* Action Text (Bottom Center) */}

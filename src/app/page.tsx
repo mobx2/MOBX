@@ -7,8 +7,6 @@ import MissionList from "@/components/MissionList";
 import StatsHUD from "@/components/StatsHUD";
 import FinalCutscene from "@/components/FinalCutscene";
 import GameHUD from "@/components/GameHUD";
-import WantedLevel from "@/components/WantedLevel";
-import PauseMenu from "@/components/PauseMenu";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 
 export default function Home() {
@@ -38,22 +36,13 @@ export default function Home() {
     <main ref={containerRef} className="bg-gta-black min-h-screen selection:bg-gta-sepia selection:text-gta-black relative overflow-hidden">
       
       {/* Stable wrapper for Loader to prevent React insertBefore crashes */}
-      <div className="relative z-[200]">
-        <PauseMenu />
-      </div>
-
       <div className="relative z-50">
         {loading && <BootLoader onComplete={() => setLoading(false)} />}
       </div>
       
       {/* Stable wrapper for HUD */}
       <div className={`relative z-40 transition-opacity duration-[1500ms] ease-in-out ${loading ? "opacity-0" : "opacity-100"}`}>
-        {!loading && (
-          <>
-            <GameHUD />
-            <WantedLevel />
-          </>
-        )}
+        {!loading && <GameHUD />}
       </div>
 
       <div 
