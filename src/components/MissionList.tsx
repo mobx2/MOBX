@@ -35,33 +35,68 @@ export default function MissionList() {
   const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useGSAP(() => {
+    // 1. Aggressive Title Reveal
+    gsap.fromTo(".archive-title-word",
+      { y: 150, opacity: 0, rotateX: -90 },
+      {
+        y: 0, opacity: 1, rotateX: 0,
+        duration: 1, stagger: 0.1,
+        ease: "back.out(1.7)",
+        scrollTrigger: {
+          trigger: ".archive-header",
+          start: "top 80%",
+          toggleActions: "play none none reverse"
+        }
+      }
+    );
+
     // Parallax and reveal animations for each project screen
     sectionsRef.current.forEach((section, i) => {
       if (!section) return;
       
+      const imgWrapper = section.querySelector(".bg-wrapper");
       const img = section.querySelector(".bg-image");
       const info = section.querySelector(".mission-info");
+      const tape = section.querySelector(".scroll-tape");
 
-      // Animate background image (Cinematic Parallax Zoom)
+      // Aggressive Clip Path Reveal for the image
+      gsap.fromTo(imgWrapper,
+        { clipPath: "polygon(0 50%, 100% 50%, 100% 50%, 0 50%)" },
+        {
+          clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+          duration: 1.5,
+          ease: "power4.inOut",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 70%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+
+      // Animate background image (Cinematic Parallax Zoom with SCRUB)
       gsap.fromTo(img, 
-        { scale: 1 }, 
+        { scale: 1.5, yPercent: 20 }, 
         { 
-          scale: 1.15, 
+          scale: 1,
+          yPercent: -20, 
           ease: "none",
           scrollTrigger: {
             trigger: section,
             start: "top bottom",
             end: "bottom top",
-            scrub: true
+            scrub: 1 // Smooth scrubbing
           }
         }
       );
 
-      // Slide in the mission info box
+      // Slide in the mission info box with SKEW
       gsap.fromTo(info,
-        { x: i % 2 === 0 ? -100 : 100, opacity: 0 },
+        { x: i % 2 === 0 ? -200 : 200, opacity: 0, skewX: 20 },
         {
-          x: 0, opacity: 1, duration: 1, ease: "power3.out",
+          x: 0, opacity: 1, skewX: 0, 
+          duration: 1.2, 
+          ease: "elastic.out(1, 0.7)",
           scrollTrigger: {
             trigger: section,
             start: "top 60%",
@@ -69,6 +104,23 @@ export default function MissionList() {
           }
         }
       );
+
+      // Moving Police Tape driven entirely by scroll (Scrubbed)
+      if (tape) {
+        gsap.fromTo(tape,
+          { xPercent: i % 2 === 0 ? -50 : 0 },
+          {
+            xPercent: i % 2 === 0 ? 0 : -50,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true
+            }
+          }
+        );
+      }
     });
 
   }, { scope: containerRef });
@@ -76,10 +128,13 @@ export default function MissionList() {
   return (
     <div ref={containerRef} className="w-full">
       {/* Intro Header Section */}
-      <section className="level-section relative w-full h-[50vh] bg-gta-black flex flex-col justify-center items-center border-t-4 border-b-4 border-gta-brown/50 overflow-hidden">
+      <section className="archive-header level-section relative w-full h-[50vh] bg-gta-black flex flex-col justify-center items-center border-t-4 border-b-4 border-gta-brown/50 overflow-hidden perspective-1000">
         <div className="absolute inset-0 gta-noise z-0 pointer-events-none" />
-        <div className="relative z-10 text-center px-4">
-          <h2 className="gta-title text-6xl md:text-8xl text-gta-sepia drop-shadow-[5px_5px_0_#050505]">MISSION ARCHIVE</h2>
+        <div className="relative z-10 text-center px-4 overflow-hidden">
+          <h2 className="gta-title text-6xl md:text-8xl text-gta-sepia drop-shadow-[5px_5px_0_#050505] flex gap-4 overflow-hidden">
+            <span className="archive-title-word block">MISSION</span>
+            <span className="archive-title-word block text-white">ARCHIVE</span>
+          </h2>
           <p className="gta-hud text-gta-brown text-xl md:text-2xl mt-4 animate-pulse">ACCESSING LCPD DATABASE...</p>
         </div>
       </section>
@@ -89,13 +144,24 @@ export default function MissionList() {
         <section 
           key={mission.id}
           ref={el => { sectionsRef.current[i] = el }}
-          className="level-section relative w-full h-screen overflow-hidden border-b-4 border-gta-brown/50"
+          className="level-section relative w-full h-screen overflow-hidden border-b-4 border-gta-brown/50 bg-gta-black"
         >
-          {/* Background Image / Future GIF */}
-          <div 
-            className="bg-image absolute inset-0 bg-cover bg-center will-change-transform origin-center"
-            style={{ backgroundImage: `url('${mission.image}')` }}
-          />
+          {/* Aggressive Image Reveal Wrapper */}
+          <div className="bg-wrapper absolute inset-0 w-full h-full overflow-hidden">
+            <div 
+              className="bg-image absolute inset-[-10%] w-[120%] h-[120%] bg-cover bg-center will-change-transform origin-center"
+              style={{ backgroundImage: `url('${mission.image}')` }}
+            />
+          </div>
+          
+          {/* Interactive Scroll Tape */}
+          <div className={`scroll-tape absolute top-1/4 ${i % 2 === 0 ? '-left-10 rotate-[-5deg]' : '-right-10 rotate-[5deg]'} w-[200vw] h-16 bg-[#D1C7AC] text-black z-[5] opacity-20 flex items-center overflow-hidden pointer-events-none mix-blend-overlay`}>
+            <div className="flex gap-4 whitespace-nowrap gta-title text-5xl">
+              {[...Array(10)].map((_, idx) => (
+                <span key={idx}>POLICE LINE DO NOT CROSS // LCPD // </span>
+              ))}
+            </div>
+          </div>
           
           {/* GTA Cinematic Filters */}
           <div className="absolute inset-0 bg-[#4A3219] opacity-40 mix-blend-color pointer-events-none" />
