@@ -182,22 +182,7 @@ export default function MissionList() {
         }
       );
 
-      // Moving Police Tape driven entirely by scroll (Scrubbed)
-      if (tape) {
-        gsap.fromTo(tape,
-          { xPercent: i % 2 === 0 ? -50 : 0 },
-          {
-            xPercent: i % 2 === 0 ? 0 : -50,
-            ease: "none",
-            scrollTrigger: {
-              trigger: section,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1.5
-            }
-          }
-        );
-      }
+      // Removed tape animation as per user request
     });
 
     // Massive Sticky Ticker Animation
