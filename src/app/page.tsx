@@ -53,8 +53,7 @@ export default function Home() {
       const prevSection = sections[i - 1];
       if (prevSection) {
         gsap.to(prevSection, {
-          yPercent: 30, // Push it down
-          filter: "brightness(0.2) grayscale(100%)", // Fade it to black
+          yPercent: 30, // Push it down (GPU accelerated)
           ease: "none",
           scrollTrigger: {
             trigger: section,

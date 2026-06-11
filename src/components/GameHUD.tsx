@@ -14,53 +14,59 @@ export default function GameHUD() {
       setTime(`${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`);
     }, 1000);
 
-    // Scroll listener for mission updates
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const height = window.innerHeight;
-      
-      let newMission = "MISSION: SURVIVE THE CITY";
-      if (scrollY > height * 2.5) {
-        newMission = "MISSION: EXECUTE CONTRACT";
-      } else if (scrollY > height * 1.5) {
-        newMission = "MISSION: CHECK PLAYER STATS";
-      } else if (scrollY > height * 0.5) {
-        newMission = "MISSION: REVIEW DOSSIERS";
-      }
+    return () => clearInterval(interval);
+  }, []);
 
-      if (newMission !== missionText) {
-        // Glitch effect on text change
-        const target = document.getElementById("hud-mission-text");
-        if (target) {
-          gsap.fromTo(target, 
-            { opacity: 0, x: -10 },
-            { opacity: 1, x: 0, duration: 0.2, ease: "power4.out" }
-          );
+  useGSAP(() => {
+    // Highly performant ScrollTrigger for the crosshair tracking
+    const crosshair = document.getElementById("scroll-crosshair");
+    if (crosshair) {
+      gsap.to(crosshair, {
+        top: "100%",
+        ease: "none",
+        scrollTrigger: {
+          trigger: document.body,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: true,
         }
-        setMissionText(newMission);
-      }
+      });
+    }
 
-      // Move the crosshair!
-      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = scrollY / totalScroll;
-      
-      const crosshair = document.getElementById("scroll-crosshair");
-      if (crosshair) {
-        // Calculate the height of the track line (it's 100% of its parent minus some padding)
-        gsap.to(crosshair, {
-          top: `${progress * 100}%`,
-          duration: 0.1,
-          ease: "none"
+    // Scroll listener for mission updates (Throttled via ScrollTrigger callbacks)
+    ScrollTrigger.create({
+      trigger: document.body,
+      start: "top top",
+      end: "bottom bottom",
+      onUpdate: (self) => {
+        const progress = self.progress;
+        
+        let newMission = "MISSION: SURVIVE THE CITY";
+        if (progress > 0.75) {
+          newMission = "MISSION: EXECUTE CONTRACT";
+        } else if (progress > 0.5) {
+          newMission = "MISSION: CHECK PLAYER STATS";
+        } else if (progress > 0.25) {
+          newMission = "MISSION: REVIEW DOSSIERS";
+        }
+
+        setMissionText((prev) => {
+          if (prev !== newMission) {
+            const target = document.getElementById("hud-mission-text");
+            if (target) {
+              gsap.fromTo(target, 
+                { opacity: 0, x: -10 },
+                { opacity: 1, x: 0, duration: 0.2, ease: "power4.out" }
+              );
+            }
+            return newMission;
+          }
+          return prev;
         });
       }
-    };
+    });
 
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [missionText]);
+  }, []);
 
   return (
     <div className="fixed inset-0 pointer-events-none z-[60] select-none">
