@@ -83,6 +83,25 @@ export default function HeroSlider() {
           }}
         />
 
+        {/* Custom Police Strobe Animation */}
+        <style>{`
+          @keyframes cop-light {
+            0%, 100% { opacity: 0; }
+            5% { opacity: 0.8; }
+            10% { opacity: 0; }
+            15% { opacity: 0.8; }
+            50% { opacity: 0; }
+          }
+          .animate-cop-red { animation: cop-light 1.2s infinite; }
+          .animate-cop-blue { animation: cop-light 1.2s infinite 0.6s; }
+        `}</style>
+
+        {/* Layer 1.5: Police Sirens Behind Character */}
+        <div className="absolute inset-0 z-[5] pointer-events-none mix-blend-color-dodge">
+          <div className="absolute top-0 left-[10%] w-[50%] h-[100%] bg-[radial-gradient(circle_at_center,rgba(255,0,0,0.7)_0%,transparent_60%)] animate-cop-red" />
+          <div className="absolute top-0 right-[10%] w-[50%] h-[100%] bg-[radial-gradient(circle_at_center,rgba(0,100,255,0.7)_0%,transparent_60%)] animate-cop-blue" />
+        </div>
+
         {/* Layer 2: Foreground Cutout */}
         <div 
           ref={fgRef}
