@@ -162,7 +162,7 @@ export default function MissionList() {
 
     // Header Tapes moving continuously while pinned
     gsap.to(".header-tape-left", {
-      xPercent: -20,
+      x: "-50vw", // Move noticeably
       ease: "none",
       scrollTrigger: {
         trigger: ".archive-header",
@@ -172,7 +172,7 @@ export default function MissionList() {
       }
     });
     gsap.to(".header-tape-right", {
-      xPercent: 20,
+      x: "50vw",
       ease: "none",
       scrollTrigger: {
         trigger: ".archive-header",
@@ -198,24 +198,24 @@ export default function MissionList() {
       <section className="archive-header level-section relative w-full h-screen bg-gta-black flex flex-col justify-center items-center overflow-hidden perspective-1000">
         <div className="absolute inset-0 gta-noise z-0 pointer-events-none" />
         
-        {/* Header Police Tapes */}
-        <div className="header-tape-left absolute top-[15%] -left-10 rotate-[-3deg] w-[200vw] h-12 bg-[#cc9933] text-black z-0 opacity-40 flex items-center overflow-hidden pointer-events-none border-y-2 border-black mix-blend-color-dodge">
-          <div className="flex gap-4 whitespace-nowrap gta-title text-3xl mt-1">
-            {[...Array(20)].map((_, idx) => (
-              <span key={idx}>POLICE LINE DO NOT CROSS // </span>
+        {/* Header Police Tapes (Highly Visible) */}
+        <div className="absolute top-[10%] -left-10 rotate-[-3deg] w-[200vw] h-14 bg-[#e6b800] z-10 flex items-center overflow-hidden pointer-events-none border-y-4 border-black drop-shadow-xl">
+          <div className="header-tape-left flex gap-4 whitespace-nowrap gta-title text-3xl mt-2 text-black w-full">
+            {[...Array(30)].map((_, idx) => (
+              <span key={idx}>POLICE LINE DO NOT CROSS // LCPD // </span>
             ))}
           </div>
         </div>
         
-        <div className="header-tape-right absolute bottom-[15%] -left-[100vw] rotate-[3deg] w-[200vw] h-12 bg-[#cc9933] text-black z-0 opacity-40 flex items-center overflow-hidden pointer-events-none border-y-2 border-black mix-blend-color-dodge">
-          <div className="flex gap-4 whitespace-nowrap gta-title text-3xl mt-1">
-            {[...Array(20)].map((_, idx) => (
+        <div className="absolute bottom-[10%] -left-[100vw] rotate-[3deg] w-[200vw] h-14 bg-[#e6b800] z-10 flex items-center overflow-hidden pointer-events-none border-y-4 border-black drop-shadow-xl">
+          <div className="header-tape-right flex gap-4 whitespace-nowrap gta-title text-3xl mt-2 text-black w-full">
+            {[...Array(30)].map((_, idx) => (
               <span key={idx}>LCPD // POLICE LINE DO NOT CROSS // </span>
             ))}
           </div>
         </div>
 
-        <div className="relative z-10 text-center px-4 flex flex-col items-center w-full">
+        <div className="relative z-20 text-center px-4 flex flex-col items-center w-full">
           <div className="flex flex-col gap-8 items-center w-full">
             <div className="archive-title-word origin-center will-change-transform">
               <img 
