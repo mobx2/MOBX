@@ -16,6 +16,18 @@ export default function StatsHUD() {
   const barsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useGSAP(() => {
+    // Parallax background
+    gsap.to(".hud-bg", {
+      yPercent: 30,
+      ease: "none",
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true,
+      }
+    });
+
     barsRef.current.forEach((bar, i) => {
       if (!bar) return;
       
@@ -55,7 +67,7 @@ export default function StatsHUD() {
       
       {/* Dark Desaturated Map Background */}
       <div 
-        className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2074')] bg-cover bg-center opacity-10 pointer-events-none"
+        className="hud-bg absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2074')] bg-cover bg-center opacity-10 pointer-events-none scale-150 origin-center"
         style={{ filter: 'grayscale(100%) contrast(200%) invert(100%)' }}
       />
       <div className="absolute inset-0 gta-vignette pointer-events-none" />

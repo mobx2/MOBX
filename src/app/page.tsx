@@ -25,46 +25,11 @@ export default function Home() {
 
   useGSAP(() => {
     if (loading) return;
-
-    // Remove old pinning logic. 
-    // Instead, let's create a crazy vertical parallax effect where sections overlap dynamically.
-    const sections = gsap.utils.toArray<HTMLElement>(".level-section");
     
-    sections.forEach((section, i) => {
-      // Skip the first section (Hero) from sliding up
-      if (i === 0) return;
-      
-      // We start the section slightly lower and move it up faster than the scroll
-      gsap.fromTo(section, 
-        { yPercent: 20, boxShadow: "0px -50px 100px rgba(0,0,0,1)" },
-        {
-          yPercent: 0,
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            start: "top bottom", // When top of section hits bottom of viewport
-            end: "top top",      // Until it reaches its natural position
-            scrub: true,
-          }
-        }
-      );
-      
-      // We push the previous section down slightly to create an overlapping parallax!
-      const prevSection = sections[i - 1];
-      if (prevSection) {
-        gsap.to(prevSection, {
-          yPercent: 30, // Push it down (GPU accelerated)
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            start: "top bottom",
-            end: "top top",
-            scrub: true,
-          }
-        });
-      }
-    });
-
+    // We intentionally removed the section-level yPercent parallax 
+    // because animating the actual DOM containers while scrolling past them 
+    // fights Lenis and creates a "dragging" / "torture" scroll feeling.
+    // Parallax should only be applied to inner elements, never the wrapper!
   }, { scope: containerRef, dependencies: [loading] });
 
   return (
