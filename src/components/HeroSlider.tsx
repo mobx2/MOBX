@@ -47,16 +47,19 @@ export default function HeroSlider() {
       const text = slide.querySelector('.hero-text');
       const crosshair = slide.querySelector('.hero-crosshair');
 
-      // 1. Crossfade slide container (except the first one which is already visible)
+      // 1. Wipe/Push slide container one by one
       if (index > 0) {
-        tl.fromTo(slide, { autoAlpha: 0 }, { autoAlpha: 1, duration: 1 }, `slide${index}`);
+        // Push the previous slide out to the left
+        tl.to(slides[index - 1], { xPercent: -100, duration: 1.5, ease: "power2.inOut" }, `slide${index}`);
+        // Bring this slide in from the right
+        tl.fromTo(slide, { xPercent: 100, autoAlpha: 1 }, { xPercent: 0, duration: 1.5, ease: "power2.inOut" }, `slide${index}`);
       } else {
         tl.addLabel(`slide${index}`);
       }
 
       // 2. Zoom background slowly over the duration of this slide
       if (bg) {
-        tl.to(bg, { scale: 1.5, ease: "none", duration: 2 }, `slide${index}`);
+        tl.to(bg, { scale: 1.5, ease: "none", duration: 2.5 }, `slide${index}`);
       }
 
       // 3. Move/Scale foreground slightly differently for parallax
@@ -100,8 +103,12 @@ export default function HeroSlider() {
         {SLIDES.map((slide, idx) => (
           <div 
             key={slide.id} 
-            className="hero-slide absolute inset-0 w-full h-full"
-            style={{ opacity: idx === 0 ? 1 : 0, visibility: idx === 0 ? 'visible' : 'hidden' }}
+            className="hero-slide absolute inset-0 w-full h-full will-change-transform"
+            style={{ 
+              opacity: 1, 
+              visibility: 'visible',
+              transform: idx === 0 ? 'translateX(0%)' : 'translateX(100%)' 
+            }}
           >
             {/* Background */}
             <div 
