@@ -93,15 +93,15 @@ export default function HeroSlider() {
             0%, 49% { opacity: 0; }
             50%, 100% { opacity: 1; }
           }
-          .animate-cop-red { animation: cop-red 0.8s infinite; }
-          .animate-cop-blue { animation: cop-blue 0.8s infinite; }
+          .animate-cop-red { animation: cop-red 1.2s infinite; }
+          .animate-cop-blue { animation: cop-blue 1.2s infinite; }
         `}</style>
 
         {/* Layer 1.5: Police Sirens Behind Character (Strong Alternating Flashes) */}
         <div className="absolute inset-0 z-[5] pointer-events-none mix-blend-screen opacity-90">
           {/* Strong red and blue flashes restricted to the left background to not be hidden by character */}
-          <div className="absolute inset-0 w-full h-full bg-[radial-gradient(ellipse_at_10%_50%,rgba(255,0,0,0.8)_0%,transparent_35%)] animate-cop-red" />
-          <div className="absolute inset-0 w-full h-full bg-[radial-gradient(ellipse_at_10%_50%,rgba(0,100,255,1)_0%,transparent_35%)] animate-cop-blue" />
+          <div className="absolute inset-0 w-[50%] h-full bg-[radial-gradient(ellipse_at_0%_50%,rgba(255,0,0,0.8)_0%,transparent_50%)] animate-cop-red" />
+          <div className="absolute inset-0 w-[50%] h-full bg-[radial-gradient(ellipse_at_0%_50%,rgba(0,100,255,1)_0%,transparent_50%)] animate-cop-blue" />
         </div>
 
         {/* Layer 2: Foreground Cutout */}
