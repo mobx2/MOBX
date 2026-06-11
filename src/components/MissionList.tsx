@@ -95,9 +95,7 @@ export default function MissionList() {
         ease: "power4.out",
         duration: 2
       }
-    ).to(".archive-title-word", {
-      scale: 1.2, opacity: 0, y: -100, stagger: 0.1, ease: "power2.inOut"
-    }, "+=1.5");
+    ); // Removed the .to() that faded it out
 
     // Header Tapes moving continuously while pinned
     headerTl.to(".header-tape-left", {
