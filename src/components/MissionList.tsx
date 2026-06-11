@@ -85,9 +85,9 @@ export default function MissionList() {
           <div 
             key={mission.id}
             ref={el => { cardsRef.current[i] = el }}
-            className="group relative w-full max-w-4xl flex flex-col md:flex-row bg-[#111] border-2 border-[#222] p-6 gap-8 shadow-2xl"
+            className="group relative w-full max-w-4xl flex flex-col md:flex-row bg-[#111] border-2 border-[#222] p-6 gap-8 will-change-transform"
             style={{ 
-              boxShadow: '10px 10px 30px rgba(0,0,0,0.8), inset 0 0 50px rgba(0,0,0,0.5)'
+              boxShadow: '20px 20px 0px rgba(0,0,0,0.8)' // Hard shadow instead of blurred shadow for 60FPS
             }}
           >
             {/* Fake Tape on Top */}
@@ -96,14 +96,16 @@ export default function MissionList() {
             {/* Image (Polaroid Style) */}
             <div className="relative w-full md:w-1/2 aspect-video bg-black border-[12px] border-b-[40px] border-[#D1C7AC] overflow-hidden">
               <div 
-                className="absolute inset-0 bg-cover bg-center transition-all duration-300 group-hover:scale-105"
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105 will-change-transform"
                 style={{ 
-                  backgroundImage: `url('${mission.image}')`,
-                  filter: 'sepia(60%) contrast(150%) brightness(0.6)'
+                  backgroundImage: `url('${mission.image}')`
                 }}
               />
+              {/* Fake Sepia Filter using pure HTML overlay (Zero GPU hit) */}
+              <div className="absolute inset-0 bg-[#4A3219] opacity-40 mix-blend-color pointer-events-none transition-opacity duration-300 group-hover:opacity-0" />
+              <div className="absolute inset-0 bg-black opacity-40 pointer-events-none transition-opacity duration-300 group-hover:opacity-10" />
+              
               <div className="absolute inset-0 scanlines opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-              <div className="absolute inset-0 gta-noise opacity-10 group-hover:opacity-40 transition-opacity duration-300 pointer-events-none" />
             </div>
 
             {/* Mission Details */}
