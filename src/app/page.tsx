@@ -70,9 +70,16 @@ export default function Home() {
 
   return (
     <main ref={containerRef} className="bg-gta-black min-h-screen selection:bg-gta-sepia selection:text-gta-black relative overflow-hidden">
-      {loading && <BootLoader onComplete={() => setLoading(false)} />}
       
-      {!loading && <GameHUD />}
+      {/* Stable wrapper for Loader to prevent React insertBefore crashes */}
+      <div className="relative z-50">
+        {loading && <BootLoader onComplete={() => setLoading(false)} />}
+      </div>
+      
+      {/* Stable wrapper for HUD */}
+      <div className="relative z-40">
+        {!loading && <GameHUD />}
+      </div>
 
       <div 
         className="w-full relative z-10" 
