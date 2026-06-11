@@ -150,13 +150,13 @@ export default function MissionList() {
 
     // Massive Sticky Ticker Animation
     gsap.to(".massive-sticky-ticker", {
-      xPercent: -50,
+      xPercent: -30, // Reduced from -50 to make it move slower and smoother
       ease: "none",
       scrollTrigger: {
         trigger: containerRef.current,
         start: "top top",
         end: "bottom bottom",
-        scrub: 1.5,
+        scrub: 2, // Softer scrub
       }
     });
 
@@ -165,10 +165,10 @@ export default function MissionList() {
   return (
     <div ref={containerRef} className="w-full relative">
       
-      {/* MASSIVE STICKY TICKER THAT STAYS WITH YOU */}
-      <div className="sticky top-[40vh] left-0 w-[300vw] h-0 z-0 pointer-events-none mix-blend-overlay opacity-20 overflow-visible">
-        <h1 className="massive-sticky-ticker gta-title text-[25vw] leading-none text-gta-sepia whitespace-nowrap drop-shadow-2xl">
-          MOST WANTED // HIGH LEVEL THREAT // LCPD PURSUIT // DO NOT APPROACH // MOST WANTED // HIGH LEVEL THREAT //
+      {/* MASSIVE STICKY TICKER THAT STAYS WITH YOU (TONED DOWN) */}
+      <div className="sticky top-[45vh] left-0 w-[300vw] h-0 z-0 pointer-events-none opacity-[0.03] overflow-visible">
+        <h1 className="massive-sticky-ticker gta-title text-[15vw] leading-none text-white whitespace-nowrap">
+          MISSION ARCHIVE // CLASSIFIED FILES // MISSION ARCHIVE // CLASSIFIED FILES // MISSION ARCHIVE // CLASSIFIED FILES //
         </h1>
       </div>
 
