@@ -32,47 +32,60 @@ const MISSIONS = [
 
 export default function MissionList() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const scrollWrapperRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useGSAP(() => {
     const cards = cardsRef.current;
     if (!cards.length) return;
 
-    // Horizontal Scroll for Missions
-    gsap.to(scrollWrapperRef.current, {
-      xPercent: -100 * (cards.length - 1),
-      ease: "none",
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top top",
-        end: () => `+=${window.innerWidth * cards.length}`,
-        pin: true,
-        scrub: 1,
-      }
+    cards.forEach((card, i) => {
+      if (!card) return;
+      
+      const isEven = i % 2 === 0;
+      
+      // High velocity slide-in on scroll
+      gsap.fromTo(card,
+        { 
+          xPercent: isEven ? -50 : 50, 
+          rotationZ: isEven ? -10 : 10,
+          opacity: 0 
+        },
+        {
+          xPercent: 0,
+          rotationZ: (Math.random() - 0.5) * 4, // Slight polaroid tilt
+          opacity: 1,
+          duration: 0.8,
+          ease: "power4.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 85%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
     });
 
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="level-section relative w-full h-screen bg-gta-black py-20 overflow-hidden border-t-4 border-b-4 border-gta-brown/50">
+    <section ref={containerRef} className="level-section relative w-full min-h-screen bg-gta-black py-32 overflow-hidden border-t-4 border-b-4 border-gta-brown/50 flex flex-col items-center">
       
       <div className="absolute inset-0 gta-noise z-0 pointer-events-none" />
       <div className="absolute inset-0 gta-vignette z-0 pointer-events-none" />
 
       {/* Header */}
-      <div className="absolute top-10 left-10 z-20 border-b-4 border-gta-brown pb-2">
-        <h2 className="gta-title text-5xl text-gta-sepia">MISSION ARCHIVE</h2>
+      <div className="relative z-10 mb-20 border-b-4 border-gta-brown pb-2 w-full max-w-4xl px-8">
+        <h2 className="gta-title text-5xl md:text-6xl text-gta-sepia">MISSION ARCHIVE</h2>
         <p className="gta-hud text-gta-brown text-lg mt-1">ACCESSING LCPD DATABASE...</p>
       </div>
 
-      {/* Horizontal Scroll Wrapper */}
-      <div ref={scrollWrapperRef} className="relative z-10 flex h-full items-center mt-10 w-max pl-[10vw]">
+      {/* Vertical Stack Wrapper */}
+      <div className="relative z-10 flex flex-col gap-24 w-full px-4 md:px-8 items-center">
         {MISSIONS.map((mission, i) => (
           <div 
             key={mission.id}
             ref={el => { cardsRef.current[i] = el }}
-            className="group relative w-[80vw] md:w-[60vw] max-w-4xl flex flex-col md:flex-row bg-[#111] border-2 border-[#222] p-6 gap-8 shadow-2xl mx-8"
+            className="group relative w-full max-w-4xl flex flex-col md:flex-row bg-[#111] border-2 border-[#222] p-6 gap-8 shadow-2xl"
             style={{ 
               boxShadow: '10px 10px 30px rgba(0,0,0,0.8), inset 0 0 50px rgba(0,0,0,0.5)'
             }}
@@ -83,7 +96,7 @@ export default function MissionList() {
             {/* Image (Polaroid Style) */}
             <div className="relative w-full md:w-1/2 aspect-video bg-black border-[12px] border-b-[40px] border-[#D1C7AC] overflow-hidden">
               <div 
-                className="absolute inset-0 bg-cover bg-center transition-all duration-300"
+                className="absolute inset-0 bg-cover bg-center transition-all duration-300 group-hover:scale-105"
                 style={{ 
                   backgroundImage: `url('${mission.image}')`,
                   filter: 'sepia(60%) contrast(150%) brightness(0.6)'
