@@ -204,6 +204,25 @@ export default function MissionList() {
       }
     });
 
+    // Parallax Collage Images
+    gsap.utils.toArray('.collage-img').forEach((el: any, i) => {
+      // Alternate movement direction based on column index approximation
+      const direction = i % 2 === 0 ? 1 : -1;
+      gsap.fromTo(el, 
+        { y: direction * 50 },
+        {
+          y: direction * -50,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".archive-header",
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          }
+        }
+      );
+    });
+
   }, { scope: containerRef });
 
   return (
@@ -220,16 +239,19 @@ export default function MissionList() {
       <section className="archive-header level-section relative w-full h-screen bg-gta-black flex flex-col justify-center items-center overflow-hidden perspective-1000">
         
         {/* Background Collage of Screenshots */}
-        <div className="absolute inset-0 z-0 opacity-20 overflow-hidden grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-2 p-2 pointer-events-none" style={{ filter: 'grayscale(80%) sepia(50%) hue-rotate(5deg)' }}>
+        <div className="absolute inset-0 z-0 overflow-hidden grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-2 p-2 pointer-events-none opacity-25">
+          {/* Sepia Tint Overlay (Performance friendly) */}
+          <div className="absolute inset-0 bg-gta-sepia mix-blend-color z-10 pointer-events-none" />
+          
           {PROJECT_SCREENSHOTS.map((src, i) => (
-            <div key={i} className="relative aspect-video w-full rounded overflow-hidden border border-gta-sepia/20">
+            <div key={i} className="collage-img relative aspect-video w-full rounded overflow-hidden border border-gta-sepia/20 will-change-transform">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={`/projects/${src}`} alt="Project" className="object-cover w-full h-full" />
             </div>
           ))}
           {/* Duplicate some to fill the screen if needed */}
           {PROJECT_SCREENSHOTS.slice(0, 10).map((src, i) => (
-            <div key={`dup-${i}`} className="relative aspect-video w-full rounded overflow-hidden border border-gta-sepia/20">
+            <div key={`dup-${i}`} className="collage-img relative aspect-video w-full rounded overflow-hidden border border-gta-sepia/20 will-change-transform">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={`/projects/${src}`} alt="Project" className="object-cover w-full h-full" />
             </div>
