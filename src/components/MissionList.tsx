@@ -179,13 +179,9 @@ export default function MissionList() {
           <div className="flex flex-col gap-8 items-center w-full">
             <div className="archive-title-word origin-center will-change-transform">
               <img 
-                src="/pngfind.com-gta-png-2851262.png" 
+                src="/5d0g3g.png" 
                 alt="Mission Passed Respect +" 
-                className="w-[80vw] md:w-[600px] object-contain"
-                style={{ 
-                  // Multiple tight drop-shadows create a thick "stroke" effect around the PNG alpha channel
-                  filter: 'drop-shadow(2px 0px 0px black) drop-shadow(-2px 0px 0px black) drop-shadow(0px 2px 0px black) drop-shadow(0px -2px 0px black) drop-shadow(5px 5px 0px rgba(0,0,0,0.8))'
-                }}
+                className="w-[80vw] md:w-[600px] object-contain drop-shadow-[5px_5px_0px_#050505]"
               />
             </div>
             
