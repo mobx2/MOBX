@@ -204,20 +204,20 @@ export default function MissionList() {
       }
     });
 
-    // Parallax Collage Images
+    // Parallax Collage Images (Continuous movement through the pin)
     gsap.utils.toArray('.collage-img').forEach((el: any, i) => {
       // Alternate movement direction based on column index approximation
       const direction = i % 2 === 0 ? 1 : -1;
       gsap.fromTo(el, 
-        { y: direction * 150 },
+        { y: direction * 400 },
         {
-          y: direction * -150,
+          y: direction * -400,
           ease: "none",
           scrollTrigger: {
             trigger: ".archive-header",
             start: "top bottom",
-            end: "bottom top",
-            scrub: true,
+            end: "+=3000", // Cover the enter, the pin, and the exit
+            scrub: 1,
           }
         }
       );
