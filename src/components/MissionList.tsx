@@ -200,7 +200,7 @@ export default function MissionList() {
         
         {/* Header Police Tapes (Highly Visible) */}
         <div className="absolute top-[10%] -left-10 rotate-[-3deg] w-[200vw] h-14 bg-[#e6b800] z-10 flex items-center overflow-hidden pointer-events-none border-y-4 border-black drop-shadow-xl">
-          <div className="header-tape-left flex gap-4 whitespace-nowrap gta-title text-3xl mt-2 text-black w-full">
+          <div className="header-tape-left flex gap-4 whitespace-nowrap gta-title text-4xl mt-2 text-black w-full" style={{ WebkitTextStroke: '0px', textShadow: 'none' }}>
             {[...Array(30)].map((_, idx) => (
               <span key={idx}>POLICE LINE DO NOT CROSS // LCPD // </span>
             ))}
@@ -208,7 +208,7 @@ export default function MissionList() {
         </div>
         
         <div className="absolute bottom-[10%] -left-[100vw] rotate-[3deg] w-[200vw] h-14 bg-[#e6b800] z-10 flex items-center overflow-hidden pointer-events-none border-y-4 border-black drop-shadow-xl">
-          <div className="header-tape-right flex gap-4 whitespace-nowrap gta-title text-3xl mt-2 text-black w-full">
+          <div className="header-tape-right flex gap-4 whitespace-nowrap gta-title text-4xl mt-2 text-black w-full" style={{ WebkitTextStroke: '0px', textShadow: 'none' }}>
             {[...Array(30)].map((_, idx) => (
               <span key={idx}>LCPD // POLICE LINE DO NOT CROSS // </span>
             ))}
@@ -249,7 +249,7 @@ export default function MissionList() {
           
           {/* Interactive Scroll Tape */}
           <div className={`scroll-tape absolute top-1/4 ${i % 2 === 0 ? '-left-10 rotate-[-5deg]' : '-right-10 rotate-[5deg]'} w-[200vw] h-16 bg-[#D1C7AC] text-black z-[5] opacity-20 flex items-center overflow-hidden pointer-events-none mix-blend-overlay`}>
-            <div className="flex gap-4 whitespace-nowrap gta-title text-5xl">
+            <div className="flex gap-4 whitespace-nowrap gta-title text-5xl" style={{ WebkitTextStroke: '0px', textShadow: 'none' }}>
               {[...Array(10)].map((_, idx) => (
                 <span key={idx}>POLICE LINE DO NOT CROSS // LCPD // </span>
               ))}
