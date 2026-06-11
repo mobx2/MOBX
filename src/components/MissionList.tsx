@@ -47,16 +47,16 @@ export default function MissionList() {
     });
 
     headerTl.fromTo(".archive-title-word",
-      { scale: 5, opacity: 0, rotateX: -90, z: 500 },
+      { scale: 15, opacity: 0 },
       {
-        scale: 1, opacity: 1, rotateX: 0, z: 0,
-        stagger: 0.1,
-        ease: "expo.out",
+        scale: 1, opacity: 1,
+        stagger: 0.2,
+        ease: "power4.out",
         duration: 2
       }
     ).to(".archive-title-word", {
-      scale: 0.8, opacity: 0, y: -100, stagger: 0.1, ease: "power4.inOut"
-    }, "+=1");
+      scale: 1.2, opacity: 0, y: -100, stagger: 0.1, ease: "power2.inOut"
+    }, "+=1.5");
 
     // Scroll Velocity Skewing (Grime Effect) for Projects
     const proxy = { skew: 0 };
@@ -168,7 +168,7 @@ export default function MissionList() {
       {/* MASSIVE STICKY TICKER THAT STAYS WITH YOU (TONED DOWN) */}
       <div className="sticky top-[45vh] left-0 w-[300vw] h-0 z-0 pointer-events-none opacity-[0.03] overflow-visible">
         <h1 className="massive-sticky-ticker gta-title text-[15vw] leading-none text-white whitespace-nowrap">
-          MISSION ARCHIVE // CLASSIFIED FILES // MISSION ARCHIVE // CLASSIFIED FILES // MISSION ARCHIVE // CLASSIFIED FILES //
+          LCPD DATABASE // LCPD DATABASE // LCPD DATABASE // LCPD DATABASE // LCPD DATABASE // LCPD DATABASE //
         </h1>
       </div>
 
@@ -182,6 +182,9 @@ export default function MissionList() {
             </span>
             <span className="archive-title-word block text-[#e6e6e6] text-3xl md:text-5xl origin-bottom tracking-widest whitespace-nowrap">
               RESPECT +
+            </span>
+            <span className="archive-title-word gta-hud text-gta-brown text-xl md:text-2xl mt-8 tracking-[0.2em] animate-pulse">
+              ACCESSING LCPD DATABASE...
             </span>
           </h2>
         </div>
