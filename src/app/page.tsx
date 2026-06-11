@@ -53,10 +53,18 @@ export default function Home() {
       <div 
         className={`w-full relative z-10 transition-opacity duration-[2000ms] ease-in-out ${loading ? "opacity-0 h-screen overflow-hidden" : "opacity-100"}`} 
       >
-        <HeroSlider />
-        <MissionList />
-        <StatsHUD />
-        <FinalCutscene />
+        <div id="hero">
+          <HeroSlider />
+        </div>
+        <div id="missions">
+          <MissionList />
+        </div>
+        <div id="stats">
+          <StatsHUD />
+        </div>
+        <div id="ending">
+          <FinalCutscene />
+        </div>
       </div>
     </main>
   );

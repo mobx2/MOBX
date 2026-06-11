@@ -57,26 +57,32 @@ export default function PauseMenu() {
   const handleWaypointClick = (x: number, y: number, section: string) => {
     if (!svgMapRef.current) return;
     
-    // Aggressive GSAP zoom into the coordinate
+    // Aggressive, fast GSAP zoom into the coordinate
     gsap.to(svgMapRef.current, {
       scale: 15,
       x: -x * 10,
       y: -y * 10,
-      duration: 1.2,
-      ease: "power4.inOut",
+      duration: 0.5,
+      ease: "power4.in",
       onComplete: () => {
-        // Close the menu
+        // Close the menu instantly
         setIsOpen(false);
         
-        // Scroll the page to the appropriate section
+        // Scroll the page to the exact element
         setTimeout(() => {
-          if (section === "Profile") window.scrollTo({ top: 0, behavior: 'smooth' });
-          if (section === "Projects") window.scrollTo({ top: window.innerHeight * 1.5, behavior: 'smooth' });
-          if (section === "Skills") window.scrollTo({ top: window.innerHeight * 3, behavior: 'smooth' });
+          let targetId = "hero";
+          if (section === "Profile") targetId = "hero";
+          if (section === "Projects") targetId = "missions";
+          if (section === "Skills") targetId = "stats";
+          
+          const element = document.getElementById(targetId);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
           
           // Reset map zoom so it's normal next time we open it
           gsap.set(svgMapRef.current, { scale: 1, x: 0, y: 0 });
-        }, 300);
+        }, 50);
       }
     });
   };
