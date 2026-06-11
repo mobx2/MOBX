@@ -87,16 +87,16 @@ export default function HeroSlider() {
         <style>{`
           @keyframes cop-red {
             0%, 100% { opacity: 0; }
-            0% { opacity: 0.55; }
+            0% { opacity: 0.45; }
             10% { opacity: 0; }
-            20% { opacity: 0.55; }
+            20% { opacity: 0.45; }
             30% { opacity: 0; }
           }
           @keyframes cop-blue {
             0%, 100% { opacity: 0; }
-            50% { opacity: 0.65; }
+            50% { opacity: 0.45; }
             60% { opacity: 0; }
-            70% { opacity: 0.65; }
+            70% { opacity: 0.45; }
             80% { opacity: 0; }
           }
           .animate-cop-red { animation: cop-red 2s infinite; }
@@ -106,8 +106,8 @@ export default function HeroSlider() {
         {/* Layer 1.5: Police Sirens Behind Character (Subtle Gritty Reflection) */}
         <div className="absolute inset-0 z-[5] pointer-events-none mix-blend-overlay">
           {/* Subtle red and blue flashes restricted to the far left background */}
-          <div className="absolute inset-0 w-full h-full bg-[radial-gradient(ellipse_at_10%_50%,rgba(255,0,0,0.6)_0%,transparent_40%)] animate-cop-red" />
-          <div className="absolute inset-0 w-full h-full bg-[radial-gradient(ellipse_at_10%_50%,rgba(0,50,255,0.7)_0%,transparent_40%)] animate-cop-blue" />
+          <div className="absolute inset-0 w-full h-full bg-[radial-gradient(ellipse_at_10%_50%,rgba(255,0,0,0.6)_0%,transparent_30%)] animate-cop-red" />
+          <div className="absolute inset-0 w-full h-full bg-[radial-gradient(ellipse_at_10%_50%,rgba(0,50,255,0.7)_0%,transparent_30%)] animate-cop-blue" />
         </div>
 
         {/* Layer 2: Foreground Cutout */}
