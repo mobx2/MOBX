@@ -19,7 +19,6 @@
 }
 
 html {
-  scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
 }
 
@@ -30,12 +29,6 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-/* Make sections act as levels */
-section {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
 }
 
 /* Typography styles */

@@ -42,7 +42,7 @@ export default function FinalCutscene() {
   };
 
   return (
-    <section ref={containerRef} className="relative w-full h-screen bg-[#020202] flex items-center justify-center overflow-hidden transition-all duration-[4000ms]">
+    <section ref={containerRef} className="level-section relative w-full h-screen bg-[#020202] flex items-center justify-center overflow-hidden transition-all duration-[4000ms]">
       
       <div className="absolute inset-0 gta-noise z-0 pointer-events-none" />
       <div className="absolute inset-0 gta-vignette opacity-100 z-10 pointer-events-none" />

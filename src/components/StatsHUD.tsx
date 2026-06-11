@@ -51,7 +51,7 @@ export default function StatsHUD() {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="relative w-full bg-gta-black py-32 px-4 md:px-20 overflow-hidden border-t-2 border-b-2 border-gta-brown/30">
+    <section ref={containerRef} className="level-section relative w-full h-screen bg-gta-black py-32 px-4 md:px-20 overflow-hidden border-t-2 border-b-2 border-gta-brown/30 flex items-center justify-center">
       
       {/* Dark Desaturated Map Background */}
       <div 

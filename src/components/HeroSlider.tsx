@@ -129,7 +129,7 @@ export default function HeroSlider() {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="relative w-full h-screen overflow-hidden bg-gta-black">
+    <section ref={containerRef} className="level-section relative w-full h-screen overflow-hidden bg-gta-black">
       
       {/* Global Noise & Vignette */}
       <div className="absolute inset-0 gta-noise z-50" />
