@@ -148,10 +148,30 @@ export default function MissionList() {
       }
     });
 
+    // Massive Sticky Ticker Animation
+    gsap.to(".massive-sticky-ticker", {
+      xPercent: -50,
+      ease: "none",
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 1.5,
+      }
+    });
+
   }, { scope: containerRef });
 
   return (
-    <div ref={containerRef} className="w-full">
+    <div ref={containerRef} className="w-full relative">
+      
+      {/* MASSIVE STICKY TICKER THAT STAYS WITH YOU */}
+      <div className="sticky top-[40vh] left-0 w-[300vw] h-0 z-0 pointer-events-none mix-blend-overlay opacity-20 overflow-visible">
+        <h1 className="massive-sticky-ticker gta-title text-[25vw] leading-none text-gta-sepia whitespace-nowrap drop-shadow-2xl">
+          MOST WANTED // HIGH LEVEL THREAT // LCPD PURSUIT // DO NOT APPROACH // MOST WANTED // HIGH LEVEL THREAT //
+        </h1>
+      </div>
+
       {/* Intro Header Section */}
       <section className="archive-header level-section relative w-full h-screen bg-gta-black flex flex-col justify-center items-center overflow-hidden perspective-1000">
         <div className="absolute inset-0 gta-noise z-0 pointer-events-none" />
