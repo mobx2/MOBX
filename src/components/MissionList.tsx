@@ -32,7 +32,7 @@ const MISSIONS = [
     client: "UNKNOWN",
     status: "COMPLETED",
     desc: "Infiltrate the mainframe and establish a WebGL beachhead.",
-    image: "https://images.unsplash.com/photo-1444723121867-7a241cacace9?q=80&w=2000" // Moody city architecture
+    image: "/projects/Screenshot%20from%202026-06-12%2002-00-20.png"
   },
   {
     id: 2,
@@ -40,7 +40,7 @@ const MISSIONS = [
     client: "SYNDICATE",
     status: "IN PROGRESS",
     desc: "Extract the React components before the deadline hits.",
-    image: "https://images.unsplash.com/photo-1514565131-fce0801e5785?q=80&w=2000" // Urban street lights
+    image: "/projects/Screenshot%20from%202026-06-12%2002-03-56.png"
   },
   {
     id: 3,
@@ -48,7 +48,7 @@ const MISSIONS = [
     client: "CARTEL",
     status: "WANTED",
     desc: "Develop a high-performance shader pipeline. Leave no trace.",
-    image: "https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?q=80&w=2000" // Urban grit / NYC
+    image: "/projects/Screenshot%20from%202026-06-12%2002-04-22.png"
   }
 ];
 
@@ -173,11 +173,11 @@ export default function MissionList() {
         {
           xPercent: 0, rotateZ: 0,
           ease: "expo.out",
+          duration: 1.5,
           scrollTrigger: {
             trigger: section,
-            start: "top 60%",
-            end: "top 10%",
-            scrub: 1.5
+            start: "top 70%",
+            toggleActions: "play none none reverse"
           }
         }
       );
@@ -217,22 +217,20 @@ export default function MissionList() {
       <section className="archive-header level-section relative w-full h-screen bg-gta-black flex flex-col justify-center items-center overflow-hidden perspective-1000">
         
         {/* Background Collage of Screenshots */}
-        <div className="absolute inset-0 z-0 overflow-hidden grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-2 p-2 pointer-events-none opacity-25">
+        <div className="absolute -inset-[50vh] z-0 overflow-hidden grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-2 p-2 pointer-events-none opacity-25">
           {/* Sepia Tint Overlay (Performance friendly) */}
           <div className="absolute inset-0 bg-gta-sepia mix-blend-color z-10 pointer-events-none" />
           
-          {PROJECT_SCREENSHOTS.map((src, i) => (
-            <div key={i} className="collage-img relative aspect-video w-full rounded overflow-hidden border border-gta-sepia/20 will-change-transform">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`/projects/${src}`} alt="Project" className="object-cover w-full h-full" />
-            </div>
-          ))}
-          {/* Duplicate some to fill the screen if needed */}
-          {PROJECT_SCREENSHOTS.slice(0, 10).map((src, i) => (
-            <div key={`dup-${i}`} className="collage-img relative aspect-video w-full rounded overflow-hidden border border-gta-sepia/20 will-change-transform">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`/projects/${src}`} alt="Project" className="object-cover w-full h-full" />
-            </div>
+          {/* Duplicate massively to fill the expanded grid to prevent gaps during animation */}
+          {[...Array(15)].map((_, loopIdx) => (
+            <React.Fragment key={`loop-${loopIdx}`}>
+              {PROJECT_SCREENSHOTS.map((src, i) => (
+                <div key={`img-${loopIdx}-${i}`} className="collage-img relative aspect-video w-full rounded overflow-hidden border border-gta-sepia/20 will-change-transform">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={`/projects/${src}`} alt="Project" className="object-cover w-full h-full" />
+                </div>
+              ))}
+            </React.Fragment>
           ))}
         </div>
 
