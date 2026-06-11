@@ -130,17 +130,20 @@ export default function Hero({ name = "JOHN DOE" }: { name?: string }) {
       {/* 3D Kinetic Typography */}
       <h1 
         ref={textRef} 
-        className="relative z-10 text-[18vw] leading-[0.8] text-brand-white brutalist-text flex flex-wrap justify-center pointer-events-none transform-style-3d will-change-transform drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+        className="relative z-10 text-[18vw] leading-[0.8] text-brand-white brutalist-text flex flex-col items-center justify-center pointer-events-none transform-style-3d will-change-transform drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]"
         aria-label={name}
       >
-        {name.split("").map((char, i) => (
-          <span 
-            key={i} 
-            className="char inline-block gpu-accelerated will-change-transform origin-center"
-            style={{ whiteSpace: char === ' ' ? 'pre' : 'normal' }}
-          >
-            {char}
-          </span>
+        {name.split(" ").map((word, wIndex) => (
+          <div key={wIndex} className="flex justify-center w-full overflow-visible">
+            {word.split("").map((char, i) => (
+              <span 
+                key={i} 
+                className="char inline-block gpu-accelerated will-change-transform origin-center"
+              >
+                {char}
+              </span>
+            ))}
+          </div>
         ))}
       </h1>
     </section>
