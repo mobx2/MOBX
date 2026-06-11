@@ -66,11 +66,11 @@ export default function BootLoader({ onComplete }: { onComplete: () => void }) {
       <div className="absolute inset-0 gta-noise z-50" />
       <div className="absolute inset-0 gta-vignette z-40" />
 
-      {/* R Logo Phase */}
+      {/* Rockstar-style MOBX Logo Phase */}
       <div ref={rLogoRef} className="absolute inset-0 flex items-center justify-center z-30">
-        <div className="w-32 h-32 bg-[#FFA500] rounded-xl flex items-center justify-center border-4 border-gta-black shadow-[0_0_20px_rgba(255,165,0,0.5)]">
-          {/* Fake R Logo */}
-          <span className="font-bold text-6xl text-gta-black -ml-2 -mt-2">R*</span>
+        <div className="w-40 h-32 bg-[#FFA500] rounded-xl flex items-center justify-center border-4 border-gta-black shadow-[0_0_20px_rgba(255,165,0,0.5)]">
+          {/* Fake Logo */}
+          <span className="font-bold text-5xl text-gta-black tracking-tighter">MOBX</span>
         </div>
       </div>
 
