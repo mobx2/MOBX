@@ -32,33 +32,39 @@ const MISSIONS = [
 
 export default function MissionList() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useGSAP(() => {
-    const cards = cardsRef.current;
-    if (!cards.length) return;
+    // Parallax and reveal animations for each project screen
+    sectionsRef.current.forEach((section, i) => {
+      if (!section) return;
+      
+      const img = section.querySelector(".bg-image");
+      const info = section.querySelector(".mission-info");
 
-    cards.forEach((card, i) => {
-      if (!card) return;
-      
-      const isEven = i % 2 === 0;
-      
-      // High velocity slide-in on scroll
-      gsap.fromTo(card,
+      // Animate background image (Cinematic Parallax Zoom)
+      gsap.fromTo(img, 
+        { scale: 1 }, 
         { 
-          xPercent: isEven ? -50 : 50, 
-          rotationZ: isEven ? -10 : 10,
-          opacity: 0 
-        },
-        {
-          xPercent: 0,
-          rotationZ: (Math.random() - 0.5) * 4, // Slight polaroid tilt
-          opacity: 1,
-          duration: 0.8,
-          ease: "power4.out",
+          scale: 1.15, 
+          ease: "none",
           scrollTrigger: {
-            trigger: card,
-            start: "top 85%",
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true
+          }
+        }
+      );
+
+      // Slide in the mission info box
+      gsap.fromTo(info,
+        { x: i % 2 === 0 ? -100 : 100, opacity: 0 },
+        {
+          x: 0, opacity: 1, duration: 1, ease: "power3.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 60%",
             toggleActions: "play none none reverse"
           }
         }
@@ -68,79 +74,76 @@ export default function MissionList() {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="level-section relative w-full min-h-screen bg-gta-black py-32 overflow-hidden border-t-4 border-b-4 border-gta-brown/50 flex flex-col items-center">
-      
-      <div className="absolute inset-0 gta-noise z-0 pointer-events-none" />
-      <div className="absolute inset-0 gta-vignette z-0 pointer-events-none" />
+    <div ref={containerRef} className="w-full">
+      {/* Intro Header Section */}
+      <section className="level-section relative w-full h-[50vh] bg-gta-black flex flex-col justify-center items-center border-t-4 border-b-4 border-gta-brown/50 overflow-hidden">
+        <div className="absolute inset-0 gta-noise z-0 pointer-events-none" />
+        <div className="relative z-10 text-center px-4">
+          <h2 className="gta-title text-6xl md:text-8xl text-gta-sepia drop-shadow-[5px_5px_0_#050505]">MISSION ARCHIVE</h2>
+          <p className="gta-hud text-gta-brown text-xl md:text-2xl mt-4 animate-pulse">ACCESSING LCPD DATABASE...</p>
+        </div>
+      </section>
 
-      {/* Header */}
-      <div className="relative z-10 mb-20 border-b-4 border-gta-brown pb-2 w-full max-w-4xl px-8">
-        <h2 className="gta-title text-5xl md:text-6xl text-gta-sepia">MISSION ARCHIVE</h2>
-        <p className="gta-hud text-gta-brown text-lg mt-1">ACCESSING LCPD DATABASE...</p>
-      </div>
-
-      {/* Vertical Stack Wrapper */}
-      <div className="relative z-10 flex flex-col gap-24 w-full px-4 md:px-8 items-center">
-        {MISSIONS.map((mission, i) => (
+      {/* Full-Screen Projects */}
+      {MISSIONS.map((mission, i) => (
+        <section 
+          key={mission.id}
+          ref={el => { sectionsRef.current[i] = el }}
+          className="level-section relative w-full h-screen overflow-hidden border-b-4 border-gta-brown/50"
+        >
+          {/* Background Image / Future GIF */}
           <div 
-            key={mission.id}
-            ref={el => { cardsRef.current[i] = el }}
-            className="group relative w-full max-w-4xl flex flex-col md:flex-row bg-[#111] border-2 border-[#222] p-6 gap-8 will-change-transform"
-            style={{ 
-              boxShadow: '20px 20px 0px rgba(0,0,0,0.8)' // Hard shadow instead of blurred shadow for 60FPS
-            }}
-          >
-            {/* Fake Tape on Top */}
-            <div className="absolute top-[-15px] left-1/2 -translate-x-1/2 w-32 h-8 bg-[#D1C7AC] opacity-30 rotate-[-2deg] z-20" />
+            className="bg-image absolute inset-0 bg-cover bg-center will-change-transform origin-center"
+            style={{ backgroundImage: `url('${mission.image}')` }}
+          />
+          
+          {/* GTA Cinematic Filters */}
+          <div className="absolute inset-0 bg-[#4A3219] opacity-40 mix-blend-color pointer-events-none" />
+          <div className="absolute inset-0 bg-black opacity-60 pointer-events-none" />
+          <div className="absolute inset-0 scanlines opacity-40 pointer-events-none" />
+          <div className="absolute inset-0 gta-vignette pointer-events-none" />
 
-            {/* Image (Polaroid Style) */}
-            <div className="relative w-full md:w-1/2 aspect-video bg-black border-[12px] border-b-[40px] border-[#D1C7AC] overflow-hidden">
-              <div 
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105 will-change-transform"
-                style={{ 
-                  backgroundImage: `url('${mission.image}')`
-                }}
-              />
-              {/* Fake Sepia Filter using pure HTML overlay (Zero GPU hit) */}
-              <div className="absolute inset-0 bg-[#4A3219] opacity-40 mix-blend-color pointer-events-none transition-opacity duration-300 group-hover:opacity-0" />
-              <div className="absolute inset-0 bg-black opacity-40 pointer-events-none transition-opacity duration-300 group-hover:opacity-10" />
-              
-              <div className="absolute inset-0 scanlines opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-            </div>
+          {/* Mission Information (HUD style overlay) */}
+          <div className={`mission-info absolute top-1/2 -translate-y-1/2 ${i % 2 === 0 ? 'left-4 md:left-24' : 'right-4 md:right-24'} w-[90vw] md:w-[500px] z-10`}>
+            
+            <div className="bg-[#050505]/95 border-2 border-[#222] p-6 md:p-10 shadow-[15px_15px_0px_rgba(0,0,0,1)]">
+              {/* Fake Tape */}
+              <div className="absolute top-[-15px] left-1/2 -translate-x-1/2 w-32 h-8 bg-[#D1C7AC] opacity-20 rotate-[-2deg] pointer-events-none" />
 
-            {/* Mission Details */}
-            <div className="w-full md:w-1/2 flex flex-col justify-center gap-4 text-gta-sepia">
-              <div className="border-b-2 border-gta-brown/50 pb-2">
-                <p className="gta-hud text-sm text-gta-brown mb-1">FILE N° 0{mission.id}</p>
-                <h3 className="gta-title text-4xl md:text-5xl tracking-tight leading-none">{mission.title}</h3>
+              <div className="border-b-2 border-gta-brown/50 pb-4 mb-6">
+                <p className="gta-hud text-gta-brown mb-2 tracking-widest text-lg">FILE N° 0{mission.id}</p>
+                <h3 className="gta-title text-5xl md:text-7xl tracking-tight text-gta-sepia leading-none drop-shadow-[4px_4px_0_#000]">
+                  {mission.title}
+                </h3>
               </div>
               
-              <div className="grid grid-cols-2 gap-4 my-2 gta-hud text-sm">
+              <div className="grid grid-cols-2 gap-6 my-6 gta-hud text-sm">
                 <div>
-                  <span className="text-gta-brown block">CLIENT</span>
-                  <span>{mission.client}</span>
+                  <span className="text-gta-brown block mb-1">CLIENT</span>
+                  <span className="text-white text-xl">{mission.client}</span>
                 </div>
                 <div>
-                  <span className="text-gta-brown block">STATUS</span>
-                  <span className={mission.status === 'WANTED' ? 'text-gta-red' : 'text-gta-green'}>
+                  <span className="text-gta-brown block mb-1">STATUS</span>
+                  <span className={`text-xl ${mission.status === 'WANTED' ? 'text-gta-red' : 'text-gta-green'} animate-pulse`}>
                     {mission.status}
                   </span>
                 </div>
               </div>
 
-              <div className="bg-[#0A0A0A] p-4 border border-[#222]">
-                <p className="gta-hud text-sm text-gta-sepia/80 leading-relaxed">
+              <div className="bg-[#0A0A0A] p-5 border border-[#222] mb-8">
+                <p className="gta-hud text-sm md:text-base text-gta-sepia/80 leading-relaxed">
                   {mission.desc}
                 </p>
               </div>
 
-              <button className="gta-hud mt-4 border-2 border-gta-sepia py-3 px-6 hover:bg-gta-sepia hover:text-gta-black transition-colors self-start">
+              <button className="gta-hud w-full border-2 border-gta-sepia py-4 hover:bg-gta-sepia hover:text-gta-black transition-colors text-xl">
                 LOAD MISSION
               </button>
             </div>
+
           </div>
-        ))}
-      </div>
-    </section>
+        </section>
+      ))}
+    </div>
   );
 }
