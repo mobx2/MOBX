@@ -6,6 +6,8 @@ import { gsap } from "@/lib/gsap";
 export default function PauseMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("MAP");
+  const [musicPlaying, setMusicPlaying] = useState(false);
+  const [volume, setVolume] = useState(1);
   const menuRef = useRef<HTMLDivElement>(null);
   const svgMapRef = useRef<SVGSVGElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -222,38 +224,50 @@ export default function PauseMenu() {
               
               <div className="flex justify-between items-center text-xl text-gray-300">
                 <span>RADIO STATION</span>
-                <span className="text-white bg-gta-sepia text-black px-4 font-bold">VLADIVOSTOK FM</span>
+                <span className="text-white bg-gta-sepia text-black px-4 font-bold">SAN ANDREAS FM</span>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <div className="flex justify-between text-xl text-gray-300">
+                  <span>PLAY MUSIC</span>
+                  <button 
+                    onClick={() => {
+                      const audio = document.getElementById('bg-music') as HTMLAudioElement;
+                      if (audio) {
+                        if (audio.paused) audio.play();
+                        else audio.pause();
+                        // Force re-render just to show status if we had a state, but let's just let it be toggle
+                        audio.paused ? setMusicPlaying(false) : setMusicPlaying(true);
+                      }
+                    }}
+                    className="text-white hover:text-gta-sepia uppercase"
+                  >
+                    {musicPlaying ? "ON" : "OFF"}
+                  </button>
+                </div>
               </div>
 
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between text-xl text-gray-300">
                   <span>MUSIC VOLUME</span>
-                  <span>100%</span>
+                  <span>{Math.round(volume * 100)}%</span>
                 </div>
-                {/* Fake slider */}
-                <div className="w-full h-4 bg-gray-800 border border-gray-600 relative flex">
+                {/* Interactive slider */}
+                <div className="w-full h-4 bg-gray-800 border border-gray-600 relative flex cursor-pointer"
+                  onClick={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const newVol = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+                    setVolume(newVol);
+                    const audio = document.getElementById('bg-music') as HTMLAudioElement;
+                    if (audio) audio.volume = newVol;
+                  }}
+                >
                   {[...Array(20)].map((_, i) => (
-                    <div key={i} className="flex-1 border-r border-black bg-[#cc9933]" />
+                    <div key={i} className={`flex-1 border-r border-black ${i < (volume * 20) ? 'bg-[#cc9933]' : 'bg-transparent'}`} />
                   ))}
                 </div>
               </div>
 
-              <div className="flex flex-col gap-2">
-                <div className="flex justify-between text-xl text-gray-300">
-                  <span>SFX VOLUME</span>
-                  <span>80%</span>
-                </div>
-                {/* Fake slider */}
-                <div className="w-full h-4 bg-gray-800 border border-gray-600 relative flex">
-                  {[...Array(20)].map((_, i) => (
-                    <div key={i} className={`flex-1 border-r border-black ${i < 16 ? 'bg-[#cc9933]' : 'bg-transparent'}`} />
-                  ))}
-                </div>
-              </div>
-
-              <div className="mt-8 text-center text-gray-500 text-sm">
-                * You can easily drop any .mp3 file into the public folder and we will link it to play here!
-              </div>
             </div>
           </div>
         )}
@@ -272,6 +286,8 @@ export default function PauseMenu() {
           <span className="border border-white px-2 rounded bg-white text-black text-sm">ESC</span> BACK / RESUME
         </button>
       </div>
+
+      <audio id="bg-music" src="/theme.mp3" loop />
     </div>
   );
 }
