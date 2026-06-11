@@ -161,23 +161,6 @@ export default function HeroSlider() {
             }}
           />
 
-          {/* Layer 2.5: Infinite Marquee Background Text */}
-          <div className="absolute top-[20%] left-0 w-[200vw] flex overflow-hidden z-10 opacity-10 pointer-events-none">
-            <div className="flex gap-8 whitespace-nowrap animate-marquee">
-              {[...Array(6)].map((_, idx) => (
-                <span key={idx} className="gta-title text-9xl text-stroke tracking-widest uppercase">
-                  HIGHLY CLASSIFIED // LCPD DATABASE // 
-                </span>
-              ))}
-            </div>
-          </div>
-          
-          {/* Layer 2.8: Police Sirens */}
-          <div className="absolute inset-0 z-10 pointer-events-none opacity-50">
-            <div className="absolute inset-0 siren-red animate-siren" />
-            <div className="absolute inset-0 siren-blue animate-siren" style={{ animationDelay: "1s" }} />
-          </div>
-
           {/* Layer 3: Bold Typography */}
           <div className="absolute inset-0 flex items-center justify-start pl-24 z-20 pointer-events-none glitch-hover">
             <h1 
@@ -191,6 +174,32 @@ export default function HeroSlider() {
           </div>
         </div>
       ))}
+      
+      {/* Global Foreground Marquee & Sirens (Above background, behind text) */}
+      <div className="absolute top-[10%] left-0 w-[200vw] flex overflow-hidden z-[15] opacity-30 pointer-events-none mix-blend-overlay">
+        <div className="flex gap-8 whitespace-nowrap animate-marquee">
+          {[...Array(6)].map((_, idx) => (
+            <span key={idx} className="gta-title text-[150px] text-stroke tracking-widest uppercase">
+              HIGHLY CLASSIFIED // LCPD DATABASE // 
+            </span>
+          ))}
+        </div>
+      </div>
+      <div className="absolute bottom-[10%] left-0 w-[200vw] flex overflow-hidden z-[15] opacity-30 pointer-events-none mix-blend-overlay">
+        <div className="flex gap-8 whitespace-nowrap animate-marquee" style={{ animationDirection: 'reverse', animationDuration: '30s' }}>
+          {[...Array(6)].map((_, idx) => (
+            <span key={idx} className="gta-title text-[150px] text-stroke tracking-widest uppercase">
+              MOST WANTED // DO NOT APPROACH // 
+            </span>
+          ))}
+        </div>
+      </div>
+      
+      {/* Police Sirens (Intensified) */}
+      <div className="absolute inset-0 z-[15] pointer-events-none mix-blend-screen opacity-60">
+        <div className="absolute inset-0 siren-red animate-siren" />
+        <div className="absolute inset-0 siren-blue animate-siren" style={{ animationDelay: "1s" }} />
+      </div>
       
     </section>
   );
