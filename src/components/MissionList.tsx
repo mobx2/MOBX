@@ -35,22 +35,48 @@ export default function MissionList() {
   const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useGSAP(() => {
-    // 1. Aggressive Title Reveal
-    gsap.fromTo(".archive-title-word",
-      { y: 150, opacity: 0, rotateX: -90 },
+    // 1. Aggressive Title Pinning & Slam
+    const headerTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".archive-header",
+        pin: true,
+        start: "top top",
+        end: "+=1500", // Keep it pinned for 1.5 viewport heights
+        scrub: 1.5,
+      }
+    });
+
+    headerTl.fromTo(".archive-title-word",
+      { scale: 5, opacity: 0, rotateX: -90, z: 500 },
       {
-        y: 0, opacity: 1, rotateX: 0,
-        duration: 1, stagger: 0.1,
-        ease: "back.out(1.7)",
-        scrollTrigger: {
-          trigger: ".archive-header",
-          start: "top 80%",
-          toggleActions: "play none none reverse"
+        scale: 1, opacity: 1, rotateX: 0, z: 0,
+        stagger: 0.1,
+        ease: "expo.out",
+        duration: 2
+      }
+    ).to(".archive-title-word", {
+      scale: 0.8, opacity: 0, y: -100, stagger: 0.1, ease: "power4.inOut"
+    }, "+=1");
+
+    // Scroll Velocity Skewing (Grime Effect) for Projects
+    const proxy = { skew: 0 };
+    const clamp = gsap.utils.clamp(-15, 15);
+    const skewSetters = sectionsRef.current.map(sec => sec ? gsap.quickSetter(sec.querySelector(".mission-info"), "skewY", "deg") : null);
+
+    ScrollTrigger.create({
+      onUpdate: (self) => {
+        const skew = clamp(self.getVelocity() / -50);
+        if (Math.abs(skew) > Math.abs(proxy.skew)) {
+          proxy.skew = skew;
+          gsap.to(proxy, {
+            skew: 0, duration: 1, ease: "elastic.out(1, 0.3)", overwrite: true,
+            onUpdate: () => skewSetters.forEach(set => set && set(proxy.skew))
+          });
         }
       }
-    );
+    });
 
-    // Parallax and reveal animations for each project screen
+    // Deep Parallax and reveal animations for each project screen
     sectionsRef.current.forEach((section, i) => {
       if (!section) return;
       
@@ -59,48 +85,47 @@ export default function MissionList() {
       const info = section.querySelector(".mission-info");
       const tape = section.querySelector(".scroll-tape");
 
-      // Aggressive Clip Path Reveal for the image
+      // Aggressive Clip Path Wipe (No fading, pure wipe)
       gsap.fromTo(imgWrapper,
-        { clipPath: "polygon(0 50%, 100% 50%, 100% 50%, 0 50%)" },
+        { clipPath: "inset(100% 0% 0% 0%)" },
         {
-          clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
-          duration: 1.5,
+          clipPath: "inset(0% 0% 0% 0%)",
           ease: "power4.inOut",
           scrollTrigger: {
             trigger: section,
-            start: "top 70%",
-            toggleActions: "play none none reverse"
+            start: "top bottom",
+            end: "top 20%",
+            scrub: 1.5
           }
         }
       );
 
-      // Animate background image (Cinematic Parallax Zoom with SCRUB)
+      // Deep Parallax Zoom with SCRUB
       gsap.fromTo(img, 
-        { scale: 1.5, yPercent: 20 }, 
+        { scale: 1.5, yPercent: 30 }, 
         { 
-          scale: 1,
-          yPercent: -20, 
+          scale: 1, yPercent: -30, 
           ease: "none",
           scrollTrigger: {
             trigger: section,
             start: "top bottom",
             end: "bottom top",
-            scrub: 1 // Smooth scrubbing
+            scrub: 1.5
           }
         }
       );
 
-      // Slide in the mission info box with SKEW
+      // Slam in the mission info box
       gsap.fromTo(info,
-        { x: i % 2 === 0 ? -200 : 200, opacity: 0, skewX: 20 },
+        { xPercent: i % 2 === 0 ? -150 : 150, rotateZ: i % 2 === 0 ? -15 : 15 },
         {
-          x: 0, opacity: 1, skewX: 0, 
-          duration: 1.2, 
-          ease: "elastic.out(1, 0.7)",
+          xPercent: 0, rotateZ: 0,
+          ease: "expo.out",
           scrollTrigger: {
             trigger: section,
             start: "top 60%",
-            toggleActions: "play none none reverse"
+            end: "top 10%",
+            scrub: 1.5
           }
         }
       );
@@ -116,7 +141,7 @@ export default function MissionList() {
               trigger: section,
               start: "top bottom",
               end: "bottom top",
-              scrub: true
+              scrub: 1.5
             }
           }
         );
@@ -128,14 +153,14 @@ export default function MissionList() {
   return (
     <div ref={containerRef} className="w-full">
       {/* Intro Header Section */}
-      <section className="archive-header level-section relative w-full h-[50vh] bg-gta-black flex flex-col justify-center items-center border-t-4 border-b-4 border-gta-brown/50 overflow-hidden perspective-1000">
+      <section className="archive-header level-section relative w-full h-screen bg-gta-black flex flex-col justify-center items-center overflow-hidden perspective-1000">
         <div className="absolute inset-0 gta-noise z-0 pointer-events-none" />
         <div className="relative z-10 text-center px-4 overflow-hidden">
-          <h2 className="gta-title text-6xl md:text-8xl text-gta-sepia drop-shadow-[5px_5px_0_#050505] flex gap-4 overflow-hidden">
-            <span className="archive-title-word block">MISSION</span>
-            <span className="archive-title-word block text-white">ARCHIVE</span>
+          <h2 className="gta-title text-[15vw] leading-none text-gta-sepia drop-shadow-[10px_10px_0_#050505] flex flex-col gap-0 overflow-hidden">
+            <span className="archive-title-word block origin-bottom">MISSION</span>
+            <span className="archive-title-word block text-white origin-bottom">ARCHIVE</span>
           </h2>
-          <p className="gta-hud text-gta-brown text-xl md:text-2xl mt-4 animate-pulse">ACCESSING LCPD DATABASE...</p>
+          <p className="archive-title-word gta-hud text-gta-brown text-xl md:text-3xl mt-8 animate-pulse">ACCESSING LCPD DATABASE...</p>
         </div>
       </section>
 
