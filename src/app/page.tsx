@@ -6,6 +6,7 @@ import HeroSlider from "@/components/HeroSlider";
 import MissionList from "@/components/MissionList";
 import StatsHUD from "@/components/StatsHUD";
 import FinalCutscene from "@/components/FinalCutscene";
+import GameHUD from "@/components/GameHUD";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -24,6 +25,8 @@ export default function Home() {
     <main className="bg-gta-black min-h-screen selection:bg-gta-sepia selection:text-gta-black">
       {loading && <BootLoader onComplete={() => setLoading(false)} />}
       
+      {!loading && <GameHUD />}
+
       <div 
         className="w-full relative" 
         style={{ visibility: loading ? "hidden" : "visible" }}
