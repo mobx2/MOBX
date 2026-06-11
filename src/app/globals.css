@@ -1,35 +1,85 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-black: #000000;
-  --color-brand-white: #ffffff;
-  --color-brand-accent: #ff3300;
+  --color-brand-black: #050505;
+  --color-brand-white: #fdfdfd;
+  --color-brand-yellow: #FFDE00;
+  --color-brand-cyan: #00F0FF;
+  --color-brand-magenta: #FF00E5;
   
-  --font-sans: 'Inter', system-ui, sans-serif;
-  
-  --spacing-section: 10vh;
+  --font-comic: var(--font-bangers), 'Bangers', 'Oswald', 'Inter', system-ui, sans-serif;
 }
 
 :root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 0, 0, 0;
-  --background-end-rgb: 0, 0, 0;
+  --foreground-rgb: 5, 5, 5;
+  --background-start-rgb: 253, 253, 253;
+  --background-end-rgb: 253, 253, 253;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-start-rgb));
-  font-family: var(--font-sans);
+  font-family: var(--font-comic);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-.brutalist-text {
+/* Comic Book Typography */
+.comic-text {
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: -0.05em;
+  letter-spacing: 0.02em;
   line-height: 0.9;
+  -webkit-text-stroke: 2px var(--color-brand-black);
+  text-shadow: 6px 6px 0px var(--color-brand-black);
+}
+
+.comic-text-sm {
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  -webkit-text-stroke: 1px var(--color-brand-black);
+  text-shadow: 3px 3px 0px var(--color-brand-black);
+}
+
+/* Thick Comic Borders */
+.comic-border {
+  border: 4px solid var(--color-brand-black);
+  box-shadow: 8px 8px 0px var(--color-brand-black);
+}
+
+/* Dynamic Shadow for JS */
+.comic-shadow-dynamic {
+  filter: drop-shadow(0px 0px 0px var(--color-brand-black));
+}
+
+/* Halftone Patterns */
+.halftone-bg {
+  background-image: radial-gradient(var(--color-brand-black) 20%, transparent 20%);
+  background-size: 10px 10px;
+  background-position: 0 0, 5px 5px;
+}
+
+.halftone-bg-light {
+  background-image: radial-gradient(rgba(0,0,0,0.2) 20%, transparent 20%);
+  background-size: 8px 8px;
+}
+
+.halftone-bg-white {
+  background-image: radial-gradient(rgba(255,255,255,0.3) 20%, transparent 20%);
+  background-size: 8px 8px;
+}
+
+/* Action/Speed Lines */
+.speed-lines {
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 10px,
+    rgba(0,0,0,0.1) 10px,
+    rgba(0,0,0,0.1) 12px
+  );
 }
 
 /* Hardware acceleration classes */
@@ -38,7 +88,6 @@ body {
   will-change: transform, opacity;
 }
 
-/* Hide scrollbar for a cleaner look */
 ::-webkit-scrollbar {
   width: 0px;
   background: transparent;

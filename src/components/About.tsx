@@ -5,135 +5,92 @@ import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 
 const SKILLS = ["REACT", "NEXT.JS", "GSAP", "WEBGL", "THREE.JS", "TAILWIND", "TYPESCRIPT", "MOTION"];
 
-const PROJECTS = [
-  { id: 1, title: "PROJECT ZERO", category: "WEBGL / CREATIVE", color: "#ff3300" },
-  { id: 2, title: "NEON VOID", category: "NEXT.JS / GSAP", color: "#0033ff" },
-  { id: 3, title: "ACID DREAMS", category: "THREE.JS / SHADERS", color: "#ccff00" },
-  { id: 4, title: "BRUTAL WEB", category: "UI / UX", color: "#ffffff" }
-];
-
 export default function About() {
   const container = useRef<HTMLDivElement>(null);
-  const leftCol = useRef<HTMLDivElement>(null);
-  const iconsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const projectsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const leftPanel = useRef<HTMLDivElement>(null);
+  const rightPanel = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    // 1. Pin the Section
-    const tl = gsap.timeline({
+    // Pin and slide the inner contents
+    gsap.timeline({
       scrollTrigger: {
         trigger: container.current,
         start: "top top",
-        end: "+=300%", // Extra scroll distance for the drop sequence
+        end: "+=200%",
         pin: true,
         scrub: 1,
       }
-    });
-
-    // Left Column (Skills) scrolls down slightly while pinned
-    tl.to(leftCol.current, { yPercent: -30, ease: "none" }, 0);
-
-    // 2. Projects Drop in on the Right
-    projectsRef.current.forEach((project, i) => {
-      if (!project) return;
-      tl.fromTo(project, 
-        { 
-          y: -window.innerHeight * 1.5, 
-          opacity: 0, 
-          rotationX: -45,
-          scale: 0.8
-        },
-        {
-          y: 0,
-          opacity: 1,
-          rotationX: 0,
-          scale: 1,
-          ease: "back.out(1.5)",
-          duration: 1
-        },
-        i * 0.4 // Staggered drop timing based on scroll scrub
-      );
-    });
-
-    // 3. Velocity based SVG Rotation
-    let rotation = 0;
-    ScrollTrigger.create({
-      trigger: document.body,
-      start: 0,
-      end: "max",
-      onUpdate: (self) => {
-        const velocity = self.getVelocity();
-        rotation += velocity * 0.05;
-        
-        gsap.to(iconsRef.current, {
-          rotation: rotation,
-          ease: "expo.out",
-          duration: 0.5,
-          overwrite: "auto"
-        });
-      }
-    });
+    })
+    .to(leftPanel.current, { yPercent: 50, ease: "none" }, 0)
+    .to(rightPanel.current, { yPercent: -50, ease: "none" }, 0);
 
   }, { scope: container });
 
   return (
-    <section ref={container} className="w-full h-screen bg-brand-black flex overflow-hidden relative z-20">
-      {/* Dynamic Background Noise */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.03] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')] repeat" />
-
-      {/* Left Column - Skills */}
-      <div className="w-1/2 h-full border-r border-brand-white/10 relative overflow-hidden flex justify-center z-10">
+    <section ref={container} className="relative w-full h-screen overflow-hidden bg-brand-black border-b-8 border-brand-black">
+      
+      {/* Background container with diagonal split */}
+      <div className="absolute inset-0 flex">
+        
+        {/* Left Side: Magenta (Diagonal clip-path) */}
         <div 
-          ref={leftCol}
-          className="absolute top-0 w-full flex flex-col items-center justify-center gap-24 py-20 will-change-transform"
+          className="absolute inset-0 bg-brand-magenta halftone-bg-light z-10"
+          style={{ clipPath: 'polygon(0 0, 60% 0, 40% 100%, 0 100%)' }}
         >
-          {[...SKILLS, ...SKILLS].map((skill, i) => (
-            <div key={i} className="flex flex-col items-center gap-6">
-              <div 
-                ref={el => { iconsRef.current[i] = el }}
-                className="w-40 h-40 rounded-full border-[2px] border-dashed border-brand-white/40 flex items-center justify-center will-change-transform"
-              >
-                <svg viewBox="0 0 100 100" className="w-16 h-16 fill-brand-white/80">
-                  <path d="M50 0 L55 45 L100 50 L55 55 L50 100 L45 55 L0 50 L45 45 Z" />
+          {/* Inner scrolling content */}
+          <div 
+            ref={leftPanel} 
+            className="absolute top-[-100%] left-0 w-[50%] flex flex-col items-center justify-center gap-16 py-20 will-change-transform"
+          >
+            {[...SKILLS, ...SKILLS, ...SKILLS].map((skill, i) => (
+              <div key={i} className="flex items-center gap-6 group">
+                <svg viewBox="0 0 100 100" className="w-12 h-12 fill-brand-yellow drop-shadow-[4px_4px_0px_#050505]">
+                  <path d="M50 0 L60 30 L90 20 L70 50 L100 70 L65 75 L60 100 L45 75 L10 80 L35 55 L0 40 L30 35 Z" />
                 </svg>
-              </div>
-              <h3 className="text-brand-white text-5xl brutalist-text tracking-widest mix-blend-difference">{skill}</h3>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Right Column - Projects Drop */}
-      <div className="w-1/2 h-full relative flex flex-col items-center justify-center px-12 z-10">
-        <div className="w-full max-w-2xl flex flex-col gap-8 perspective-[1000px]">
-          <h2 className="text-brand-accent text-3xl brutalist-text mb-8 tracking-widest uppercase">
-            SELECTED WORKS
-          </h2>
-          {PROJECTS.map((project, i) => (
-            <div 
-              key={project.id}
-              ref={el => { projectsRef.current[i] = el }}
-              className="w-full bg-[#0a0a0a] border border-brand-white/10 p-10 rounded-3xl will-change-transform flex justify-between items-center group cursor-none hover:bg-brand-white transition-colors duration-500"
-            >
-              <div className="flex flex-col gap-2">
-                <span className="text-brand-white/50 text-sm font-mono tracking-widest group-hover:text-brand-black/50 transition-colors duration-500">
-                  0{project.id} // {project.category}
-                </span>
-                <h3 className="text-5xl brutalist-text text-brand-white group-hover:text-brand-black transition-colors duration-500">
-                  {project.title}
+                <h3 className="comic-text text-brand-white text-6xl group-hover:scale-110 transition-transform duration-300">
+                  {skill}
                 </h3>
               </div>
-              <div 
-                className="w-16 h-16 rounded-full border-2 flex items-center justify-center transition-all duration-500"
-                style={{ borderColor: project.color }}
-              >
-                <svg viewBox="0 0 24 24" className="w-8 h-8 group-hover:rotate-45 transition-transform duration-500" style={{ fill: project.color }}>
-                  <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="square"/>
-                </svg>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
+
+        {/* Right Side: Cyan */}
+        <div className="absolute inset-0 bg-brand-cyan halftone-bg z-0 flex justify-end">
+          {/* Inner scrolling content */}
+          <div 
+            ref={rightPanel}
+            className="absolute top-[100%] right-0 w-[50%] flex flex-col justify-center items-center px-16 gap-10 will-change-transform"
+          >
+            <div className="bg-brand-white comic-border p-10 rotate-[2deg] shadow-[15px_15px_0px_#FFDE00]">
+              <h2 className="comic-text text-brand-magenta text-[6vw] leading-none mb-6">
+                I BUILD<br/>REALITIES.
+              </h2>
+              <p className="font-bold text-2xl uppercase tracking-wider border-l-4 border-brand-black pl-4">
+                I am a Front-End Developer with a strong eye for visual arts. 
+                My work lies at the intersection of avant-garde design and bleeding-edge technology.
+              </p>
+            </div>
+            
+            <div className="bg-brand-yellow comic-border p-8 rotate-[-3deg] shadow-[15px_15px_0px_#050505] self-end">
+              <p className="font-bold text-xl uppercase tracking-wider">
+                We don't do static. The web is a living, breathing graphic novel.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Diagonal Thick Black Line Divider */}
+        <div 
+          className="absolute inset-0 bg-brand-black z-20 pointer-events-none w-[10px]"
+          style={{ 
+            left: '50%',
+            height: '150%',
+            top: '-25%',
+            transform: 'rotate(18deg)', // matches the polygon angle approximately
+          }}
+        />
+
       </div>
     </section>
   );

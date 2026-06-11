@@ -25,14 +25,14 @@ export default function Home() {
   }, [loading]);
 
   return (
-    <main className="bg-brand-black min-h-screen selection:bg-brand-accent selection:text-brand-black">
+    <main className="bg-brand-black min-h-screen selection:bg-brand-magenta selection:text-brand-white">
       {loading && <Loader onComplete={() => setLoading(false)} />}
       
       <div 
         className="w-full relative" 
         style={{ visibility: loading ? "hidden" : "visible" }}
       >
-        <Hero name="IBRAHEEM SHAHEEN" />
+        <Hero />
         <Projects />
         <Marquee />
         <About />
