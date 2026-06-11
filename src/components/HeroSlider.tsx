@@ -87,16 +87,16 @@ export default function HeroSlider() {
         <style>{`
           @keyframes cop-red {
             0%, 100% { opacity: 0; }
-            0% { opacity: 0.3; }
+            0% { opacity: 0.55; }
             10% { opacity: 0; }
-            20% { opacity: 0.3; }
+            20% { opacity: 0.55; }
             30% { opacity: 0; }
           }
           @keyframes cop-blue {
             0%, 100% { opacity: 0; }
-            50% { opacity: 0.4; }
+            50% { opacity: 0.65; }
             60% { opacity: 0; }
-            70% { opacity: 0.4; }
+            70% { opacity: 0.65; }
             80% { opacity: 0; }
           }
           .animate-cop-red { animation: cop-red 2s infinite; }

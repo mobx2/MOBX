@@ -85,8 +85,14 @@ export default function CustomCursor() {
       />
       <div 
         ref={cursorOutline} 
-        className="fixed top-0 left-0 w-10 h-10 border border-brand-white rounded-full pointer-events-none z-[100] mix-blend-difference will-change-transform gpu-accelerated hidden md:block"
-      />
+        className="fixed top-0 left-0 w-10 h-10 border-[1.5px] border-brand-white rounded-full pointer-events-none z-[100] mix-blend-difference will-change-transform gpu-accelerated hidden md:flex items-center justify-center opacity-80"
+      >
+        {/* Crosshair Ticks */}
+        <div className="absolute top-[-4px] w-[2px] h-[6px] bg-brand-white" />
+        <div className="absolute bottom-[-4px] w-[2px] h-[6px] bg-brand-white" />
+        <div className="absolute left-[-4px] w-[6px] h-[2px] bg-brand-white" />
+        <div className="absolute right-[-4px] w-[6px] h-[2px] bg-brand-white" />
+      </div>
     </>
   );
 }
