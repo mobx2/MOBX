@@ -41,13 +41,12 @@ export default function Home() {
       </div>
       
       {/* Stable wrapper for HUD */}
-      <div className="relative z-40">
+      <div className={`relative z-40 transition-opacity duration-[1500ms] ease-in-out ${loading ? "opacity-0" : "opacity-100"}`}>
         {!loading && <GameHUD />}
       </div>
 
       <div 
-        className="w-full relative z-10" 
-        style={{ visibility: loading ? "hidden" : "visible" }}
+        className={`w-full relative z-10 transition-opacity duration-[2000ms] ease-in-out ${loading ? "opacity-0 h-screen overflow-hidden" : "opacity-100"}`} 
       >
         <HeroSlider />
         <MissionList />
