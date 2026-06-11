@@ -110,9 +110,12 @@ export default function MissionList() {
               {/* Fake Tape */}
               <div className="absolute top-[-15px] left-1/2 -translate-x-1/2 w-32 h-8 bg-[#D1C7AC] opacity-20 rotate-[-2deg] pointer-events-none" />
 
-              <div className="border-b-2 border-gta-brown/50 pb-4 mb-6">
+              <div className="border-b-2 border-gta-brown/50 pb-4 mb-6 relative">
+                {/* Minor Police Strobe in HUD */}
+                <div className="absolute top-0 right-0 w-16 h-16 siren-red animate-siren opacity-30 pointer-events-none" />
+                
                 <p className="gta-hud text-gta-brown mb-2 tracking-widest text-lg">FILE N° 0{mission.id}</p>
-                <h3 className="gta-title text-5xl md:text-7xl tracking-tight text-gta-sepia leading-none drop-shadow-[4px_4px_0_#000]">
+                <h3 className="gta-title text-5xl md:text-7xl tracking-tight text-gta-sepia leading-none drop-shadow-[4px_4px_0_#000] glitch-hover">
                   {mission.title}
                 </h3>
               </div>
@@ -130,14 +133,18 @@ export default function MissionList() {
                 </div>
               </div>
 
-              <div className="bg-[#0A0A0A] p-5 border border-[#222] mb-8">
-                <p className="gta-hud text-sm md:text-base text-gta-sepia/80 leading-relaxed">
+              <div className="bg-[#0A0A0A] p-5 border border-[#222] mb-8 relative overflow-hidden group">
+                <div className="absolute inset-0 scanlines opacity-50 pointer-events-none" />
+                <p className="gta-hud text-sm md:text-base text-gta-sepia/80 leading-relaxed relative z-10 transition-colors duration-300 group-hover:text-white">
                   {mission.desc}
                 </p>
               </div>
 
-              <button className="gta-hud w-full border-2 border-gta-sepia py-4 hover:bg-gta-sepia hover:text-gta-black transition-colors text-xl">
-                LOAD MISSION
+              <button className="gta-hud relative w-full border-2 border-gta-sepia py-4 text-gta-sepia overflow-hidden group text-xl">
+                <div className="absolute inset-0 bg-gta-sepia -translate-x-full transition-transform duration-500 ease-out group-hover:translate-x-0" />
+                <span className="relative z-10 group-hover:text-gta-black transition-colors duration-500">
+                  LOAD MISSION
+                </span>
               </button>
             </div>
 

@@ -161,8 +161,25 @@ export default function HeroSlider() {
             }}
           />
 
+          {/* Layer 2.5: Infinite Marquee Background Text */}
+          <div className="absolute top-[20%] left-0 w-[200vw] flex overflow-hidden z-10 opacity-10 pointer-events-none">
+            <div className="flex gap-8 whitespace-nowrap animate-marquee">
+              {[...Array(6)].map((_, idx) => (
+                <span key={idx} className="gta-title text-9xl text-stroke tracking-widest uppercase">
+                  HIGHLY CLASSIFIED // LCPD DATABASE // 
+                </span>
+              ))}
+            </div>
+          </div>
+          
+          {/* Layer 2.8: Police Sirens */}
+          <div className="absolute inset-0 z-10 pointer-events-none opacity-50">
+            <div className="absolute inset-0 siren-red animate-siren" />
+            <div className="absolute inset-0 siren-blue animate-siren" style={{ animationDelay: "1s" }} />
+          </div>
+
           {/* Layer 3: Bold Typography */}
-          <div className="absolute inset-0 flex items-center justify-start pl-24 z-20 pointer-events-none">
+          <div className="absolute inset-0 flex items-center justify-start pl-24 z-20 pointer-events-none glitch-hover">
             <h1 
               ref={el => { textsRef.current[i] = el }}
               className="text-[12vw] gta-title leading-[0.85] text-gta-sepia will-change-transform"
