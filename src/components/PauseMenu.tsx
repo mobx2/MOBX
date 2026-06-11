@@ -65,32 +65,34 @@ export default function PauseMenu() {
       duration: 0.5,
       ease: "power4.in",
       onComplete: () => {
+        // Scroll the page to the exact element instantly to avoid stutter
+        let targetId = "hero";
+        if (section === "Profile") targetId = "hero";
+        if (section === "Projects") targetId = "missions";
+        if (section === "Skills") targetId = "stats";
+        
+        const element = document.getElementById(targetId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
         // Close the menu instantly
         setIsOpen(false);
         
-        // Scroll the page to the exact element
+        // Reset map zoom after menu has completely faded out (300ms)
         setTimeout(() => {
-          let targetId = "hero";
-          if (section === "Profile") targetId = "hero";
-          if (section === "Projects") targetId = "missions";
-          if (section === "Skills") targetId = "stats";
-          
-          const element = document.getElementById(targetId);
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-          
-          // Reset map zoom so it's normal next time we open it
           gsap.set(svgMapRef.current, { scale: 1, x: 0, y: 0 });
-        }, 50);
+        }, 300);
       }
     });
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div ref={menuRef} className="fixed inset-0 z-[100] bg-gta-black text-brand-white flex flex-col font-sans invisible">
+    <div 
+      ref={menuRef} 
+      className="fixed inset-0 z-[100] bg-gta-black text-brand-white flex flex-col font-sans invisible"
+      style={{ pointerEvents: isOpen ? 'auto' : 'none' }}
+    >
       
       {/* Background Noise/Scanlines */}
       <div className="absolute inset-0 pointer-events-none opacity-20 bg-[url('/noise.png')] mix-blend-overlay" />
@@ -234,12 +236,12 @@ export default function PauseMenu() {
 function StatBar({ label, value, color = "#cc9933" }: { label: string, value: number, color?: string }) {
   const barRef = useRef<HTMLDivElement>(null);
   
-  // Random flicker animation to simulate GTA IV UI loading
+  // Smooth fill animation for stats
   useEffect(() => {
     if (barRef.current) {
       gsap.fromTo(barRef.current, 
         { width: "0%" },
-        { width: `${value}%`, duration: 1.5, ease: "steps(12)", delay: Math.random() * 0.5 }
+        { width: `${value}%`, duration: 1.2, ease: "power3.out", delay: 0.1 }
       );
     }
   }, [value]);
