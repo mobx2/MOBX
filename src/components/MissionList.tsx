@@ -181,9 +181,14 @@ export default function MissionList() {
               <img 
                 src="/pngfind.com-gta-png-2851262.png" 
                 alt="Mission Passed Respect +" 
-                className="w-[80vw] md:w-[600px] object-contain drop-shadow-[10px_10px_0_#050505]"
+                className="w-[80vw] md:w-[600px] object-contain"
+                style={{ 
+                  // Multiple tight drop-shadows create a thick "stroke" effect around the PNG alpha channel
+                  filter: 'drop-shadow(2px 0px 0px black) drop-shadow(-2px 0px 0px black) drop-shadow(0px 2px 0px black) drop-shadow(0px -2px 0px black) drop-shadow(5px 5px 0px rgba(0,0,0,0.8))'
+                }}
               />
             </div>
+            
             <span className="archive-title-word block origin-center will-change-transform gta-hud text-gta-brown text-xl md:text-2xl tracking-[0.2em] animate-pulse">
               ACCESSING LCPD DATABASE...
             </span>
