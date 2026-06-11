@@ -81,11 +81,11 @@ export default function CustomCursor() {
     <>
       <div 
         ref={cursorDot} 
-        className="fixed top-0 left-0 w-2 h-2 bg-white rounded-full pointer-events-none z-[100] will-change-transform gpu-accelerated hidden md:block drop-shadow-[1px_1px_0px_rgba(0,0,0,1)]"
+        className="fixed top-0 left-0 w-2 h-2 bg-white rounded-full pointer-events-none z-[9999] will-change-transform gpu-accelerated hidden md:block drop-shadow-[1px_1px_0px_rgba(0,0,0,1)]"
       />
       <div 
         ref={cursorOutline} 
-        className="fixed top-0 left-0 w-10 h-10 pointer-events-none z-[100] will-change-transform gpu-accelerated hidden md:flex items-center justify-center opacity-90"
+        className="fixed top-0 left-0 w-10 h-10 pointer-events-none z-[9999] will-change-transform gpu-accelerated hidden md:flex items-center justify-center opacity-90"
       >
         {/* Crosshair Ticks (No Circle, Just Weapon Aim) */}
         <div className="absolute top-0 w-[3px] h-[10px] bg-white drop-shadow-[1px_1px_0px_rgba(0,0,0,1)]" />
