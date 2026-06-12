@@ -1,14 +1,16 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import dynamic from 'next/dynamic';
 import BootLoader from "@/components/BootLoader";
 import HeroSlider from "@/components/HeroSlider";
-import MissionList from "@/components/MissionList";
-import StatsHUD from "@/components/StatsHUD";
-import FinalCutscene from "@/components/FinalCutscene";
-import GameHUD from "@/components/GameHUD";
 import PauseMenu from "@/components/PauseMenu";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
+
+const MissionList = dynamic(() => import('@/components/MissionList'), { ssr: false });
+const StatsHUD = dynamic(() => import('@/components/StatsHUD'), { ssr: false });
+const FinalCutscene = dynamic(() => import('@/components/FinalCutscene'), { ssr: false });
+const GameHUD = dynamic(() => import('@/components/GameHUD'), { ssr: false });
 
 export default function Home() {
   const [loading, setLoading] = useState(true);

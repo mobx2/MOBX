@@ -209,6 +209,10 @@ export default function MissionList() {
     }
   }, [currentView]);
 
+  const dispatchKey = (key: string) => {
+    window.dispatchEvent(new KeyboardEvent('keydown', { key, code: `Virtual${key}`, bubbles: true }));
+  };
+
   // Keyboard Navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -550,34 +554,34 @@ export default function MissionList() {
            ) : (
              <>
                {/* LCPD Top Header (Yellow Line & Logo) */}
-               <div className="w-full relative mt-24 z-20">
+               <div className="w-full relative mt-16 md:mt-24 z-20">
                  <div className="w-full h-3 bg-[#ffcc00] relative drop-shadow-[0_2px_5px_rgba(0,0,0,0.5)]">
                    {/* Floating Police Badge */}
-                   <div className="absolute top-1/2 -translate-y-1/2 left-12 w-[110px] h-[130px] z-30 drop-shadow-[4px_4px_0_rgba(0,0,0,0.8)]">
+                   <div className="absolute top-1/2 -translate-y-1/2 left-4 md:left-12 w-[60px] h-[80px] md:w-[110px] md:h-[130px] z-30 drop-shadow-[4px_4px_0_rgba(0,0,0,0.8)]">
                      <img src="/lcpd_hd_logo_by_interglobalfilms_d4eq983-375w-2x.png" alt="LCPD Badge" className="w-full h-full object-contain" />
                    </div>
           
               {/* Header Text */}
-              <div className="absolute bottom-3 right-16 flex flex-col items-end">
-                <h1 className="text-white text-4xl md:text-5xl font-gta-hud tracking-[0.1em] drop-shadow-[3px_3px_0_#000]">
+              <div className="absolute bottom-3 right-4 md:right-16 flex flex-col items-end">
+                <h1 className="text-white text-lg md:text-5xl font-gta-hud tracking-[0.1em] drop-shadow-[3px_3px_0_#000]">
                   LIBERTY CITY POLICE DEPT.
                 </h1>
               </div>
             </div>
-            <div className="flex justify-end pr-16 mt-2">
-              <div className="text-[#3399ff] text-sm tracking-widest uppercase font-bold drop-shadow-[1px_1px_0_#000]">
+            <div className="flex justify-end pr-4 md:pr-16 mt-2">
+              <div className="text-[#3399ff] text-[10px] md:text-sm tracking-widest uppercase font-bold drop-shadow-[1px_1px_0_#000]">
                 PROTECTING LIBERTY CITY
               </div>
             </div>
           </div>
 
           {/* Main Content Area (Two Columns) */}
-          <div className="flex flex-1 w-full px-16 pt-16 pb-24 z-20 relative">
+          <div className="flex flex-col md:flex-row flex-1 w-full px-6 md:px-16 pt-8 md:pt-16 pb-32 md:pb-24 z-20 relative overflow-y-auto custom-scrollbar">
             
             {/* ---------------- ROOT VIEW ---------------- */}
             {(currentView === 'ROOT' || currentView === 'HELP') && (
               <>
-                <div className="w-1/2 flex flex-col pr-8 h-full">
+                <div className="w-full md:w-1/2 flex flex-col md:pr-8 h-full mb-8 md:mb-0 shrink-0">
                   <h2 className="text-[#ffcc00] text-3xl font-gta-hud tracking-widest mb-4 drop-shadow-[2px_2px_0_#000]">
                     {currentView === 'ROOT' ? 'LCPD MAIN TERMINAL' : 'EMERGENCY COMMS'}
                   </h2>
@@ -635,8 +639,8 @@ export default function MissionList() {
                 </div>
 
                 {/* Right Side: Generic Status */}
-                <div className="w-1/2 border-l-2 border-[#ffcc00]/20 pl-8 h-full flex flex-col items-center justify-center opacity-50">
-                  <div className="text-center font-mono text-[#3399ff] text-2xl">
+                <div className="hidden md:flex w-full md:w-1/2 border-t-2 md:border-t-0 md:border-l-2 border-[#ffcc00]/20 pt-8 md:pt-0 pl-0 md:pl-8 h-full flex-col items-center justify-center opacity-50 mt-8 md:mt-0">
+                  <div className="text-center font-mono text-[#3399ff] text-xl md:text-2xl">
                     <p className="mb-4">SYSTEM STATUS: <span className="text-green-500">ONLINE</span></p>
                     <p className="mb-4">ENCRYPTION: 256-BIT AES</p>
                     <p className="mb-4 animate-pulse text-[#ffcc00]">MONITORING ACTIVE</p>
@@ -702,14 +706,14 @@ export default function MissionList() {
             {currentView === 'FILES' && (
               <>
             {/* Left Column: Project List */}
-            <div className="w-1/2 flex flex-col pr-8 h-full">
-              <div className="flex justify-between items-end mb-4">
-                <h2 className="text-[#ffcc00] text-3xl font-gta-hud tracking-widest drop-shadow-[2px_2px_0_#000]">
+            <div className="w-full md:w-1/2 flex flex-col md:pr-8 h-full mb-8 md:mb-0 shrink-0">
+              <div className="flex flex-col md:flex-row md:justify-between md:items-end mb-4 gap-2">
+                <h2 className="text-[#ffcc00] text-2xl md:text-3xl font-gta-hud tracking-widest drop-shadow-[2px_2px_0_#000]">
                   {expandedMissionIndex !== null ? 'EVIDENCE FILES' : 'CURRENT CRIMES'}
                 </h2>
-                <span className="text-[#3399ff] text-sm font-bold tracking-widest">[BACKSPACE: BACK]</span>
+                <span className="text-[#3399ff] text-xs md:text-sm font-bold tracking-widest hidden md:block">[BACKSPACE: BACK]</span>
               </div>
-              <p className="text-white font-sans text-lg mb-8 max-w-lg leading-relaxed">
+              <p className="text-white font-sans text-sm md:text-lg mb-4 md:mb-8 max-w-lg leading-relaxed">
                 {expandedMissionIndex !== null 
                   ? `Browsing restricted files for: ${MISSIONS[expandedMissionIndex].title}.` 
                   : 'The following crimes have been reported. Select one to dispatch to.'}
@@ -769,13 +773,13 @@ export default function MissionList() {
             </div>
 
             {/* Right Column: Surveillance Photo (Project Image) */}
-            <div className="w-1/2 flex flex-col h-full border-l-2 border-gray-800/50 pl-12 relative group">
+            <div className="w-full md:w-1/2 flex flex-col h-full border-t-2 md:border-t-0 md:border-l-2 border-gray-800/50 pt-8 md:pt-0 pl-0 md:pl-12 relative group">
               <div className="absolute top-4 right-4 z-30 flex flex-col items-end">
                 <span className="text-red-500 font-gta-hud tracking-widest text-xl animate-pulse drop-shadow-[2px_2px_0_#000]">● REC</span>
                 <span className="text-white font-mono bg-black/50 px-2 mt-1">LCPD CCTV - CAM 04</span>
               </div>
               
-              <div className="relative w-full h-[300px] md:h-[400px] border-4 border-gray-800 bg-black overflow-hidden mt-8 shadow-[10px_10px_0_rgba(0,0,0,0.5)]">
+              <div className="relative w-full h-[250px] md:h-[400px] border-4 border-gray-800 bg-black overflow-hidden mt-8 shadow-[10px_10px_0_rgba(0,0,0,0.5)]">
                 {/* CRT Glitch overlay on image */}
                 <div className="absolute inset-0 bg-[url('/noise.png')] opacity-30 mix-blend-overlay z-20 pointer-events-none" />
                 
@@ -821,7 +825,7 @@ export default function MissionList() {
 
           {/* Bottom Footer Line & Controls */}
           {currentView === 'FILES' && (
-            <div className="w-full mt-auto pb-12 pt-8 z-20 relative">
+            <div className="w-full mt-auto pb-12 pt-8 z-20 relative hidden md:block">
               <div className="w-full h-2 bg-[#ffcc00] drop-shadow-[0_-2px_5px_rgba(0,0,0,0.5)] mb-4" />
               <div className="flex justify-center items-center gap-16 px-16 text-white font-sans font-bold text-sm">
                 <div className="flex items-center gap-2">
@@ -848,20 +852,34 @@ export default function MissionList() {
 
        </div>
 
+       {/* Mobile Virtual D-Pad */}
+       {isAuthenticated && (
+         <div className="absolute bottom-6 right-6 z-[9000] flex flex-col items-center gap-2 md:hidden opacity-60 hover:opacity-100 transition-opacity pointer-events-auto">
+           <button onClick={(e) => { e.stopPropagation(); dispatchKey('ArrowUp'); }} className="w-12 h-12 bg-black/80 border-2 border-[#ffcc00] rounded flex items-center justify-center text-[#ffcc00] active:bg-[#ffcc00] active:text-black text-xl">▲</button>
+           <div className="flex gap-2">
+             <button onClick={(e) => { e.stopPropagation(); dispatchKey('ArrowLeft'); }} className="w-12 h-12 bg-black/80 border-2 border-[#ffcc00] rounded flex items-center justify-center text-[#ffcc00] active:bg-[#ffcc00] active:text-black text-xl">◀</button>
+             <button onClick={(e) => { e.stopPropagation(); dispatchKey('Enter'); }} className="w-12 h-12 bg-[#ffcc00]/20 border-2 border-[#ffcc00] rounded flex items-center justify-center text-[#ffcc00] font-bold active:bg-[#ffcc00] active:text-black text-sm">SEL</button>
+             <button onClick={(e) => { e.stopPropagation(); dispatchKey('ArrowRight'); }} className="w-12 h-12 bg-black/80 border-2 border-[#ffcc00] rounded flex items-center justify-center text-[#ffcc00] active:bg-[#ffcc00] active:text-black text-xl">▶</button>
+           </div>
+           <button onClick={(e) => { e.stopPropagation(); dispatchKey('ArrowDown'); }} className="w-12 h-12 bg-black/80 border-2 border-[#ffcc00] rounded flex items-center justify-center text-[#ffcc00] active:bg-[#ffcc00] active:text-black text-xl">▼</button>
+           <button onClick={(e) => { e.stopPropagation(); dispatchKey('Backspace'); }} className="mt-2 px-6 py-3 bg-black/80 border-2 border-red-500 rounded text-red-500 text-sm font-bold active:bg-red-500 active:text-black tracking-widest">BACK</button>
+         </div>
+       )}
+
        {/* Fullscreen Image Overlay */}
        {fullScreenState && (
          <div 
            className="fixed inset-0 z-[99999] bg-[#020202] flex flex-col items-center justify-center p-8 cursor-pointer"
            onClick={() => { setFullScreenState(null); playHoverSound(); }}
          >
-           <div className="absolute top-8 right-8 text-[#ffcc00] font-gta-hud tracking-widest text-2xl animate-pulse z-50 drop-shadow-[2px_2px_0_#000]">
+           <div className="absolute top-4 right-4 md:top-8 md:right-8 text-[#ffcc00] font-gta-hud tracking-widest text-lg md:text-2xl animate-pulse z-50 drop-shadow-[2px_2px_0_#000]">
              [ BACKSPACE ] TO CLOSE
            </div>
 
-           <div className="absolute bottom-8 text-white font-gta-hud tracking-widest text-xl z-50 flex gap-8">
-             <span className="animate-pulse">◀ ARROWS TO FLIP</span>
+           <div className="absolute bottom-4 md:bottom-8 text-white font-gta-hud tracking-widest text-sm md:text-xl z-50 flex gap-4 md:gap-8">
+             <span className="animate-pulse">◀ FLIP</span>
              <span>IMAGE {fullScreenState.imageIndex + 1} OF {MISSIONS[fullScreenState.missionIndex].images.length}</span>
-             <span className="animate-pulse">ARROWS TO FLIP ▶</span>
+             <span className="animate-pulse">FLIP ▶</span>
            </div>
            
            {/* CRT Overlays for Fullscreen */}
@@ -871,7 +889,7 @@ export default function MissionList() {
            <img 
              src={encodeURI(`/${MISSIONS[fullScreenState.missionIndex].images[fullScreenState.imageIndex]}`)} 
              alt="Fullscreen Evidence" 
-             className="max-w-[90vw] max-h-[85vh] object-contain z-20 shadow-[0_0_50px_rgba(255,255,255,0.1)] border-4 border-gray-800" 
+             className="max-w-[95vw] md:max-w-[90vw] max-h-[85vh] object-contain z-20 shadow-[0_0_50px_rgba(255,255,255,0.1)] border-2 md:border-4 border-gray-800" 
              style={{ filter: 'grayscale(10%) contrast(110%) brightness(0.9)' }}
              onClick={(e) => {
                e.stopPropagation();

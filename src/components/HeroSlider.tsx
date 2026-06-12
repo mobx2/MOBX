@@ -28,60 +28,69 @@ export default function HeroSlider() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    // Master Pinned Scroll Timeline for sequencing multiple slides
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.current,
-        pin: true,
-        start: "top top",
-        end: `+=${SLIDES.length * 1000}`, // 1000px per slide
-        scrub: 1.5,
-      }
+    let mm = gsap.matchMedia();
+
+    mm.add({
+      isDesktop: "(min-width: 768px)",
+      isMobile: "(max-width: 767px)"
+    }, (context) => {
+      let { isMobile } = context.conditions as { isDesktop: boolean, isMobile: boolean };
+
+      // Master Pinned Scroll Timeline for sequencing multiple slides
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          pin: true,
+          start: "top top",
+          end: `+=${SLIDES.length * (isMobile ? 600 : 1000)}`, // Shorter scroll distance on mobile
+          scrub: isMobile ? 0.5 : 1.5, // Faster scrub response on mobile to prevent jitter
+        }
+      });
+
+      const slides = gsap.utils.toArray('.hero-slide') as HTMLElement[];
+
+      slides.forEach((slide: HTMLElement, index) => {
+        const bg = slide.querySelector('.hero-bg');
+        const fg = slide.querySelector('.hero-fg');
+        const text = slide.querySelector('.hero-text');
+        const crosshair = slide.querySelector('.hero-crosshair');
+
+        // 1. Fade transition to prevent any horizontal layout shifts
+        if (index > 0) {
+          tl.to(slides[index - 1], { autoAlpha: 0, duration: 1, ease: "power2.inOut" }, `slide${index}`);
+          tl.fromTo(slide, { autoAlpha: 0, scale: isMobile ? 1.05 : 1.1 }, { autoAlpha: 1, scale: 1, duration: 1, ease: "power2.out" }, `slide${index}`);
+        } else {
+          tl.addLabel(`slide${index}`);
+        }
+
+        // 2. Zoom background slowly over the duration of this slide
+        if (bg) {
+          tl.to(bg, { scale: isMobile ? 1.05 : 1.2, ease: "none", duration: 2.5 }, `slide${index}`);
+        }
+
+        // 3. Move/Scale foreground slightly differently for parallax
+        if (fg) {
+          tl.to(fg, { scale: isMobile ? 1.02 : 1.05, ease: "none", duration: 2 }, `slide${index}`);
+        }
+
+        // 4. Animate Text (fade in from bottom, then fade out up)
+        if (text) {
+          tl.fromTo(text, 
+            { y: isMobile ? 20 : 50, autoAlpha: 0 }, 
+            { y: 0, autoAlpha: 1, duration: 0.4, ease: "power2.out" }, 
+            `slide${index}+=0.2`
+          );
+          tl.to(text, { y: isMobile ? -20 : -50, autoAlpha: 0, duration: 0.4, ease: "power2.in" }, `slide${index}+=1.4`);
+        }
+
+        // 5. Crosshair pulse & scale on the first slide
+        if (crosshair) {
+          tl.to(crosshair, { scale: isMobile ? 2 : 5, autoAlpha: 0, duration: 0.5, ease: "power3.in" }, `slide${index}+=1.5`);
+        }
+      });
     });
 
-    const slides = gsap.utils.toArray('.hero-slide') as HTMLElement[];
-
-    slides.forEach((slide: HTMLElement, index) => {
-      const bg = slide.querySelector('.hero-bg');
-      const fg = slide.querySelector('.hero-fg');
-      const text = slide.querySelector('.hero-text');
-      const crosshair = slide.querySelector('.hero-crosshair');
-
-      // 1. Fade transition to prevent any horizontal layout shifts
-      if (index > 0) {
-        // Fade out previous slide
-        tl.to(slides[index - 1], { autoAlpha: 0, duration: 1, ease: "power2.inOut" }, `slide${index}`);
-        // Fade in current slide
-        tl.fromTo(slide, { autoAlpha: 0, scale: 1.1 }, { autoAlpha: 1, scale: 1, duration: 1, ease: "power2.out" }, `slide${index}`);
-      } else {
-        tl.addLabel(`slide${index}`);
-      }
-
-      // 2. Zoom background slowly over the duration of this slide
-      if (bg) {
-        tl.to(bg, { scale: 1.2, ease: "none", duration: 2.5 }, `slide${index}`);
-      }
-
-      // 3. Move/Scale foreground slightly differently for parallax
-      if (fg) {
-        tl.to(fg, { scale: 1.05, ease: "none", duration: 2 }, `slide${index}`);
-      }
-
-      // 4. Animate Text (fade in from bottom, then fade out up)
-      if (text) {
-        tl.fromTo(text, 
-          { y: 50, autoAlpha: 0 }, 
-          { y: 0, autoAlpha: 1, duration: 0.4, ease: "power2.out" }, 
-          `slide${index}+=0.2`
-        );
-        tl.to(text, { y: -50, autoAlpha: 0, duration: 0.4, ease: "power2.in" }, `slide${index}+=1.4`);
-      }
-
-      // 5. Crosshair pulse & scale on the first slide
-      if (crosshair) {
-        tl.to(crosshair, { scale: 5, autoAlpha: 0, duration: 0.5, ease: "power3.in" }, `slide${index}+=1.5`);
-      }
-    });
+    return () => mm.revert();
   }, { scope: containerRef });
 
   const splitText = (text: string) => {
