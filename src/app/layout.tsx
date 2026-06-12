@@ -4,8 +4,22 @@ import CustomCursor from "@/components/CustomCursor";
 import SmoothScroll from "@/components/SmoothScroll";
 
 export const metadata: Metadata = {
-  title: "Ibraheem Shaheen | Visual Artist & Developer",
-  description: "A mind-blowing, god-tier personal portfolio driven by Scroll-driven Innovations.",
+  title: "MOBX PORTFOLIO",
+  description: "MOBX PORTFOLIO",
+  icons: {
+    icon: "/loading1.png",
+  },
+  openGraph: {
+    title: "MOBX PORTFOLIO",
+    description: "MOBX PORTFOLIO",
+    images: ["/og.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "MOBX PORTFOLIO",
+    description: "MOBX PORTFOLIO",
+    images: ["/og.png"],
+  }
 };
 
 import { Bangers } from "next/font/google";
