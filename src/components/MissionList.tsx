@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, Fragment } from "react";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 
 const PROJECT_SCREENSHOTS = [
@@ -49,6 +49,62 @@ const MISSIONS = [
     status: "WANTED",
     desc: "Develop a high-performance shader pipeline. Leave no trace.",
     image: "/projects/Screenshot%20from%202026-06-12%2002-04-22.png"
+  },
+  {
+    id: 4,
+    title: "CYBER HEIST",
+    client: "VANGUARD",
+    status: "COMPLETED",
+    desc: "Bypass the corporate firewall and extract the encrypted data payload.",
+    image: "/projects/Screenshot%20from%202026-06-12%2001-59-35.png"
+  },
+  {
+    id: 5,
+    title: "GHOST PROTOCOL",
+    client: "PHANTOM",
+    status: "IN PROGRESS",
+    desc: "Deploy untraceable backend services to mask our digital footprint.",
+    image: "/projects/Screenshot%20from%202026-06-12%2002-00-00.png"
+  },
+  {
+    id: 6,
+    title: "MIDNIGHT RUN",
+    client: "COURIER",
+    status: "COMPLETED",
+    desc: "Deliver the secure API payload across enemy networks before dawn.",
+    image: "/projects/Screenshot%20from%202026-06-12%2002-00-13.png"
+  },
+  {
+    id: 7,
+    title: "SILENT ECHO",
+    client: "SHADOWS",
+    status: "WANTED",
+    desc: "Intercept encrypted transmissions and decode the hidden UI elements.",
+    image: "/projects/Screenshot%20from%202026-06-12%2002-00-40.png"
+  },
+  {
+    id: 8,
+    title: "BLOOD MONEY",
+    client: "MOBX",
+    status: "IN PROGRESS",
+    desc: "Launder the legacy codebase through a modern Next.js framework.",
+    image: "/projects/Screenshot%20from%202026-06-12%2002-03-19.png"
+  },
+  {
+    id: 9,
+    title: "OPERATION OMEGA",
+    client: "APEX",
+    status: "COMPLETED",
+    desc: "Finalize the production build and deploy to the global edge network.",
+    image: "/projects/Screenshot%20from%202026-06-12%2002-03-28.png"
+  },
+  {
+    id: 10,
+    title: "RUSTED CAGE",
+    client: "ROGUES",
+    status: "WANTED",
+    desc: "Break out of the monolithic architecture and embrace microservices.",
+    image: "/projects/Screenshot%20from%202026-06-12%2002-03-39.png"
   }
 ];
 
@@ -110,23 +166,6 @@ export default function MissionList() {
       duration: 5.5
     }, 0);
 
-    // Scroll Velocity Skewing (Grime Effect) for Projects
-    const proxy = { skew: 0 };
-    const clamp = gsap.utils.clamp(-15, 15);
-    const skewSetters = sectionsRef.current.map(sec => sec ? gsap.quickSetter(sec.querySelector(".mission-info"), "skewY", "deg") : null);
-
-    ScrollTrigger.create({
-      onUpdate: (self) => {
-        const skew = clamp(self.getVelocity() / -50);
-        if (Math.abs(skew) > Math.abs(proxy.skew)) {
-          proxy.skew = skew;
-          gsap.to(proxy, {
-            skew: 0, duration: 1, ease: "elastic.out(1, 0.3)", overwrite: true,
-            onUpdate: () => skewSetters.forEach(set => set && set(proxy.skew))
-          });
-        }
-      }
-    });
 
     // Deep Parallax and reveal animations for each project screen
     sectionsRef.current.forEach((section, i) => {
@@ -223,14 +262,14 @@ export default function MissionList() {
           
           {/* Duplicate massively to fill the expanded grid to prevent gaps during animation */}
           {[...Array(15)].map((_, loopIdx) => (
-            <React.Fragment key={`loop-${loopIdx}`}>
+            <Fragment key={`loop-${loopIdx}`}>
               {PROJECT_SCREENSHOTS.map((src, i) => (
                 <div key={`img-${loopIdx}-${i}`} className="collage-img relative aspect-video w-full rounded overflow-hidden border border-gta-sepia/20 will-change-transform">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={`/projects/${src}`} alt="Project" className="object-cover w-full h-full" />
                 </div>
               ))}
-            </React.Fragment>
+            </Fragment>
           ))}
         </div>
 
@@ -301,7 +340,7 @@ export default function MissionList() {
           {/* GTA Cinematic Filters */}
           <div className="absolute inset-0 bg-[#4A3219] opacity-40 mix-blend-color pointer-events-none" />
           <div className="absolute inset-0 bg-black opacity-60 pointer-events-none" />
-          <div className="absolute inset-0 scanlines opacity-40 pointer-events-none" />
+          <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] z-[4] animate-crt-scroll opacity-80" />
           <div className="absolute inset-0 gta-vignette pointer-events-none" />
 
           {/* Mission Information (HUD style overlay) */}
