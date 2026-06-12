@@ -11,8 +11,18 @@ export default function BootLoader({ onComplete }: { onComplete: () => void }) {
   const bgRef = useRef<HTMLDivElement>(null);
   
   const [progress, setProgress] = useState(0);
+  const [bgIndex, setBgIndex] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
+
+  const BGS = [
+    { fg: "/loading1.png", bg: "/loading1bg.png" },
+    { fg: "/loader3.png", bg: "/loader3bg.png" }
+  ];
 
   useEffect(() => {
+    // Trigger initial CSS transitions
+    const mountTimer = setTimeout(() => setIsMounted(true), 50);
+
     // 1. Rockstar "M" Logo flash & scale up
     const tl = gsap.timeline();
     
@@ -30,8 +40,8 @@ export default function BootLoader({ onComplete }: { onComplete: () => void }) {
       "-=0.2"
     );
 
-    // 3. Loading progression (5 seconds total)
-    // 5000ms / 50ms = 100 steps. 100% / 100 steps = 1% per step.
+    // 3. Loading progression (8 seconds total)
+    // 8000ms / 80ms = 100 steps. 100% / 100 steps = 1% per step.
     let current = 0;
     const interval = setInterval(() => {
       current += 1; // Exact increment to hit 100 in 100 steps
@@ -48,18 +58,27 @@ export default function BootLoader({ onComplete }: { onComplete: () => void }) {
           onComplete: onComplete
         });
       }
+
+      // Cycle background images every 50 steps (~4 seconds)
+      if (current % 50 === 0 && current < 99) {
+        setBgIndex(prev => (prev + 1) % BGS.length);
+      }
+
       setProgress(Math.floor(current));
       
       // Animate loading bar width
       gsap.to(".loading-fill", {
         width: `${current}%`,
-        duration: 0.05,
+        duration: 0.08,
         ease: "none"
       });
       
-    }, 50);
+    }, 80);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(mountTimer);
+    };
   }, [onComplete]);
 
   return (
@@ -98,33 +117,43 @@ export default function BootLoader({ onComplete }: { onComplete: () => void }) {
       </div>
 
       {/* Loading Phase */}
-      <div ref={bgRef} className="absolute inset-0 opacity-0 flex flex-col justify-end p-12 z-20">
+      <div ref={bgRef} className="absolute inset-0 opacity-0 flex flex-col justify-end p-6 md:p-12 z-20">
         
-        {/* Background Code Pattern */}
-        <div className="absolute inset-0 z-0 flex flex-col justify-center opacity-10 pointer-events-none px-12 md:px-32">
-          <pre className="text-[#FFA500] font-mono text-sm md:text-xl leading-relaxed overflow-hidden">
-{`/* LCPD SECURE NETWORK INITIALIZATION */
-function initLCPD_Terminal(auth_token) {
-  const connection = new SecureSocket(auth_token);
-  
-  if (!connection.verify()) {
-    throw new SecurityError('UNAUTHORIZED ACCESS ATTEMPT');
-  }
-  
-  System.mount({
-    target: '#lcpd-root',
-    components: ['CriminalDatabase', 'SurveillanceCams', 'ActiveMissions']
-  });
-
-  console.log('[LCPD] Handshake complete.');
-  return connection.status;
-}
-
-// ESTABLISHING CONNECTION...
-// DECRYPTING ASSETS...
-// LOAD COMPLETE.`}
-          </pre>
+        {/* Cinematic GTA Slideshow */}
+        <div className="absolute inset-0 z-0 overflow-hidden opacity-100">
+          {BGS.map((slide, idx) => (
+            <div 
+              key={idx} 
+              className="absolute inset-0 transition-opacity duration-[1500ms] ease-in-out"
+              style={{ opacity: bgIndex === idx ? 1 : 0 }}
+            >
+              {/* Background with zoom-in parallax */}
+              <div 
+                className={`absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-[10000ms] ease-linear ${
+                  (bgIndex === idx && isMounted) ? 'scale-125 md:scale-110' : 'scale-110 md:scale-100'
+                }`}
+                style={{ 
+                  backgroundImage: `url('${slide.bg}')`,
+                  filter: 'contrast(110%) brightness(0.6)'
+                }}
+              />
+              {/* Foreground PNG with zoom-out parallax */}
+              <div 
+                className={`absolute inset-0 w-full h-full bg-no-repeat transition-transform duration-[10000ms] ease-linear origin-bottom ${
+                  (bgIndex === idx && isMounted) ? 'scale-[1.7] md:scale-90' : 'scale-[2] md:scale-100'
+                }`}
+                style={{ 
+                  backgroundImage: `url('${slide.fg}')`,
+                  backgroundSize: 'contain',
+                  backgroundPosition: 'center bottom',
+                  filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.8))'
+                }}
+              />
+            </div>
+          ))}
         </div>
+        
+
         
         <div className="flex justify-between items-end w-full max-w-4xl mx-auto mb-4">
           <h2 className="gta-title text-4xl text-gta-sepia">STARTING NEW GAME...</h2>

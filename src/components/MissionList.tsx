@@ -343,6 +343,75 @@ export default function MissionList() {
   useGSAP(() => {
     let mm = gsap.matchMedia();
 
+    // MOBILE ANIMATIONS (Highly optimized for crappiest devices)
+    mm.add("(max-width: 767px)", () => {
+      // INTRO ANIMATIONS
+      gsap.to('.collage-grid', {
+        yPercent: -15,
+        ease: "none",
+        scrollTrigger: {
+          trigger: introRef.current,
+          start: "top top",
+          end: "+=1500", // Shorter scroll distance
+          scrub: 1,
+        }
+      });
+
+      const headerTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: introRef.current,
+          pin: true,
+          start: "top top",
+          end: "+=600", // Shorter pin
+          scrub: 1.5,
+        }
+      });
+
+      headerTl.fromTo(".archive-title-word",
+        { scale: 3, opacity: 0 },
+        { scale: 1, opacity: 1, stagger: 0.2, ease: "power4.out", duration: 2 }
+      );
+
+      headerTl.to(".header-tape-left", { x: "-50vw", ease: "none", duration: 5.5 }, 0);
+      headerTl.to(".header-tape-right", { x: "50vw", ease: "none", duration: 5.5 }, 0);
+
+      gsap.to(".massive-sticky-ticker", {
+        xPercent: -30,
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 2,
+        }
+      });
+
+      // TERMINAL ANIMATIONS
+      const terminal = terminalRef.current;
+      if (terminal) {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: wrapperRef.current,
+            pin: true,
+            start: "top top",
+            end: "+=1000", // Shorter terminal pin
+            scrub: 1,
+          }
+        });
+
+        // Removed filter: "blur" to ensure highest efficiency on crappiest devices
+        gsap.set(terminal, { scale: 0.9, opacity: 0 });
+
+        tl.to(terminal, {
+          scale: 1,
+          opacity: 1,
+          ease: "power2.out",
+          duration: 0.5 
+        })
+        .to({}, { duration: 1.5 });
+      }
+    });
+
     mm.add("(min-width: 768px)", () => {
       // INTRO ANIMATIONS
       gsap.to('.collage-grid', {
@@ -432,7 +501,7 @@ export default function MissionList() {
       {/* Intro Header Section (Mission Passed) */}
       <section ref={introRef} className="archive-header relative w-full h-screen bg-gta-black flex flex-col justify-center items-center overflow-hidden perspective-1000 z-20">
         <div className="collage-grid absolute -inset-[50vh] z-0 overflow-hidden grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-2 p-2 pointer-events-none opacity-25 will-change-transform">
-          <div className="absolute inset-0 bg-gta-sepia/40 mix-blend-color z-10 pointer-events-none" />
+          <div className="absolute inset-0 bg-gta-sepia/40 md:mix-blend-color z-10 pointer-events-none" />
           {[...Array(6)].map((_, loopIdx) => (
             <Fragment key={`loop-${loopIdx}`}>
               {PROJECT_SCREENSHOTS.map((src, i) => (
@@ -448,16 +517,16 @@ export default function MissionList() {
         <div className="absolute inset-0 gta-noise z-[2] pointer-events-none" />
         <div className="absolute inset-0 gta-vignette z-[3] pointer-events-none" />
         
-        <div className="absolute top-[10%] -left-10 rotate-[-3deg] w-[200vw] h-14 bg-[#e6b800] z-10 flex items-center overflow-hidden pointer-events-none border-y-4 border-black drop-shadow-xl">
-          <div className="header-tape-left flex gap-4 whitespace-nowrap font-sans font-black tracking-[0.2em] text-3xl text-black w-full" style={{ WebkitTextStroke: '0px', textShadow: 'none' }}>
+        <div className="absolute top-[5%] md:top-[10%] -left-10 rotate-[-3deg] w-[200vw] h-10 md:h-14 bg-[#e6b800] z-10 flex items-center overflow-hidden pointer-events-none border-y-4 border-black drop-shadow-xl">
+          <div className="header-tape-left flex gap-4 whitespace-nowrap font-sans font-black tracking-[0.2em] text-xl md:text-3xl text-black w-full" style={{ WebkitTextStroke: '0px', textShadow: 'none' }}>
             {[...Array(30)].map((_, idx) => (
               <span key={idx}>POLICE LINE DO NOT CROSS // LCPD // </span>
             ))}
           </div>
         </div>
         
-        <div className="absolute bottom-[10%] -left-[100vw] rotate-[3deg] w-[200vw] h-14 bg-[#e6b800] z-10 flex items-center overflow-hidden pointer-events-none border-y-4 border-black drop-shadow-xl">
-          <div className="header-tape-right flex gap-4 whitespace-nowrap font-sans font-black tracking-[0.2em] text-3xl text-black w-full" style={{ WebkitTextStroke: '0px', textShadow: 'none' }}>
+        <div className="absolute bottom-[5%] md:bottom-[10%] -left-[100vw] rotate-[3deg] w-[200vw] h-10 md:h-14 bg-[#e6b800] z-10 flex items-center overflow-hidden pointer-events-none border-y-4 border-black drop-shadow-xl">
+          <div className="header-tape-right flex gap-4 whitespace-nowrap font-sans font-black tracking-[0.2em] text-xl md:text-3xl text-black w-full" style={{ WebkitTextStroke: '0px', textShadow: 'none' }}>
             {[...Array(30)].map((_, idx) => (
               <span key={idx}>LCPD // POLICE LINE DO NOT CROSS // </span>
             ))}
@@ -490,101 +559,107 @@ export default function MissionList() {
           <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] z-[100] animate-crt-scroll" />
           
           {!isAuthenticated ? (
-             <div className="w-full h-full flex flex-col items-center justify-center font-gta-hud relative z-20">
-               <div className="flex flex-col items-center">
-                 <img src="/lcpd_hd_logo_by_interglobalfilms_d4eq983-375w-2x.png" className="w-40 h-48 mb-8 drop-shadow-[4px_4px_0_rgba(0,0,0,1)]" />
-                 <h1 className="text-[#ffcc00] text-5xl tracking-widest mb-2 drop-shadow-[2px_2px_0_#000]">LCPD SECURE NETWORK</h1>
-                 <div className="text-[#3399ff] text-xl tracking-widest uppercase font-bold drop-shadow-[1px_1px_0_#000] mb-16">
-                   RESTRICTED ACCESS ONLY
-                 </div>
+             <div className="w-full h-full flex flex-col items-center justify-center font-gta-hud relative z-20 px-4">
+                <div className="flex flex-col items-center w-full max-w-2xl text-center">
+                  <img src="/lcpd_hd_logo_by_interglobalfilms_d4eq983-375w-2x.png" className="w-24 h-32 md:w-40 md:h-48 mb-4 md:mb-8 drop-shadow-[4px_4px_0_rgba(0,0,0,1)]" />
+                  <h1 className="text-[#ffcc00] text-2xl md:text-5xl tracking-widest mb-2 drop-shadow-[2px_2px_0_#000]">LCPD SECURE NETWORK</h1>
+                  <div className="text-[#3399ff] text-sm md:text-xl tracking-widest uppercase font-bold drop-shadow-[1px_1px_0_#000] mb-8 md:mb-16">
+                    RESTRICTED ACCESS ONLY
+                  </div>
 
-                 {loginStep === 'LOGIN' || loginStep === 'DENIED' ? (
-                   <div className="flex flex-col items-center">
-                     <div className="text-white text-2xl tracking-widest mb-4">ENTER AUTHORIZATION CODE:</div>
-                     <div className="relative">
-                       <input 
-                         ref={loginInputRef}
-                         type="password"
-                         value={password}
-                         onChange={(e) => setPassword(e.target.value)}
-                         onKeyDown={(e) => {
-                           if (e.key === 'Enter') {
-                             playHoverSound();
-                             setLoginStep('AUTHENTICATING');
-                             setTimeout(() => {
-                               if (password.trim().length > 0) {
-                                 setLoginStep('GRANTED');
-                                 playHoverSound();
-                                 setTimeout(() => setIsAuthenticated(true), 1500);
-                               } else {
-                                 setLoginStep('DENIED');
-                                 setHintVisible(true);
-                                 setPassword('');
-                                 playHoverSound();
-                               }
-                             }, 1500);
-                           }
-                         }}
-                         className="lcpd-login bg-transparent border-b-4 border-[#ffcc00] text-[#ffcc00] text-4xl tracking-[0.5em] text-center w-64 outline-none placeholder-gray-800 focus:bg-white/5 transition-colors"
-                         placeholder="*****"
-                         maxLength={10}
-                       />
-                     </div>
-                     {loginStep === 'DENIED' && (
-                       <div className="text-red-500 text-xl tracking-widest mt-6 animate-pulse">
-                         ACCESS DENIED. UNAUTHORIZED ATTEMPT LOGGED.
-                       </div>
-                     )}
-                     <div className="text-[#3399ff]/60 text-sm mt-8 font-mono tracking-widest text-center leading-relaxed">
-                       [SYSTEM HINT: AUTHORIZATION CODE IS '12345']<br/>
-                       [NAVIGATION: ARROWS TO MOVE / ENTER TO SELECT / BACKSPACE TO GO BACK]
-                     </div>
-                   </div>
-                 ) : loginStep === 'AUTHENTICATING' ? (
-                   <div className="text-[#ffcc00] text-3xl tracking-widest animate-pulse mt-8">
-                     VERIFYING CREDENTIALS...
-                   </div>
-                 ) : (
-                   <div className="text-green-500 text-4xl tracking-widest drop-shadow-[0_0_10px_rgba(0,255,0,0.5)] mt-8">
-                     ACCESS GRANTED. WELCOME, DETECTIVE.
-                   </div>
-                 )}
-               </div>
+                  {loginStep === 'LOGIN' || loginStep === 'DENIED' ? (
+                    <form className="flex flex-col items-center w-full" onSubmit={(e) => {
+                      e.preventDefault();
+                      playHoverSound();
+                      setLoginStep('AUTHENTICATING');
+                      setTimeout(() => {
+                        if (password.trim().length > 0) {
+                          setLoginStep('GRANTED');
+                          playHoverSound();
+                          setTimeout(() => setIsAuthenticated(true), 1500);
+                        } else {
+                          setLoginStep('DENIED');
+                          setHintVisible(true);
+                          setPassword('');
+                          playHoverSound();
+                        }
+                      }, 1500);
+                    }}>
+                      <div className="text-white text-lg md:text-2xl tracking-widest mb-4">ENTER AUTHORIZATION CODE:</div>
+                      <div className="relative w-full flex justify-center">
+                        <input 
+                          ref={loginInputRef}
+                          type="password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          className="lcpd-login bg-transparent border-b-2 md:border-b-4 border-[#ffcc00] text-[#ffcc00] text-2xl md:text-4xl tracking-[0.5em] text-center w-48 md:w-64 outline-none placeholder-gray-800 focus:bg-white/5 transition-colors"
+                          placeholder="*****"
+                          maxLength={10}
+                        />
+                      </div>
+                      <button type="submit" className="mt-6 md:hidden px-6 py-2 border-2 border-[#ffcc00] text-[#ffcc00] bg-black/50 text-sm font-bold tracking-widest">
+                        SUBMIT
+                      </button>
+                      {loginStep === 'DENIED' && (
+                        <div className="text-red-500 text-sm md:text-xl tracking-widest mt-6 animate-pulse">
+                          ACCESS DENIED. UNAUTHORIZED ATTEMPT LOGGED.
+                        </div>
+                      )}
+                      <div className="text-[#3399ff]/60 text-[10px] md:text-sm mt-8 font-mono tracking-widest text-center leading-relaxed">
+                        [SYSTEM HINT: TYPE ANY CODE AND PRESS ENTER]<br/>
+                        [NAVIGATION: TOUCH / D-PAD TO MOVE]
+                      </div>
+                    </form>
+                  ) : loginStep === 'AUTHENTICATING' ? (
+                    <div className="text-[#ffcc00] text-xl md:text-3xl tracking-widest animate-pulse mt-8">
+                      VERIFYING CREDENTIALS...
+                    </div>
+                  ) : (
+                    <div className="text-green-500 text-xl md:text-4xl tracking-widest drop-shadow-[0_0_10px_rgba(0,255,0,0.5)] mt-8">
+                      ACCESS GRANTED. WELCOME, DETECTIVE.
+                    </div>
+                  )}
+                </div>
              </div>
            ) : (
              <>
                {/* LCPD Top Header (Yellow Line & Logo) */}
-               <div className="w-full relative mt-16 md:mt-24 z-20">
-                 <div className="w-full h-3 bg-[#ffcc00] relative drop-shadow-[0_2px_5px_rgba(0,0,0,0.5)]">
+               <div className="w-full relative mt-12 md:mt-24 z-20 shrink-0">
+                 <div className="w-full h-2 md:h-3 bg-[#ffcc00] relative drop-shadow-[0_2px_5px_rgba(0,0,0,0.5)]">
                    {/* Floating Police Badge */}
-                   <div className="absolute top-1/2 -translate-y-1/2 left-4 md:left-12 w-[60px] h-[80px] md:w-[110px] md:h-[130px] z-30 drop-shadow-[4px_4px_0_rgba(0,0,0,0.8)]">
+                   <div className="absolute top-1/2 -translate-y-1/2 left-4 md:left-12 w-[50px] h-[70px] md:w-[110px] md:h-[130px] z-30 drop-shadow-[4px_4px_0_rgba(0,0,0,0.8)]">
                      <img src="/lcpd_hd_logo_by_interglobalfilms_d4eq983-375w-2x.png" alt="LCPD Badge" className="w-full h-full object-contain" />
                    </div>
           
               {/* Header Text */}
-              <div className="absolute bottom-3 right-4 md:right-16 flex flex-col items-end">
-                <h1 className="text-white text-lg md:text-5xl font-gta-hud tracking-[0.1em] drop-shadow-[3px_3px_0_#000]">
+              <div className="absolute bottom-2 md:bottom-3 right-4 md:right-16 flex flex-col items-end">
+                <h1 className="text-white text-sm md:text-5xl font-gta-hud tracking-[0.1em] drop-shadow-[3px_3px_0_#000]">
                   LIBERTY CITY POLICE DEPT.
                 </h1>
               </div>
             </div>
-            <div className="flex justify-end pr-4 md:pr-16 mt-2">
-              <div className="text-[#3399ff] text-[10px] md:text-sm tracking-widest uppercase font-bold drop-shadow-[1px_1px_0_#000]">
+            <div className="flex justify-end pr-4 md:pr-16 mt-1 md:mt-2">
+              <div className="text-[#3399ff] text-[8px] md:text-sm tracking-widest uppercase font-bold drop-shadow-[1px_1px_0_#000]">
                 PROTECTING LIBERTY CITY
               </div>
             </div>
           </div>
 
           {/* Main Content Area (Two Columns) */}
-          <div className="flex flex-col md:flex-row flex-1 w-full px-6 md:px-16 pt-8 md:pt-16 pb-32 md:pb-24 z-20 relative overflow-y-auto custom-scrollbar">
+          <div className="flex flex-col md:flex-row flex-1 w-full px-4 md:px-16 pt-4 md:pt-16 pb-32 md:pb-24 z-20 relative overflow-hidden">
             
             {/* ---------------- ROOT VIEW ---------------- */}
             {(currentView === 'ROOT' || currentView === 'HELP') && (
               <>
-                <div className="w-full md:w-1/2 flex flex-col md:pr-8 h-full mb-8 md:mb-0 shrink-0">
-                  <h2 className="text-[#ffcc00] text-3xl font-gta-hud tracking-widest mb-4 drop-shadow-[2px_2px_0_#000]">
-                    {currentView === 'ROOT' ? 'LCPD MAIN TERMINAL' : 'EMERGENCY COMMS'}
-                  </h2>
+                <div className="w-full md:w-1/2 flex flex-col md:pr-8 h-full mb-8 md:mb-0 shrink-0 overflow-y-auto custom-scrollbar">
+                  <div className="flex items-center gap-4 mb-4">
+                    <button onClick={() => { setCurrentView('ROOT'); playHoverSound(); }} className="md:hidden px-3 py-1 border border-[#ffcc00] text-[#ffcc00] text-xs font-bold bg-black/50 tracking-widest">
+                      &lt; BACK
+                    </button>
+                    <h2 className="text-[#ffcc00] text-2xl md:text-3xl font-gta-hud tracking-widest drop-shadow-[2px_2px_0_#000] m-0">
+                      {currentView === 'ROOT' ? 'LCPD MAIN TERMINAL' : 'EMERGENCY COMMS'}
+                    </h2>
+                  </div>
                   <p className="text-white font-sans text-lg mb-8 max-w-lg leading-relaxed">
                     {currentView === 'ROOT' 
                       ? 'Select a module to access LCPD secure networks. Unauthorized access will be traced and prosecuted.'
@@ -651,10 +726,15 @@ export default function MissionList() {
 
             {/* ---------------- TERMINAL VIEW ---------------- */}
             {currentView === 'TERMINAL' && (
-              <div className="w-full flex flex-col h-full font-mono text-[#3399ff] text-xl bg-black/80 p-8 border border-[#3399ff]/30 shadow-[0_0_50px_rgba(51,153,255,0.1)]">
+              <div className="w-full flex flex-col h-full font-mono text-[#3399ff] text-sm md:text-xl bg-black/80 p-4 md:p-8 border border-[#3399ff]/30 shadow-[0_0_50px_rgba(51,153,255,0.1)] overflow-hidden">
                 <div className="mb-6 pb-2 border-b border-[#ffcc00]/30 text-[#ffcc00] flex justify-between tracking-widest font-bold">
-                  <span>LCPD COMMAND LINE INTERFACE</span>
-                  <span className="animate-pulse">[BACKSPACE TO EXIT]</span>
+                  <div className="flex items-center gap-4">
+                    <button onClick={() => { setCurrentView('ROOT'); playHoverSound(); }} className="md:hidden px-2 py-1 border border-[#ffcc00] text-[#ffcc00] text-xs bg-black/50 whitespace-nowrap">
+                      &lt; BACK
+                    </button>
+                    <span>LCPD COMMAND LINE</span>
+                  </div>
+                  <span className="animate-pulse hidden md:inline">[BACKSPACE TO EXIT]</span>
                 </div>
                 
                 <div className="flex-1 overflow-y-auto mb-4 custom-scrollbar pr-4 flex flex-col justify-end">
@@ -680,7 +760,7 @@ export default function MissionList() {
                         if (cmd === 'help') newHistory.push('Commands: help, clear, ls, whoami, date, ping, exit');
                         else if (cmd === 'clear') { setTerminalHistory([]); setTerminalInput(''); return; }
                         else if (cmd === 'ls') newHistory.push('DIR: /projects\nDIR: /suspects\nDIR: /evidence');
-                        else if (cmd === 'whoami') newHistory.push('ADMIN: Detective Ibraheem Shaheen');
+                        else if (cmd === 'whoami') newHistory.push('ADMIN: Detective Mobx');
                         else if (cmd === 'date') newHistory.push(new Date().toString());
                         else if (cmd.startsWith('ping')) newHistory.push('Pinging network...\nReply from 192.168.1.1: bytes=32 time=1ms TTL=64\nReply from 192.168.1.1: bytes=32 time=1ms TTL=64');
                         else if (cmd === 'exit') { setCurrentView('ROOT'); playHoverSound(); }
@@ -706,11 +786,23 @@ export default function MissionList() {
             {currentView === 'FILES' && (
               <>
             {/* Left Column: Project List */}
-            <div className="w-full md:w-1/2 flex flex-col md:pr-8 h-full mb-8 md:mb-0 shrink-0">
-              <div className="flex flex-col md:flex-row md:justify-between md:items-end mb-4 gap-2">
-                <h2 className="text-[#ffcc00] text-2xl md:text-3xl font-gta-hud tracking-widest drop-shadow-[2px_2px_0_#000]">
-                  {expandedMissionIndex !== null ? 'EVIDENCE FILES' : 'CURRENT CRIMES'}
-                </h2>
+            <div className="w-full md:w-1/2 flex flex-col flex-1 md:h-full md:pr-8 shrink-0 order-last md:order-first overflow-y-auto custom-scrollbar border-t-2 md:border-t-0 border-[#ffcc00]/30 pt-4 md:pt-0 mt-4 md:mt-0">
+              <div className="flex flex-col md:flex-row md:justify-between md:items-end mb-4 gap-2 shrink-0">
+                <div className="flex items-center gap-4">
+                  <button 
+                    onClick={() => {
+                      if (expandedMissionIndex !== null) setExpandedMissionIndex(null);
+                      else setCurrentView('ROOT');
+                      playHoverSound();
+                    }} 
+                    className="md:hidden px-3 py-1 border border-[#ffcc00] text-[#ffcc00] text-xs font-bold bg-black/50 tracking-widest whitespace-nowrap"
+                  >
+                    &lt; BACK
+                  </button>
+                  <h2 className="text-[#ffcc00] text-2xl md:text-3xl font-gta-hud tracking-widest drop-shadow-[2px_2px_0_#000] m-0">
+                    {expandedMissionIndex !== null ? 'EVIDENCE FILES' : 'CURRENT CRIMES'}
+                  </h2>
+                </div>
                 <span className="text-[#3399ff] text-xs md:text-sm font-bold tracking-widest hidden md:block">[BACKSPACE: BACK]</span>
               </div>
               <p className="text-white font-sans text-sm md:text-lg mb-4 md:mb-8 max-w-lg leading-relaxed">
@@ -773,13 +865,13 @@ export default function MissionList() {
             </div>
 
             {/* Right Column: Surveillance Photo (Project Image) */}
-            <div className="w-full md:w-1/2 flex flex-col h-full border-t-2 md:border-t-0 md:border-l-2 border-gray-800/50 pt-8 md:pt-0 pl-0 md:pl-12 relative group">
-              <div className="absolute top-4 right-4 z-30 flex flex-col items-end">
-                <span className="text-red-500 font-gta-hud tracking-widest text-xl animate-pulse drop-shadow-[2px_2px_0_#000]">● REC</span>
-                <span className="text-white font-mono bg-black/50 px-2 mt-1">LCPD CCTV - CAM 04</span>
+            <div className="w-full md:w-1/2 flex flex-col shrink-0 md:h-full md:border-l-2 border-gray-800/50 pt-0 md:pt-0 pl-0 md:pl-12 relative group order-first md:order-last">
+              <div className="absolute top-2 right-2 md:top-4 md:right-4 z-30 flex flex-col items-end">
+                <span className="text-red-500 font-gta-hud tracking-widest text-sm md:text-xl animate-pulse drop-shadow-[2px_2px_0_#000]">● REC</span>
+                <span className="text-white font-mono bg-black/50 px-2 mt-1 text-[10px] md:text-base">LCPD CCTV - CAM 04</span>
               </div>
               
-              <div className="relative w-full h-[250px] md:h-[400px] border-4 border-gray-800 bg-black overflow-hidden mt-8 shadow-[10px_10px_0_rgba(0,0,0,0.5)]">
+              <div className="relative w-full h-[180px] md:h-[400px] border-2 md:border-4 border-gray-800 bg-black overflow-hidden mt-0 md:mt-8 shadow-[5px_5px_0_rgba(0,0,0,0.5)] md:shadow-[10px_10px_0_rgba(0,0,0,0.5)] shrink-0">
                 {/* CRT Glitch overlay on image */}
                 <div className="absolute inset-0 bg-[url('/noise.png')] opacity-30 mix-blend-overlay z-20 pointer-events-none" />
                 
@@ -799,11 +891,11 @@ export default function MissionList() {
                 })()}
               </div>
 
-              <div className="mt-6 bg-black/50 p-6 border border-gray-800 flex flex-col gap-2 relative">
-                <div className="text-[#ffcc00] font-bold text-xl tracking-widest font-gta-hud">
+              <div className="mt-2 md:mt-6 bg-black/50 p-3 md:p-6 border border-gray-800 flex flex-col gap-1 md:gap-2 relative shrink-0">
+                <div className="text-[#ffcc00] font-bold text-sm md:text-xl tracking-widest font-gta-hud">
                   {selectedFile ? 'FILE CONTENTS:' : 'SUSPECT DOSSIER:'}
                 </div>
-                <div className={`text-white font-sans text-sm leading-relaxed max-w-xl ${selectedFile ? 'font-mono text-xs opacity-70 whitespace-pre-wrap' : ''}`}>
+                <div className={`text-white font-sans text-xs md:text-sm leading-relaxed max-w-xl line-clamp-3 md:line-clamp-none ${selectedFile ? 'font-mono text-[10px] md:text-xs opacity-70 whitespace-pre-wrap line-clamp-4 md:line-clamp-none' : ''}`}>
                   {(() => {
                     const activeMissionData = visibleItems[activeIndex]?.type === 'MISSION' 
                       ? visibleItems[activeIndex].mission 
@@ -854,7 +946,7 @@ export default function MissionList() {
 
        {/* Mobile Virtual D-Pad */}
        {isAuthenticated && (
-         <div className="absolute bottom-6 right-6 z-[9000] flex flex-col items-center gap-2 md:hidden opacity-60 hover:opacity-100 transition-opacity pointer-events-auto">
+         <div className="absolute bottom-4 right-4 z-[9000] flex flex-col items-center gap-1.5 md:hidden opacity-60 hover:opacity-100 transition-opacity pointer-events-auto scale-90 origin-bottom-right">
            <button onClick={(e) => { e.stopPropagation(); dispatchKey('ArrowUp'); }} className="w-12 h-12 bg-black/80 border-2 border-[#ffcc00] rounded flex items-center justify-center text-[#ffcc00] active:bg-[#ffcc00] active:text-black text-xl">▲</button>
            <div className="flex gap-2">
              <button onClick={(e) => { e.stopPropagation(); dispatchKey('ArrowLeft'); }} className="w-12 h-12 bg-black/80 border-2 border-[#ffcc00] rounded flex items-center justify-center text-[#ffcc00] active:bg-[#ffcc00] active:text-black text-xl">◀</button>
@@ -862,7 +954,7 @@ export default function MissionList() {
              <button onClick={(e) => { e.stopPropagation(); dispatchKey('ArrowRight'); }} className="w-12 h-12 bg-black/80 border-2 border-[#ffcc00] rounded flex items-center justify-center text-[#ffcc00] active:bg-[#ffcc00] active:text-black text-xl">▶</button>
            </div>
            <button onClick={(e) => { e.stopPropagation(); dispatchKey('ArrowDown'); }} className="w-12 h-12 bg-black/80 border-2 border-[#ffcc00] rounded flex items-center justify-center text-[#ffcc00] active:bg-[#ffcc00] active:text-black text-xl">▼</button>
-           <button onClick={(e) => { e.stopPropagation(); dispatchKey('Backspace'); }} className="mt-2 px-6 py-3 bg-black/80 border-2 border-red-500 rounded text-red-500 text-sm font-bold active:bg-red-500 active:text-black tracking-widest">BACK</button>
+           <button onClick={(e) => { e.stopPropagation(); dispatchKey('Backspace'); }} className="mt-2 w-full py-3 bg-black/80 border-2 border-red-500 rounded text-red-500 text-sm font-bold active:bg-red-500 active:text-black tracking-widest">BACK</button>
          </div>
        )}
 
@@ -872,8 +964,9 @@ export default function MissionList() {
            className="fixed inset-0 z-[99999] bg-[#020202] flex flex-col items-center justify-center p-8 cursor-pointer"
            onClick={() => { setFullScreenState(null); playHoverSound(); }}
          >
-           <div className="absolute top-4 right-4 md:top-8 md:right-8 text-[#ffcc00] font-gta-hud tracking-widest text-lg md:text-2xl animate-pulse z-50 drop-shadow-[2px_2px_0_#000]">
-             [ BACKSPACE ] TO CLOSE
+           <div className="absolute top-4 right-4 md:top-8 md:right-8 text-[#ffcc00] font-gta-hud tracking-widest text-sm md:text-2xl animate-pulse z-50 drop-shadow-[2px_2px_0_#000] bg-black/80 p-2 md:p-0 md:bg-transparent border border-[#ffcc00] md:border-none">
+             <span className="hidden md:inline">[ BACKSPACE ] TO CLOSE</span>
+             <span className="md:hidden">TAP ANYWHERE TO CLOSE</span>
            </div>
 
            <div className="absolute bottom-4 md:bottom-8 text-white font-gta-hud tracking-widest text-sm md:text-xl z-50 flex gap-4 md:gap-8">

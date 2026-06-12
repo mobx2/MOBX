@@ -127,17 +127,17 @@ export default function PauseMenu() {
       <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] z-[1] animate-crt-scroll" />
 
       {/* GTA Pause Menu Header */}
-      <div className="w-full flex border-b-2 border-gta-sepia/30 bg-[#111] z-10 relative">
-        <div className="px-8 py-4 font-bold text-2xl tracking-widest text-gta-sepia w-1/4 border-r-2 border-gta-sepia/30">
+      <div className="w-full flex flex-col md:flex-row border-b-2 border-gta-sepia/30 bg-[#111] z-10 relative shrink-0">
+        <div className="px-4 py-3 md:px-8 md:py-4 font-bold text-lg md:text-2xl tracking-widest text-gta-sepia w-full md:w-1/4 border-b-2 md:border-b-0 md:border-r-2 border-gta-sepia/30 shrink-0">
           PAUSE MENU
         </div>
-        <div className="flex flex-1">
+        <div className="flex flex-1 overflow-x-auto [&::-webkit-scrollbar]:hidden">
           {["MAP", "BRIEF", "STATS", "AUDIO", "DISPLAY", "GAME"].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
               onMouseEnter={playHoverSound}
-              className={`flex-1 py-4 text-xl font-bold tracking-widest transition-colors ${
+              className={`flex-none px-6 md:px-0 md:flex-1 py-3 md:py-4 text-sm md:text-xl font-bold tracking-widest transition-colors ${
                 activeTab === tab ? "bg-gta-sepia text-black" : "text-gray-500 hover:text-gta-sepia hover:bg-white/5"
               }`}
             >
@@ -213,26 +213,26 @@ export default function PauseMenu() {
             </svg>
             
             {/* Map Legends */}
-            <div className="absolute bottom-8 right-8 bg-black/80 border border-gta-sepia p-4 flex flex-col gap-2">
-              <div className="flex items-center gap-3"><div className="w-4 h-4 bg-[#cc9933] rounded-full" /> <span>Safehouse</span></div>
-              <div className="flex items-center gap-3"><div className="w-4 h-4 bg-[#ff3333] rounded-full" /> <span>Main Mission</span></div>
-              <div className="flex items-center gap-3"><div className="w-4 h-4 bg-[#3399ff] rounded-full" /> <span>Weapon Shop</span></div>
+            <div className="absolute bottom-4 right-4 md:bottom-8 md:right-8 bg-black/80 border border-gta-sepia p-3 md:p-4 flex flex-col gap-2 text-xs md:text-base">
+              <div className="flex items-center gap-3"><div className="w-3 h-3 md:w-4 md:h-4 bg-[#cc9933] rounded-full shrink-0" /> <span>Safehouse</span></div>
+              <div className="flex items-center gap-3"><div className="w-3 h-3 md:w-4 md:h-4 bg-[#ff3333] rounded-full shrink-0" /> <span>Main Mission</span></div>
+              <div className="flex items-center gap-3"><div className="w-3 h-3 md:w-4 md:h-4 bg-[#3399ff] rounded-full shrink-0" /> <span>Weapon Shop</span></div>
             </div>
           </div>
         )}
 
         {/* STATS TAB (Profile) */}
         {activeTab === "STATS" && (
-          <div className="w-full h-full flex p-8 gap-8 overflow-y-auto">
+          <div className="w-full h-full flex flex-col md:flex-row p-4 md:p-8 gap-4 md:gap-8 overflow-y-auto">
             {/* Player Character */}
-            <div className="w-1/3 h-full flex items-end justify-center border-r-2 border-gta-sepia/20 relative overflow-hidden">
+            <div className="w-full md:w-1/3 h-[40vh] md:h-full flex items-end justify-center border-b-2 md:border-b-0 md:border-r-2 border-gta-sepia/20 relative overflow-hidden shrink-0">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(204,153,51,0.1),transparent)]" />
-              <img src="/ibraheem.png" alt="Player" className="w-[180%] scale-[1.6] origin-bottom translate-y-6 object-bottom object-contain drop-shadow-[5px_5px_0_#000]" style={{ filter: 'sepia(30%) contrast(120%)' }} />
+              <img src="/ibraheem.png" alt="Player" className="w-[180%] md:w-[180%] scale-[1.2] md:scale-[1.6] origin-bottom translate-y-2 md:translate-y-6 object-bottom object-contain drop-shadow-[5px_5px_0_#000]" style={{ filter: 'sepia(30%) contrast(120%)' }} />
             </div>
             
             {/* Player Stats */}
-            <div className="flex-1 flex flex-col gap-6 py-8 pr-8">
-              <h2 className="text-4xl font-bold tracking-widest text-gta-sepia mb-4 border-b-2 border-gta-sepia/30 pb-2">PLAYER STATS</h2>
+            <div className="flex-1 flex flex-col gap-4 md:gap-6 py-4 md:py-8 pr-0 md:pr-8">
+              <h2 className="text-2xl md:text-4xl font-bold tracking-widest text-gta-sepia mb-2 md:mb-4 border-b-2 border-gta-sepia/30 pb-2">PLAYER STATS</h2>
               
               <div className="flex flex-col gap-4">
                 <StatBar label="RESPECT (Web Dev)" value={95} />
@@ -246,9 +246,9 @@ export default function PauseMenu() {
               <div className="mt-8">
                 <h3 className="text-2xl font-bold text-gta-sepia mb-4">CONTACT INFOMATION</h3>
                 <ul className="text-xl text-gray-300 space-y-2">
-                  <li><span className="text-white">EMAIL:</span> ibraheem.shaheen@example.com</li>
+                  <li><span className="text-white">EMAIL:</span> ibraheemshaheeh54@gmail.com</li>
                   <li><span className="text-white">WANTED LEVEL:</span> 6 STARS</li>
-                  <li><span className="text-white">CURRENT LOCATION:</span> LIBERTY CITY</li>
+                  <li><span className="text-white">GANG:</span> JUNIOR DEVELOPER</li>
                 </ul>
               </div>
             </div>
@@ -257,8 +257,8 @@ export default function PauseMenu() {
 
         {/* AUDIO TAB */}
         {activeTab === "AUDIO" && (
-          <div className="w-full h-full flex flex-col items-center justify-center p-8 relative">
-            <div className="w-full max-w-3xl bg-[#080808] border border-gta-sepia/20 p-12 flex flex-col items-center text-center gap-12 drop-shadow-[0_0_50px_rgba(204,153,51,0.05)] relative overflow-hidden">
+          <div className="w-full h-full flex flex-col items-center justify-center p-4 md:p-8 relative overflow-y-auto">
+            <div className="w-full max-w-3xl bg-[#080808] border border-gta-sepia/20 p-6 md:p-12 flex flex-col items-center text-center gap-8 md:gap-12 drop-shadow-[0_0_50px_rgba(204,153,51,0.05)] relative overflow-hidden">
               
               {/* Subtle Background Glow */}
               <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(204,153,51,0.08),transparent_70%)]" />
@@ -336,11 +336,11 @@ export default function PauseMenu() {
 
         {/* BRIEF TAB (Mission Log / CV) */}
         {activeTab === "BRIEF" && (
-          <div className="w-full h-full p-8 overflow-y-auto">
-            <div className="max-w-4xl mx-auto flex flex-col gap-8 pb-20">
+          <div className="w-full h-full p-4 md:p-8 overflow-y-auto">
+            <div className="max-w-4xl mx-auto flex flex-col gap-6 md:gap-8 pb-20">
               
-              <div className="border-l-4 border-gta-sepia pl-6">
-                <h2 className="text-4xl font-bold tracking-widest text-gta-sepia mb-2">TARGET DOSSIER: IBRAHEEM SHAHEEN</h2>
+              <div className="border-l-4 border-gta-sepia pl-4 md:pl-6">
+                <h2 className="text-2xl md:text-4xl font-bold tracking-widest text-gta-sepia mb-2">TARGET DOSSIER: IBRAHEEM SHAHEEN</h2>
                 <p className="text-xl text-gray-300 leading-relaxed font-sans">
                   I&apos;m a Front-End Developer focused on building clean, responsive, and user-friendly interfaces. While I&apos;m still early in my career, I&apos;ve been actively working on personal projects and practicing with modern technologies like React, Tailwind CSS, and JavaScript. I enjoy turning UI/UX designs into real web experiences, and I&apos;m constantly learning to write better, scalable code and stay updated with the latest front-end trends.
                 </p>

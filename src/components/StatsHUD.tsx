@@ -81,11 +81,11 @@ export default function StatsHUD() {
           <div className="gta-hud text-sm flex flex-col gap-4 border-2 border-gta-brown/50 p-6 bg-gta-black/80">
             <div className="flex justify-between border-b border-gta-brown/30 pb-2">
               <span className="text-gta-brown">ALIAS</span>
-              <span>IBRAHEEM SHAHEEN</span>
+              <span>MOBX</span>
             </div>
             <div className="flex justify-between border-b border-gta-brown/30 pb-2">
               <span className="text-gta-brown">RANK</span>
-              <span>SENIOR DEVELOPER</span>
+              <span>JUNIOR DEVELOPER</span>
             </div>
             <div className="flex justify-between border-b border-gta-brown/30 pb-2">
               <span className="text-gta-brown">WANTED LEVEL</span>
@@ -93,7 +93,7 @@ export default function StatsHUD() {
             </div>
             <div className="flex justify-between pb-2">
               <span className="text-gta-brown">TIME PLAYED</span>
-              <span>5+ YEARS</span>
+              <span>1 YEAR</span>
             </div>
           </div>
         </div>

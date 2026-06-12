@@ -153,7 +153,7 @@ export default function HeroSlider() {
             {slide.fg && (
               <div className="absolute inset-0 flex justify-center items-end z-10 pointer-events-none">
                 <div 
-                  className="hero-fg w-[90%] md:w-[60%] h-[100%] bg-contain bg-no-repeat bg-bottom will-change-transform drop-shadow-[20px_20px_0px_#050505] origin-bottom pointer-events-auto"
+                  className="hero-fg flex-shrink-0 bg-contain bg-no-repeat bg-bottom will-change-transform drop-shadow-[20px_20px_0px_#050505] origin-bottom pointer-events-auto w-[250%] md:w-[60%] h-[95%] md:h-[100%]"
                   style={{ 
                     backgroundImage: `url('${slide.fg}')`,
                     filter: 'sepia(40%) contrast(120%) brightness(0.8)'
@@ -174,10 +174,10 @@ export default function HeroSlider() {
             )}
 
             {/* Bold Typography */}
-            <div className="absolute inset-0 flex items-center justify-start pl-8 md:pl-24 z-20 pointer-events-none">
-              <h1 className="hero-text text-[8vw] gta-title leading-[0.85] text-gta-sepia will-change-transform perspective-1000">
+            <div className="absolute inset-0 flex items-start md:items-center justify-center md:justify-start pt-32 sm:pt-40 md:pt-0 pl-0 md:pl-24 z-30 pointer-events-none w-full">
+              <h1 className="hero-text text-[14vw] sm:text-[12vw] md:text-[8vw] text-center md:text-left gta-title leading-[0.85] text-gta-sepia will-change-transform perspective-1000 drop-shadow-2xl">
                 {slide.title.split(" ").map((word, wIndex) => (
-                  <span key={wIndex} className="block overflow-hidden pb-4">
+                  <span key={wIndex} className="block overflow-hidden pb-2 md:pb-4">
                     {splitText(word)}
                   </span>
                 ))}
@@ -188,10 +188,10 @@ export default function HeroSlider() {
       </div>
       
       {/* Global Foreground Marquee */}
-      <div className="absolute top-[10%] left-0 w-[200vw] flex overflow-hidden z-[15] opacity-30 pointer-events-none mix-blend-overlay">
-        <div className="flex gap-8 whitespace-nowrap animate-marquee">
+      <div className="absolute top-[10%] md:top-[10%] left-0 w-[200vw] flex overflow-hidden z-[15] opacity-30 pointer-events-none mix-blend-overlay">
+        <div className="flex gap-4 md:gap-8 whitespace-nowrap animate-marquee">
           {[...Array(6)].map((_, idx) => (
-            <span key={idx} className="gta-diploma text-[100px] text-stroke tracking-widest uppercase opacity-80">
+            <span key={idx} className="gta-diploma text-[50px] md:text-[100px] text-stroke tracking-widest uppercase opacity-80">
               HIGHLY CLASSIFIED // LCPD DATABASE // 
             </span>
           ))}
