@@ -110,7 +110,7 @@ const MISSIONS = [
 
 export default function MissionList() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const sectionsRef = useRef<(HTMLElement | null)[]>([]);
 
   useGSAP(() => {
     // 0. Parallax Collage Images (Continuous movement through the pin)

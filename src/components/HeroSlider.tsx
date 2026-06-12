@@ -39,9 +39,9 @@ export default function HeroSlider() {
       }
     });
 
-    const slides = gsap.utils.toArray('.hero-slide');
+    const slides = gsap.utils.toArray('.hero-slide') as HTMLElement[];
 
-    slides.forEach((slide: any, index) => {
+    slides.forEach((slide: HTMLElement, index) => {
       const bg = slide.querySelector('.hero-bg');
       const fg = slide.querySelector('.hero-fg');
       const text = slide.querySelector('.hero-text');
