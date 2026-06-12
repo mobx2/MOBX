@@ -90,7 +90,7 @@ export default function GameHUD() {
     <div className="fixed inset-0 pointer-events-none z-[60] select-none">
       
       {/* Top Left: Mission Objective & Music Player */}
-      <div className="absolute top-4 left-4 md:top-8 md:left-8 flex flex-col gap-2 md:gap-6 items-start pointer-events-auto">
+      <div className="absolute top-12 left-4 md:top-8 md:left-8 flex flex-col gap-2 md:gap-6 items-start pointer-events-auto">
         <h3 id="hud-mission-text" className="gta-hud text-gta-sepia text-sm md:text-2xl drop-shadow-[2px_2px_0_#050505] pointer-events-none max-w-[200px] md:max-w-none leading-tight">
           {missionText}
         </h3>
@@ -183,7 +183,7 @@ export default function GameHUD() {
       </div>
 
       {/* Top Right: Money, Weapon, Stars */}
-      <div className="absolute top-4 right-4 md:top-8 md:right-8 flex flex-col items-end gap-1 md:gap-2">
+      <div className="absolute top-12 right-4 md:top-8 md:right-8 flex flex-col items-end gap-1 md:gap-2">
         <div className="flex items-center gap-2 md:gap-4">
           <div className="gta-hud text-gta-green text-lg md:text-4xl drop-shadow-[2px_2px_0_#050505]">$99,999,999</div>
           <div className="w-8 h-8 md:w-16 md:h-16 bg-gta-black/80 border md:border-2 border-gta-black flex items-center justify-center rounded-sm">
@@ -208,7 +208,7 @@ export default function GameHUD() {
       {/* Bottom Left: Mini Map (Interactive Navigation) */}
       <div 
         onClick={() => window.dispatchEvent(new CustomEvent('togglePauseMenu'))}
-        className="absolute bottom-4 left-4 md:bottom-8 md:left-8 w-32 h-32 md:w-48 md:h-48 rounded-full border-2 md:border-[6px] border-gta-black/90 bg-gta-black/50 overflow-hidden shadow-[0_0_10px_rgba(0,0,0,0.8)] md:shadow-[0_0_20px_rgba(0,0,0,0.8)] pointer-events-auto group cursor-pointer scale-90 md:scale-100 origin-bottom-left"
+        className="absolute bottom-10 left-4 md:bottom-8 md:left-8 w-32 h-32 md:w-48 md:h-48 rounded-full border-2 md:border-[6px] border-gta-black/90 bg-gta-black/50 overflow-hidden shadow-[0_0_10px_rgba(0,0,0,0.8)] md:shadow-[0_0_20px_rgba(0,0,0,0.8)] pointer-events-auto group cursor-pointer scale-90 md:scale-100 origin-bottom-left"
       >
         {/* Map Background (Radar) */}
         <div 
@@ -242,7 +242,7 @@ export default function GameHUD() {
       </div>
 
       {/* Action Text (Bottom Center) */}
-      <div className="absolute bottom-4 md:bottom-12 left-1/2 -translate-x-1/2 w-full px-4 pointer-events-none z-0">
+      <div className="absolute bottom-10 md:bottom-12 left-1/2 -translate-x-1/2 w-full px-4 pointer-events-none z-0">
         <h3 className="gta-hud text-gta-sepia/70 text-[10px] md:text-lg drop-shadow-[2px_2px_0_#050505] text-center">
           SCROLL TO NAVIGATE LIBERTY CITY
         </h3>

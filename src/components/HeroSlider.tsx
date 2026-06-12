@@ -42,8 +42,8 @@ export default function HeroSlider() {
           trigger: containerRef.current,
           pin: true,
           start: "top top",
-          end: `+=${SLIDES.length * (isMobile ? 600 : 1000)}`, // Shorter scroll distance on mobile
-          scrub: isMobile ? 0.5 : 1.5, // Faster scrub response on mobile to prevent jitter
+          end: `+=${SLIDES.length * (isMobile ? 300 : 1000)}`, // Shorter scroll distance on mobile
+          scrub: isMobile ? true : 1.5, // Instant scrub response on mobile to prevent lag
         }
       });
 
@@ -103,9 +103,9 @@ export default function HeroSlider() {
     <section ref={containerRef} className="level-section relative w-full h-screen overflow-hidden bg-gta-black">
       
       {/* Global Noise & Vignette & CRT */}
-      <div className="absolute inset-0 gta-noise z-50 pointer-events-none" />
+      <div className="absolute inset-0 gta-noise z-50 pointer-events-none opacity-50 md:opacity-100" />
       <div className="absolute inset-0 gta-vignette z-40 pointer-events-none" />
-      <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] z-[45] animate-crt-scroll" />
+      <div className="hidden md:block absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] z-[45] animate-crt-scroll" />
 
       {/* Slider Container */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
