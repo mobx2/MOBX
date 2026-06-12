@@ -180,7 +180,7 @@ export default function HeroSlider() {
       <div className="absolute top-[10%] left-0 w-[200vw] flex overflow-hidden z-[15] opacity-30 pointer-events-none mix-blend-overlay">
         <div className="flex gap-8 whitespace-nowrap animate-marquee">
           {[...Array(6)].map((_, idx) => (
-            <span key={idx} className="gta-title text-[150px] text-stroke tracking-widest uppercase">
+            <span key={idx} className="gta-diploma text-[100px] text-stroke tracking-widest uppercase opacity-80">
               HIGHLY CLASSIFIED // LCPD DATABASE // 
             </span>
           ))}

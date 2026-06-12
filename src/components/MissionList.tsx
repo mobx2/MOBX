@@ -306,7 +306,7 @@ export default function MissionList() {
               />
             </div>
             
-            <span className="archive-title-word block origin-center will-change-transform gta-hud text-gta-brown text-xl md:text-2xl tracking-[0.2em] animate-pulse">
+            <span className="archive-title-word block origin-center will-change-transform gta-beckett text-gta-brown text-3xl md:text-5xl tracking-widest">
               ACCESSING LCPD DATABASE...
             </span>
           </div>
@@ -354,7 +354,7 @@ export default function MissionList() {
                 {/* Minor Police Strobe in HUD */}
                 <div className="absolute top-0 right-0 w-16 h-16 siren-red animate-siren opacity-30 pointer-events-none" />
                 
-                <p className="gta-hud text-gta-brown mb-2 tracking-widest text-lg">FILE N° 0{mission.id}</p>
+                <p className="gta-diploma text-gta-brown mb-2 tracking-widest text-xl">FILE N° 0{mission.id}</p>
                 <h3 className="gta-title text-5xl md:text-7xl tracking-tight text-gta-sepia leading-none drop-shadow-[4px_4px_0_#000] glitch-hover">
                   {mission.title}
                 </h3>
