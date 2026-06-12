@@ -191,11 +191,11 @@ export default function MissionList() {
         }
       );
 
-      // Deep Parallax Zoom with SCRUB
+      // Deep Parallax Zoom with SCRUB (Reduced zoom)
       gsap.fromTo(img, 
-        { scale: 1.5, yPercent: 30 }, 
+        { scale: 1.1, yPercent: 5 }, 
         { 
-          scale: 1, yPercent: -30, 
+          scale: 1, yPercent: -5, 
           ease: "none",
           scrollTrigger: {
             trigger: section,
@@ -323,7 +323,7 @@ export default function MissionList() {
           {/* Aggressive Image Reveal Wrapper */}
           <div className="bg-wrapper absolute inset-0 w-full h-full overflow-hidden">
             <div 
-              className="bg-image absolute inset-[-10%] w-[120%] h-[120%] bg-cover bg-center will-change-transform origin-center"
+              className="bg-image absolute inset-[-5%] w-[110%] h-[110%] bg-cover bg-center will-change-transform origin-center"
               style={{ backgroundImage: `url('${mission.image}')` }}
             />
           </div>
