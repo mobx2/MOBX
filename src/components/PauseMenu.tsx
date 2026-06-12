@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
+import { useHoverSound } from "@/hooks/useHoverSound";
 
 export default function PauseMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,15 +12,31 @@ export default function PauseMenu() {
   const menuRef = useRef<HTMLDivElement>(null);
   const svgMapRef = useRef<SVGSVGElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  
+  const { isMuted, playHoverSound } = useHoverSound();
+
+  const playMenuSound = () => {
+    if (!isMuted && typeof window !== "undefined") {
+      const audio = new Audio("/gta-sa-menu.mp3");
+      audio.volume = 0.6;
+      audio.play().catch(() => {});
+    }
+  };
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setIsOpen((prev) => !prev);
+        setIsOpen((prev) => {
+          if (!prev) playMenuSound();
+          return !prev;
+        });
       }
     };
     const handleToggleEvent = () => {
-      setIsOpen((prev) => !prev);
+      setIsOpen((prev) => {
+        if (!prev) playMenuSound();
+        return !prev;
+      });
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -119,6 +136,7 @@ export default function PauseMenu() {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
+              onMouseEnter={playHoverSound}
               className={`flex-1 py-4 text-xl font-bold tracking-widest transition-colors ${
                 activeTab === tab ? "bg-gta-sepia text-black" : "text-gray-500 hover:text-gta-sepia hover:bg-white/5"
               }`}
@@ -155,30 +173,42 @@ export default function PauseMenu() {
               <g 
                 className="cursor-pointer group"
                 onClick={() => handleWaypointClick(250, 300, "Profile")}
+                onMouseEnter={playHoverSound}
               >
+                {/* Invisible Hitbox for easier clicking */}
+                <circle cx="250" cy="300" r="60" fill="transparent" />
+                
                 <circle cx="250" cy="300" r="20" fill="#cc9933" className="group-hover:scale-125 transition-transform origin-center" />
                 <path d="M 240,305 L 250,290 L 260,305 Z" fill="black" />
-                <text x="250" y="340" fill="white" fontSize="16" textAnchor="middle" className="opacity-0 group-hover:opacity-100 transition-opacity">Safehouse (Profile)</text>
+                <text x="250" y="340" fill="white" fontSize="16" textAnchor="middle" className="opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Safehouse (Profile)</text>
               </g>
 
               {/* Waypoint 2: Mission (Projects) */}
               <g 
                 className="cursor-pointer group"
                 onClick={() => handleWaypointClick(700, 250, "Projects")}
+                onMouseEnter={playHoverSound}
               >
+                {/* Invisible Hitbox for easier clicking */}
+                <circle cx="700" cy="250" r="60" fill="transparent" />
+
                 <circle cx="700" cy="250" r="20" fill="#ff3333" className="group-hover:scale-125 transition-transform origin-center" />
-                <text x="700" y="256" fill="white" fontSize="18" fontWeight="bold" textAnchor="middle">M</text>
-                <text x="700" y="290" fill="white" fontSize="16" textAnchor="middle" className="opacity-0 group-hover:opacity-100 transition-opacity">Missions (Projects)</text>
+                <text x="700" y="256" fill="white" fontSize="18" fontWeight="bold" textAnchor="middle" className="pointer-events-none">M</text>
+                <text x="700" y="290" fill="white" fontSize="16" textAnchor="middle" className="opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Missions (Projects)</text>
               </g>
 
               {/* Waypoint 3: Weapon Shop (Skills) */}
               <g 
                 className="cursor-pointer group"
                 onClick={() => handleWaypointClick(500, 700, "Skills")}
+                onMouseEnter={playHoverSound}
               >
+                {/* Invisible Hitbox for easier clicking */}
+                <circle cx="500" cy="700" r="60" fill="transparent" />
+
                 <circle cx="500" cy="700" r="20" fill="#3399ff" className="group-hover:scale-125 transition-transform origin-center" />
-                <text x="500" y="706" fill="white" fontSize="18" fontWeight="bold" textAnchor="middle">W</text>
-                <text x="500" y="740" fill="white" fontSize="16" textAnchor="middle" className="opacity-0 group-hover:opacity-100 transition-opacity">Ammu-Nation (Skills)</text>
+                <text x="500" y="706" fill="white" fontSize="18" fontWeight="bold" textAnchor="middle" className="pointer-events-none">W</text>
+                <text x="500" y="740" fill="white" fontSize="16" textAnchor="middle" className="opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Ammu-Nation (Skills)</text>
               </g>
             </svg>
             
@@ -195,9 +225,9 @@ export default function PauseMenu() {
         {activeTab === "STATS" && (
           <div className="w-full h-full flex p-8 gap-8 overflow-y-auto">
             {/* Player Character */}
-            <div className="w-1/3 h-full flex items-end justify-center border-r-2 border-gta-sepia/20 relative">
+            <div className="w-1/3 h-full flex items-end justify-center border-r-2 border-gta-sepia/20 relative overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(204,153,51,0.1),transparent)]" />
-              <img src="/ibraheem.png" alt="Player" className="w-[80%] object-contain drop-shadow-[5px_5px_0_#000]" style={{ filter: 'sepia(30%) contrast(120%)' }} />
+              <img src="/ibraheem.png" alt="Player" className="w-[180%] scale-[1.6] origin-bottom translate-y-6 object-bottom object-contain drop-shadow-[5px_5px_0_#000]" style={{ filter: 'sepia(30%) contrast(120%)' }} />
             </div>
             
             {/* Player Stats */}
@@ -227,47 +257,61 @@ export default function PauseMenu() {
 
         {/* AUDIO TAB */}
         {activeTab === "AUDIO" && (
-          <div className="w-full h-full flex flex-col items-center justify-center p-8">
-            <div className="w-full max-w-2xl bg-black/50 border border-gta-sepia/30 p-8 flex flex-col gap-8">
-              <h2 className="text-3xl font-bold tracking-widest text-gta-sepia border-b-2 border-gta-sepia/30 pb-4">AUDIO SETTINGS</h2>
+          <div className="w-full h-full flex flex-col items-center justify-center p-8 relative">
+            <div className="w-full max-w-3xl bg-[#080808] border border-gta-sepia/20 p-12 flex flex-col items-center text-center gap-12 drop-shadow-[0_0_50px_rgba(204,153,51,0.05)] relative overflow-hidden">
               
-              <div className="flex justify-between items-center text-xl text-gray-300">
-                <span>RADIO STATION</span>
-                <span className="text-white bg-gta-sepia text-black px-4 font-bold">SAN ANDREAS FM</span>
-              </div>
+              {/* Subtle Background Glow */}
+              <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(204,153,51,0.08),transparent_70%)]" />
 
-              <div className="flex flex-col gap-2">
-                <div className="flex justify-between text-xl text-gray-300">
-                  <span>PLAY MUSIC</span>
-                  <button 
-                    onClick={() => {
-                      const audio = document.getElementById('bg-music') as HTMLAudioElement;
-                      if (audio) {
-                        if (audio.paused) {
-                          audio.play();
-                          setMusicPlaying(true);
-                          document.dispatchEvent(new CustomEvent('musicStateChange', { detail: { playing: true } }));
-                        } else {
-                          audio.pause();
-                          setMusicPlaying(false);
-                          document.dispatchEvent(new CustomEvent('musicStateChange', { detail: { playing: false } }));
-                        }
-                      }
-                    }}
-                    className="text-white hover:text-gta-sepia uppercase"
-                  >
-                    {musicPlaying ? "ON" : "OFF"}
-                  </button>
+              {/* Station Info */}
+              <div className="flex flex-col items-center gap-3 z-10">
+                <h2 className="text-xl tracking-[0.4em] text-gray-500 font-bold">RADIO STATION</h2>
+                <div className="text-5xl font-bold tracking-widest text-black bg-gta-sepia px-8 py-3 drop-shadow-[6px_6px_0_rgba(0,0,0,1)] -rotate-1">
+                  SAN ANDREAS FM
                 </div>
+                <div className="text-gta-sepia/70 text-lg tracking-widest mt-2 animate-pulse">NOW PLAYING: Theme Song</div>
               </div>
 
-              <div className="flex flex-col gap-2">
-                <div className="flex justify-between text-xl text-gray-300">
-                  <span>MUSIC VOLUME</span>
-                  <span>{Math.round(volume * 100)}%</span>
+              {/* Play / Pause Big Button */}
+              <div className="flex items-center justify-center z-10 mt-4">
+                <button 
+                  onClick={() => {
+                    const audio = document.getElementById('bg-music') as HTMLAudioElement;
+                    if (audio) {
+                      if (audio.paused) {
+                        audio.play();
+                        setMusicPlaying(true);
+                        document.dispatchEvent(new CustomEvent('musicStateChange', { detail: { playing: true } }));
+                      } else {
+                        audio.pause();
+                        setMusicPlaying(false);
+                        document.dispatchEvent(new CustomEvent('musicStateChange', { detail: { playing: false } }));
+                      }
+                    }
+                  }}
+                  onMouseEnter={playHoverSound}
+                  className={`w-32 h-32 rounded-full border-[6px] flex items-center justify-center transition-all duration-300 hover:scale-110 ${
+                    musicPlaying 
+                      ? "border-gta-sepia bg-gta-sepia/10 text-gta-sepia shadow-[0_0_30px_rgba(204,153,51,0.4)]" 
+                      : "border-gray-700 bg-black text-gray-500 hover:border-white hover:text-white"
+                  }`}
+                >
+                  {musicPlaying ? (
+                    <svg className="w-14 h-14 fill-current" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                  ) : (
+                    <svg className="w-16 h-16 ml-3 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  )}
+                </button>
+              </div>
+
+              {/* Volume Slider */}
+              <div className="flex flex-col gap-4 w-full max-w-lg z-10 mt-4">
+                <div className="flex justify-between text-base tracking-[0.2em] text-gray-400 font-bold">
+                  <span>MASTER VOLUME</span>
+                  <span className="text-gta-sepia">{Math.round(volume * 100)}%</span>
                 </div>
                 {/* Interactive slider */}
-                <div className="w-full h-4 bg-gray-800 border border-gray-600 relative flex cursor-pointer"
+                <div className="w-full h-8 bg-black border-2 border-gray-800 relative flex cursor-pointer group"
                   onClick={(e) => {
                     const rect = e.currentTarget.getBoundingClientRect();
                     const newVol = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
@@ -275,9 +319,13 @@ export default function PauseMenu() {
                     const audio = document.getElementById('bg-music') as HTMLAudioElement;
                     if (audio) audio.volume = newVol;
                   }}
+                  onMouseEnter={playHoverSound}
                 >
+                  {/* Hover effect highlight */}
+                  <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                  
                   {[...Array(20)].map((_, i) => (
-                    <div key={i} className={`flex-1 border-r border-black ${i < (volume * 20) ? 'bg-[#cc9933]' : 'bg-transparent'}`} />
+                    <div key={i} className={`flex-1 border-r border-black/80 ${i < (volume * 20) ? 'bg-gta-sepia shadow-[0_0_10px_rgba(204,153,51,0.5)]' : 'bg-transparent'}`} />
                   ))}
                 </div>
               </div>
@@ -372,7 +420,7 @@ export default function PauseMenu() {
       
       {/* Footer controls */}
       <div className="border-t-2 border-gta-sepia/30 bg-[#111] p-4 flex justify-end px-8 z-10 relative">
-        <button onClick={() => setIsOpen(false)} className="text-xl tracking-widest text-white hover:text-gta-sepia flex items-center gap-2">
+        <button onClick={() => setIsOpen(false)} onMouseEnter={playHoverSound} className="text-xl tracking-widest text-white hover:text-gta-sepia flex items-center gap-2">
           <span className="border border-white px-2 rounded bg-white text-black text-sm">ESC</span> BACK / RESUME
         </button>
       </div>

@@ -43,33 +43,32 @@ export default function Home() {
   return (
     <main ref={containerRef} className="bg-gta-black min-h-screen selection:bg-gta-sepia selection:text-gta-black relative overflow-hidden">
       
-      <div className="relative z-[200]">
+      <div className="relative z-[99990]">
         <PauseMenu />
       </div>
 
       {/* Stable wrapper for Loader to prevent React insertBefore crashes */}
-      <div className="relative z-50">
+      <div className="relative z-[300]">
         {loading && <BootLoader onComplete={() => setLoading(false)} />}
       </div>
       
-      {/* Stable wrapper for HUD */}
-      <div className={`relative z-40 transition-opacity duration-[1500ms] ease-in-out ${loading ? "opacity-0" : "opacity-100"}`}>
-        {!loading && <GameHUD />}
-      </div>
-
       <div 
-        className={`w-full relative z-10 transition-opacity duration-[2000ms] ease-in-out ${loading ? "opacity-0 h-screen overflow-hidden" : "opacity-100"}`} 
+        className={`w-full transition-opacity duration-[2000ms] ease-in-out ${loading ? "opacity-0 h-screen overflow-hidden" : "opacity-100"}`} 
       >
-        <div id="hero">
+        {/* Stable wrapper for HUD, now inside the same stacking context as sections */}
+        <div className={`fixed inset-0 pointer-events-none z-[60] transition-opacity duration-[1500ms] ease-in-out ${loading ? "opacity-0" : "opacity-100"}`}>
+          {!loading && <GameHUD />}
+        </div>
+        <div id="hero" className="relative z-10">
           <HeroSlider />
         </div>
-        <div id="missions">
+        <div id="missions" className="relative z-[10000]">
           <MissionList />
         </div>
-        <div id="stats">
+        <div id="stats" className="relative z-10">
           <StatsHUD />
         </div>
-        <div id="ending">
+        <div id="ending" className="relative z-10">
           <FinalCutscene />
         </div>
       </div>

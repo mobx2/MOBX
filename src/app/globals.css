@@ -156,6 +156,27 @@ body {
   will-change: transform, opacity;
 }
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #111;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-gta-sepia);
+}
+
 ::-webkit-scrollbar {
   width: 0px;
   background: transparent;

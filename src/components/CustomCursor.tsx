@@ -2,10 +2,12 @@
 
 import { useRef, useEffect } from "react";
 import { gsap } from "@/lib/gsap";
+import { useHoverSound } from "@/hooks/useHoverSound";
 
 export default function CustomCursor() {
   const cursorDot = useRef<HTMLDivElement>(null);
   const cursorOutline = useRef<HTMLDivElement>(null);
+  const { playHoverSound } = useHoverSound();
 
   useEffect(() => {
     if (!cursorDot.current || !cursorOutline.current) return;
@@ -32,7 +34,7 @@ export default function CustomCursor() {
       if (target.closest("a") || target.closest("button") || target.closest(".project-card")) {
         gsap.to(cursorOutline.current, {
           scale: 2.5,
-          backgroundColor: "rgba(255, 255, 255, 0.1)",
+          backgroundColor: "transparent",
           duration: 0.3,
         });
         gsap.to(cursorDot.current, {
@@ -56,6 +58,7 @@ export default function CustomCursor() {
 
     const handleMouseDown = () => {
       gsap.to(cursorOutline.current, { scale: 0.8, duration: 0.1 });
+      playHoverSound();
     };
 
     const handleMouseUp = () => {
@@ -75,17 +78,17 @@ export default function CustomCursor() {
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, []);
+  }, [playHoverSound]);
 
   return (
     <>
       <div 
         ref={cursorDot} 
-        className="fixed top-0 left-0 w-2 h-2 bg-white rounded-full pointer-events-none z-[9999] will-change-transform gpu-accelerated hidden md:block drop-shadow-[1px_1px_0px_rgba(0,0,0,1)]"
+        className="fixed top-0 left-0 w-2 h-2 bg-white rounded-full pointer-events-none z-[99999] will-change-transform gpu-accelerated hidden md:block drop-shadow-[1px_1px_0px_rgba(0,0,0,1)]"
       />
       <div 
         ref={cursorOutline} 
-        className="fixed top-0 left-0 w-10 h-10 pointer-events-none z-[9999] will-change-transform gpu-accelerated hidden md:flex items-center justify-center opacity-90"
+        className="fixed top-0 left-0 w-10 h-10 pointer-events-none z-[99999] will-change-transform gpu-accelerated hidden md:flex items-center justify-center opacity-90"
       >
         {/* Crosshair Ticks (No Circle, Just Weapon Aim) */}
         <div className="absolute top-0 w-[3px] h-[10px] bg-white drop-shadow-[1px_1px_0px_rgba(0,0,0,1)]" />

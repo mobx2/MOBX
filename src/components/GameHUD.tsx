@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { useHoverSound } from "@/hooks/useHoverSound";
 
 const RADIO_STATIONS = [
   { id: 0, name: "SAN ANDREAS FM", src: "/theme.mp3" },
@@ -14,6 +15,7 @@ export default function GameHUD() {
   const [time, setTime] = useState("08:00");
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const [currentStation, setCurrentStation] = useState(0);
+  const { isMuted, toggleMute, playHoverSound } = useHoverSound();
 
   useEffect(() => {
     // Clock simulation
@@ -87,11 +89,97 @@ export default function GameHUD() {
   return (
     <div className="fixed inset-0 pointer-events-none z-[60] select-none">
       
-      {/* Top Left: Mission Objective */}
-      <div className="absolute top-8 left-8">
-        <h3 id="hud-mission-text" className="gta-hud text-gta-sepia text-2xl drop-shadow-[2px_2px_0_#050505]">
+      {/* Top Left: Mission Objective & Music Player */}
+      <div className="absolute top-8 left-8 flex flex-col gap-6 items-start pointer-events-auto">
+        <h3 id="hud-mission-text" className="gta-hud text-gta-sepia text-2xl drop-shadow-[2px_2px_0_#050505] pointer-events-none">
           {missionText}
         </h3>
+
+        {/* Music Player (Slanted & Compact) */}
+        <div className="flex flex-col items-stretch -skew-x-6 origin-left transform drop-shadow-[4px_4px_0_rgba(0,0,0,0.8)]">
+          {/* Track Info Display */}
+          <div className="bg-black/80 border-2 border-gta-black px-6 py-2 flex flex-col items-start relative overflow-hidden group cursor-pointer min-w-[220px]"
+            onClick={() => {
+              const audio = document.getElementById('bg-music') as HTMLAudioElement;
+              if (audio) {
+                if (audio.paused) {
+                  audio.play();
+                  document.dispatchEvent(new CustomEvent('musicStateChange', { detail: { playing: true } }));
+                } else {
+                  audio.pause();
+                  document.dispatchEvent(new CustomEvent('musicStateChange', { detail: { playing: false } }));
+                }
+              }
+            }}
+            onMouseEnter={playHoverSound}
+          >
+            {/* Animated Shine Effect */}
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.05),transparent)] -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+            
+            <div className="text-[8px] text-gta-sepia font-gta-hud tracking-[0.2em] uppercase mb-1 animate-pulse">
+              {isMusicPlaying ? 'NOW PLAYING' : 'RADIO STATION'}
+            </div>
+            <div className="font-gta-hud text-white tracking-widest text-sm drop-shadow-[2px_2px_0_#000] truncate max-w-full">
+              {RADIO_STATIONS[currentStation].name}
+            </div>
+          </div>
+
+          {/* Player Controls */}
+          <div className="flex items-center gap-1 mt-[-2px] z-10 w-full">
+            <button 
+              onMouseEnter={playHoverSound}
+              onClick={() => {
+                const nextIdx = (currentStation - 1 + RADIO_STATIONS.length) % RADIO_STATIONS.length;
+                setCurrentStation(nextIdx);
+                const audio = document.getElementById('bg-music') as HTMLAudioElement;
+                if (audio) {
+                  audio.src = RADIO_STATIONS[nextIdx].src;
+                  if (isMusicPlaying) audio.play();
+                }
+              }}
+              className="bg-black/90 border-2 border-gta-black px-3 py-1 text-gray-400 hover:text-gta-sepia hover:bg-black transition-colors text-xs flex-1 text-center"
+            >
+              ◄
+            </button>
+            
+            <button 
+              onMouseEnter={playHoverSound}
+              onClick={() => {
+                const audio = document.getElementById('bg-music') as HTMLAudioElement;
+                if (audio) {
+                  if (audio.paused) {
+                    audio.play();
+                    document.dispatchEvent(new CustomEvent('musicStateChange', { detail: { playing: true } }));
+                  } else {
+                    audio.pause();
+                    document.dispatchEvent(new CustomEvent('musicStateChange', { detail: { playing: false } }));
+                  }
+                }
+              }}
+              className={`bg-black/90 border-2 border-gta-black px-6 py-1 font-bold transition-colors text-xs flex-[2] text-center tracking-widest ${
+                isMusicPlaying ? 'text-gta-sepia' : 'text-white hover:text-gta-sepia'
+              }`}
+            >
+              {isMusicPlaying ? '❚❚ PAUSE' : '► PLAY'}
+            </button>
+
+            <button 
+              onMouseEnter={playHoverSound}
+              onClick={() => {
+                const nextIdx = (currentStation + 1) % RADIO_STATIONS.length;
+                setCurrentStation(nextIdx);
+                const audio = document.getElementById('bg-music') as HTMLAudioElement;
+                if (audio) {
+                  audio.src = RADIO_STATIONS[nextIdx].src;
+                  if (isMusicPlaying) audio.play();
+                }
+              }}
+              className="bg-black/90 border-2 border-gta-black px-3 py-1 text-gray-400 hover:text-gta-sepia hover:bg-black transition-colors text-xs flex-1 text-center"
+            >
+              ►
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Top Right: Money, Weapon, Stars */}
@@ -115,60 +203,7 @@ export default function GameHUD() {
         </div>
       </div>
 
-      {/* Top Center: Radio Station Player */}
-      <div className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center gap-4 bg-black/60 border-2 border-gta-sepia/30 px-6 py-2 pointer-events-auto">
-        <button 
-          className="text-gta-sepia hover:text-white text-xl"
-          onClick={() => {
-            const nextIdx = (currentStation - 1 + RADIO_STATIONS.length) % RADIO_STATIONS.length;
-            setCurrentStation(nextIdx);
-            const audio = document.getElementById('bg-music') as HTMLAudioElement;
-            if (audio) {
-              audio.src = RADIO_STATIONS[nextIdx].src;
-              if (isMusicPlaying) audio.play();
-            }
-          }}
-        >
-          ◀
-        </button>
-        
-        <div 
-          className="flex flex-col items-center cursor-pointer min-w-[150px]"
-          onClick={() => {
-            const audio = document.getElementById('bg-music') as HTMLAudioElement;
-            if (audio) {
-              if (audio.paused) {
-                audio.play();
-                document.dispatchEvent(new CustomEvent('musicStateChange', { detail: { playing: true } }));
-              } else {
-                audio.pause();
-                document.dispatchEvent(new CustomEvent('musicStateChange', { detail: { playing: false } }));
-              }
-            }
-          }}
-        >
-          <span className="text-white text-xs tracking-widest">RADIO STATION</span>
-          <div className="flex items-center gap-2">
-            <span className="text-gta-sepia font-bold">{RADIO_STATIONS[currentStation].name}</span>
-            <span className="text-gta-sepia text-xs">{isMusicPlaying ? "||" : "▶"}</span>
-          </div>
-        </div>
 
-        <button 
-          className="text-gta-sepia hover:text-white text-xl"
-          onClick={() => {
-            const nextIdx = (currentStation + 1) % RADIO_STATIONS.length;
-            setCurrentStation(nextIdx);
-            const audio = document.getElementById('bg-music') as HTMLAudioElement;
-            if (audio) {
-              audio.src = RADIO_STATIONS[nextIdx].src;
-              if (isMusicPlaying) audio.play();
-            }
-          }}
-        >
-          ▶
-        </button>
-      </div>
 
       {/* Bottom Left: Mini Map (Interactive Navigation) */}
       <div 
@@ -211,6 +246,19 @@ export default function GameHUD() {
         <h3 className="gta-hud text-gta-sepia/70 text-lg drop-shadow-[2px_2px_0_#050505] text-center">
           SCROLL TO NAVIGATE LIBERTY CITY
         </h3>
+      </div>
+
+      {/* Global Comms Mute Toggle (Bottom Right) */}
+      <div className="absolute bottom-8 right-8 pointer-events-auto">
+        <button
+          onClick={toggleMute}
+          onMouseEnter={playHoverSound}
+          className={`border-2 border-gta-black px-4 py-2 font-gta-hud text-sm tracking-widest uppercase transition-colors drop-shadow-[2px_2px_0_#050505]
+            ${isMuted ? 'text-gta-red bg-black/80' : 'text-gta-sepia bg-black/60 hover:bg-black hover:text-white'}
+          `}
+        >
+          [ {isMuted ? 'COMMS MUTED' : 'MUTE COMMS'} ]
+        </button>
       </div>
 
       {/* The Sniper Crosshair Scroll Tracker */}

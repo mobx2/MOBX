@@ -12,13 +12,13 @@ const SLIDES = [
   },
   {
     id: 2,
-    title: "FRONT-END DEV",
+    title: "FRONT-END DEVELOPER",
     bg: "https://images.unsplash.com/photo-1514565131-fce0801e5785?q=80&w=2070", // Wide urban street view
     fg: "/fg2.png",
   },
   {
     id: 3,
-    title: "REACT EXPERT",
+    title: "REACT|NEXT",
     bg: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?q=80&w=2070", // Wide aerial city intersection
     fg: "/fg3.png",
   }
