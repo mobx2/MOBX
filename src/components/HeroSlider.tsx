@@ -14,13 +14,13 @@ const SLIDES = [
     id: 2,
     title: "FRONT-END DEV",
     bg: "https://images.unsplash.com/photo-1514565131-fce0801e5785?q=80&w=2070", // Wide urban street view
-    fg: "/fg2.jpeg",
+    fg: "/fg2.png",
   },
   {
     id: 3,
     title: "REACT EXPERT",
     bg: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?q=80&w=2070", // Wide aerial city intersection
-    fg: "/fg3.jpeg",
+    fg: "/fg3.png",
   }
 ];
 
@@ -142,23 +142,25 @@ export default function HeroSlider() {
 
             {/* Foreground Cutout */}
             {slide.fg && (
-              <div 
-                className="hero-fg absolute bottom-0 right-[5%] w-[60%] h-[100%] bg-contain bg-no-repeat bg-bottom z-10 will-change-transform drop-shadow-[20px_20px_0px_#050505] origin-bottom"
-                style={{ 
-                  backgroundImage: `url('${slide.fg}')`,
-                  filter: 'sepia(40%) contrast(120%) brightness(0.8)'
-                }}
-              >
-                {/* Crosshair (Only for first slide to avoid duplication clashing) */}
-                {idx === 0 && (
-                  <div className="hero-crosshair absolute top-[20%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-16 h-16 border-[3px] border-[#cc9933] rounded-full flex items-center justify-center opacity-80 z-20 will-change-transform mix-blend-screen">
-                    <div className="w-2 h-2 bg-[#cc9933] rounded-full animate-pulse" />
-                    <div className="absolute top-1/2 left-[-15px] w-5 h-[3px] bg-[#cc9933]" />
-                    <div className="absolute top-1/2 right-[-15px] w-5 h-[3px] bg-[#cc9933]" />
-                    <div className="absolute left-1/2 top-[-15px] w-[3px] h-5 bg-[#cc9933]" />
-                    <div className="absolute left-1/2 bottom-[-15px] w-[3px] h-5 bg-[#cc9933]" />
-                  </div>
-                )}
+              <div className="absolute inset-0 flex justify-center items-end z-10 pointer-events-none">
+                <div 
+                  className="hero-fg w-[90%] md:w-[60%] h-[100%] bg-contain bg-no-repeat bg-bottom will-change-transform drop-shadow-[20px_20px_0px_#050505] origin-bottom pointer-events-auto"
+                  style={{ 
+                    backgroundImage: `url('${slide.fg}')`,
+                    filter: 'sepia(40%) contrast(120%) brightness(0.8)'
+                  }}
+                >
+                  {/* Crosshair (Only for first slide to avoid duplication clashing) */}
+                  {idx === 0 && (
+                    <div className="hero-crosshair absolute top-[20%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-16 h-16 border-[3px] border-[#cc9933] rounded-full flex items-center justify-center opacity-80 z-20 will-change-transform mix-blend-screen">
+                      <div className="w-2 h-2 bg-[#cc9933] rounded-full animate-pulse" />
+                      <div className="absolute top-1/2 left-[-15px] w-5 h-[3px] bg-[#cc9933]" />
+                      <div className="absolute top-1/2 right-[-15px] w-5 h-[3px] bg-[#cc9933]" />
+                      <div className="absolute left-1/2 top-[-15px] w-[3px] h-5 bg-[#cc9933]" />
+                      <div className="absolute left-1/2 bottom-[-15px] w-[3px] h-5 bg-[#cc9933]" />
+                    </div>
+                  )}
+                </div>
               </div>
             )}
 

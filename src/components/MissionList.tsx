@@ -113,23 +113,16 @@ export default function MissionList() {
   const sectionsRef = useRef<(HTMLElement | null)[]>([]);
 
   useGSAP(() => {
-    // 0. Parallax Collage Images (Continuous movement through the pin)
-    // Create this BEFORE the pinned trigger so GSAP calculates the layout correctly
-    gsap.utils.toArray('.collage-img').forEach((el: any, i) => {
-      const direction = i % 2 === 0 ? 1 : -1;
-      gsap.fromTo(el, 
-        { y: direction * 400 },
-        {
-          y: direction * -400,
-          ease: "none",
-          scrollTrigger: {
-            trigger: ".archive-header",
-            start: "top bottom",
-            end: "+=3000",
-            scrub: 1,
-          }
-        }
-      );
+    // 0. Parallax Collage Images (Smooth whole-grid scroll instead of 285 individual elements)
+    gsap.to('.collage-grid', {
+      yPercent: -15,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".archive-header",
+        start: "top top",
+        end: "+=3000",
+        scrub: 1,
+      }
     });
 
     // 1. Aggressive Title Pinning & Slam
@@ -144,7 +137,7 @@ export default function MissionList() {
     });
 
     headerTl.fromTo(".archive-title-word",
-      { scale: 15, opacity: 0 },
+      { scale: 3, opacity: 0 },
       {
         scale: 1, opacity: 1,
         stagger: 0.2,
@@ -174,28 +167,29 @@ export default function MissionList() {
       const imgWrapper = section.querySelector(".bg-wrapper");
       const img = section.querySelector(".bg-image");
       const info = section.querySelector(".mission-info");
-      const tape = section.querySelector(".scroll-tape");
 
       // Aggressive Clip Path Wipe (No fading, pure wipe)
-      gsap.fromTo(imgWrapper,
-        { clipPath: "inset(100% 0% 0% 0%)" },
-        {
-          clipPath: "inset(0% 0% 0% 0%)",
-          ease: "power4.inOut",
-          scrollTrigger: {
-            trigger: section,
-            start: "top bottom",
-            end: "top 20%",
-            scrub: 1.5
+      if (imgWrapper) {
+        gsap.fromTo(imgWrapper,
+          { clipPath: "inset(100% 0% 0% 0%)" },
+          {
+            clipPath: "inset(0% 0% 0% 0%)",
+            ease: "power4.inOut",
+            scrollTrigger: {
+              trigger: section,
+              start: "top bottom",
+              end: "top 20%",
+              scrub: 1.5
+            }
           }
-        }
-      );
+        );
+      }
 
       // Deep Parallax Zoom with SCRUB (Reduced zoom)
       gsap.fromTo(img, 
-        { scale: 1.1, yPercent: 5 }, 
+        { scale: 1, yPercent: 3 }, 
         { 
-          scale: 1, yPercent: -5, 
+          scale: 1, yPercent: -3, 
           ease: "none",
           scrollTrigger: {
             trigger: section,
@@ -247,7 +241,7 @@ export default function MissionList() {
       
       {/* MASSIVE STICKY TICKER THAT STAYS WITH YOU (TONED DOWN) */}
       <div className="sticky top-[45vh] left-0 w-[300vw] h-0 z-0 pointer-events-none opacity-[0.03] overflow-visible">
-        <h1 className="massive-sticky-ticker gta-title text-[15vw] leading-none text-white whitespace-nowrap">
+        <h1 className="massive-sticky-ticker gta-title text-[15vw] leading-none text-white whitespace-nowrap will-change-transform">
           LCPD DATABASE // LCPD DATABASE // LCPD DATABASE // LCPD DATABASE // LCPD DATABASE // LCPD DATABASE //
         </h1>
       </div>
@@ -256,15 +250,15 @@ export default function MissionList() {
       <section className="archive-header level-section relative w-full h-screen bg-gta-black flex flex-col justify-center items-center overflow-hidden perspective-1000">
         
         {/* Background Collage of Screenshots */}
-        <div className="absolute -inset-[50vh] z-0 overflow-hidden grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-2 p-2 pointer-events-none opacity-25">
-          {/* Sepia Tint Overlay (Performance friendly) */}
-          <div className="absolute inset-0 bg-gta-sepia mix-blend-color z-10 pointer-events-none" />
+        <div className="collage-grid absolute -inset-[50vh] z-0 overflow-hidden grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-2 p-2 pointer-events-none opacity-25 will-change-transform">
+          {/* Sepia Tint Overlay */}
+          <div className="absolute inset-0 bg-gta-sepia/40 mix-blend-color z-10 pointer-events-none" />
           
-          {/* Duplicate massively to fill the expanded grid to prevent gaps during animation */}
-          {[...Array(15)].map((_, loopIdx) => (
+          {/* Render enough to fill the screen without exploding the DOM */}
+          {[...Array(6)].map((_, loopIdx) => (
             <Fragment key={`loop-${loopIdx}`}>
               {PROJECT_SCREENSHOTS.map((src, i) => (
-                <div key={`img-${loopIdx}-${i}`} className="collage-img relative aspect-video w-full rounded overflow-hidden border border-gta-sepia/20 will-change-transform">
+                <div key={`img-${loopIdx}-${i}`} className="relative aspect-video w-full rounded overflow-hidden border border-gta-sepia/20">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={`/projects/${src}`} alt="Project" className="object-cover w-full h-full" />
                 </div>
@@ -281,7 +275,7 @@ export default function MissionList() {
         
         {/* Header Police Tapes (Highly Visible) */}
         <div className="absolute top-[10%] -left-10 rotate-[-3deg] w-[200vw] h-14 bg-[#e6b800] z-10 flex items-center overflow-hidden pointer-events-none border-y-4 border-black drop-shadow-xl">
-          <div className="header-tape-left flex gap-4 whitespace-nowrap gta-title text-4xl mt-2 text-black w-full" style={{ WebkitTextStroke: '0px', textShadow: 'none' }}>
+          <div className="header-tape-left flex gap-4 whitespace-nowrap font-sans font-black tracking-[0.2em] text-3xl text-black w-full" style={{ WebkitTextStroke: '0px', textShadow: 'none' }}>
             {[...Array(30)].map((_, idx) => (
               <span key={idx}>POLICE LINE DO NOT CROSS // LCPD // </span>
             ))}
@@ -289,7 +283,7 @@ export default function MissionList() {
         </div>
         
         <div className="absolute bottom-[10%] -left-[100vw] rotate-[3deg] w-[200vw] h-14 bg-[#e6b800] z-10 flex items-center overflow-hidden pointer-events-none border-y-4 border-black drop-shadow-xl">
-          <div className="header-tape-right flex gap-4 whitespace-nowrap gta-title text-4xl mt-2 text-black w-full" style={{ WebkitTextStroke: '0px', textShadow: 'none' }}>
+          <div className="header-tape-right flex gap-4 whitespace-nowrap font-sans font-black tracking-[0.2em] text-3xl text-black w-full" style={{ WebkitTextStroke: '0px', textShadow: 'none' }}>
             {[...Array(30)].map((_, idx) => (
               <span key={idx}>LCPD // POLICE LINE DO NOT CROSS // </span>
             ))}
@@ -302,7 +296,7 @@ export default function MissionList() {
               <img 
                 src="/5d0g3g.png" 
                 alt="Mission Passed Respect +" 
-                className="w-[80vw] md:w-[600px] object-contain drop-shadow-[5px_5px_0px_#050505]"
+                className="w-[80vw] md:w-[600px] object-contain drop-shadow-xl"
               />
             </div>
             
@@ -321,26 +315,26 @@ export default function MissionList() {
           className="level-section relative w-full h-screen overflow-hidden border-b-4 border-gta-brown/50 bg-gta-black"
         >
           {/* Aggressive Image Reveal Wrapper */}
-          <div className="bg-wrapper absolute inset-0 w-full h-full overflow-hidden">
+          <div className="bg-wrapper absolute inset-0 w-full h-full overflow-hidden flex items-center justify-center">
             <div 
-              className="bg-image absolute inset-[-5%] w-[110%] h-[110%] bg-cover bg-center will-change-transform origin-center"
+              className="bg-image absolute inset-0 w-full h-full bg-contain bg-no-repeat bg-center will-change-transform origin-center"
               style={{ backgroundImage: `url('${mission.image}')` }}
             />
           </div>
           
           {/* Interactive Scroll Tape */}
-          <div className={`scroll-tape absolute top-1/4 ${i % 2 === 0 ? '-left-10 rotate-[-5deg]' : '-right-10 rotate-[5deg]'} w-[200vw] h-16 bg-[#D1C7AC] text-black z-[5] opacity-20 flex items-center overflow-hidden pointer-events-none mix-blend-overlay`}>
-            <div className="flex gap-4 whitespace-nowrap gta-title text-5xl" style={{ WebkitTextStroke: '0px', textShadow: 'none' }}>
-              {[...Array(10)].map((_, idx) => (
+          <div className={`absolute top-1/4 ${i % 2 === 0 ? '-left-10 rotate-[-5deg]' : '-right-10 rotate-[5deg]'} w-[200vw] h-16 bg-[#e6b800] text-black z-[5] opacity-20 flex items-center overflow-hidden pointer-events-none border-y-4 border-black`}>
+            <div className="flex gap-4 whitespace-nowrap font-sans font-black tracking-[0.2em] text-4xl" style={{ WebkitTextStroke: '0px', textShadow: 'none' }}>
+              {[...Array(5)].map((_, idx) => (
                 <span key={idx}>POLICE LINE DO NOT CROSS // LCPD // </span>
               ))}
             </div>
           </div>
           
-          {/* GTA Cinematic Filters */}
-          <div className="absolute inset-0 bg-[#4A3219] opacity-40 mix-blend-color pointer-events-none" />
-          <div className="absolute inset-0 bg-black opacity-60 pointer-events-none" />
-          <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] z-[4] animate-crt-scroll opacity-80" />
+          {/* GTA Cinematic Filters (Optimized) */}
+          <div className="absolute inset-0 bg-[#4A3219]/30 pointer-events-none" />
+          <div className="absolute inset-0 bg-black/50 pointer-events-none" />
+          <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] z-[4] animate-crt-scroll opacity-60" />
           <div className="absolute inset-0 gta-vignette pointer-events-none" />
 
           {/* Mission Information (HUD style overlay) */}
