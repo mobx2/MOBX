@@ -352,8 +352,8 @@ export default function MissionList() {
         scrollTrigger: {
           trigger: introRef.current,
           start: "top top",
-          end: "+=1500", // Shorter scroll distance
-          scrub: 1,
+          end: "+=500", // Much shorter scroll distance for fast mobile swipe
+          scrub: true, // Instant touch mapping, no delay
         }
       });
 
@@ -362,8 +362,8 @@ export default function MissionList() {
           trigger: introRef.current,
           pin: true,
           start: "top top",
-          end: "+=600", // Shorter pin
-          scrub: 1.5,
+          end: "+=300", // Fast scroll out
+          scrub: true, // Instant touch mapping
         }
       });
 
@@ -394,8 +394,8 @@ export default function MissionList() {
             trigger: wrapperRef.current,
             pin: true,
             start: "top top",
-            end: "+=1000", // Shorter terminal pin
-            scrub: 1,
+            end: "+=500", // Fast terminal pin
+            scrub: true,
           }
         });
 
