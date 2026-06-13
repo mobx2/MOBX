@@ -148,6 +148,7 @@ const MissionList = memo(function MissionList() {
   const [currentView, setCurrentView] = useState<'ROOT' | 'FILES' | 'TERMINAL' | 'HELP'>('ROOT');
   const [rootActiveIndex, setRootActiveIndex] = useState(0);
   const [helpActiveIndex, setHelpActiveIndex] = useState(0);
+  const [showCollage, setShowCollage] = useState(false);
 
   const [terminalHistory, setTerminalHistory] = useState<string[]>(['MOBX OS v9.2', 'Type "help" for a list of commands.']);
   const [terminalInput, setTerminalInput] = useState('');
@@ -361,6 +362,19 @@ const MissionList = memo(function MissionList() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isAuthenticated, currentView, rootActiveIndex, helpActiveIndex, activeIndex, visibleItems, expandedMissionIndex, fullScreenState, playHoverSound]);
 
+  // Lazy Load Collage
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setShowCollage(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: '1000px' });
+    
+    if (introRef.current) observer.observe(introRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   useGSAP(() => {
     let mm = gsap.matchMedia();
 
@@ -523,7 +537,7 @@ const MissionList = memo(function MissionList() {
       <section ref={introRef} className="archive-header relative w-full h-screen bg-gta-black flex flex-col justify-center items-center overflow-hidden perspective-1000 z-20">
         <div className="collage-grid absolute -inset-[50vh] z-0 overflow-hidden grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-2 p-2 pointer-events-none opacity-25 will-change-transform">
           <div className="absolute inset-0 bg-gta-sepia/40 md:mix-blend-color z-10 pointer-events-none" />
-          {[...Array(6)].map((_, loopIdx) => (
+          {showCollage && [...Array(6)].map((_, loopIdx) => (
             <Fragment key={`loop-${loopIdx}`}>
               {PROJECT_SCREENSHOTS.map((src, i) => (
                 <div key={`img-${loopIdx}-${i}`} className="relative aspect-video w-full rounded overflow-hidden border border-gta-sepia/20">
