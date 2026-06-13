@@ -165,6 +165,14 @@ export default function MissionList() {
   const loginInputRef = useRef<HTMLInputElement>(null);
   const terminalInputRef = useRef<HTMLInputElement>(null);
   const terminalEndRef = useRef<HTMLDivElement>(null);
+  const activeItemRef = useRef<HTMLButtonElement>(null);
+
+  // Auto-scroll active item in lists
+  useEffect(() => {
+    if (activeItemRef.current) {
+      activeItemRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }, [activeIndex, rootActiveIndex, helpActiveIndex]);
 
   // Auto-scroll terminal to bottom
   useEffect(() => {
@@ -687,6 +695,7 @@ export default function MissionList() {
                       return (
                         <button 
                           key={item}
+                          ref={isActive ? activeItemRef : null}
                           onClick={() => {
                             setRootActiveIndex(idx);
                             if (idx === 0) setCurrentView('FILES');
@@ -710,6 +719,7 @@ export default function MissionList() {
                       return (
                         <button 
                           key={item.name}
+                          ref={isActive ? activeItemRef : null}
                           onClick={() => {
                             setHelpActiveIndex(idx);
                             window.open(item.url, '_blank');
@@ -867,6 +877,7 @@ export default function MissionList() {
                     return (
                       <button 
                         key={`mission-${item.index}`}
+                        ref={isActive ? activeItemRef : null}
                         onClick={() => { setActiveIndex(idx); setExpandedMissionIndex(isExpanded ? null : item.index); playHoverSound(); }}
                         onMouseEnter={() => { setActiveIndex(idx); playHoverSound(); }}
                         className={`text-left flex items-center group relative w-max py-2 my-1 ${isExpanded ? 'border-b border-gray-800 w-full mb-2' : ''}`}
@@ -883,6 +894,7 @@ export default function MissionList() {
                     return (
                       <button 
                         key={`file-${item.missionIndex}-${item.fileIndex}`}
+                        ref={isActive ? activeItemRef : null}
                         onClick={() => { 
                           setActiveIndex(idx); 
                           playHoverSound(); 
