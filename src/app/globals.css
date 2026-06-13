@@ -200,3 +200,8 @@ body {
 .animate-marquee {
   animation: marquee-scroll 20s linear infinite;
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

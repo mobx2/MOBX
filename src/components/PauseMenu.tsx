@@ -9,6 +9,8 @@ export default function PauseMenu() {
   const [activeTab, setActiveTab] = useState("MAP");
   const [musicPlaying, setMusicPlaying] = useState(false);
   const [volume, setVolume] = useState(1);
+  const [characterIndex, setCharacterIndex] = useState(0);
+  const CHARACTERS = ["/ibraheem.png", "/loader3.png", "/fg3.png", "/fg2.png", "/loading1.png"];
   const menuRef = useRef<HTMLDivElement>(null);
   const svgMapRef = useRef<SVGSVGElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -46,6 +48,17 @@ export default function PauseMenu() {
       window.removeEventListener("togglePauseMenu", handleToggleEvent);
     };
   }, []);
+
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isOpen && activeTab === "STATS") {
+      interval = setInterval(() => {
+        setCharacterIndex((prev) => (prev + 1) % CHARACTERS.length);
+      }, 4000);
+    }
+    return () => clearInterval(interval);
+  }, [isOpen, activeTab]);
 
   const isInitialMount = useRef(true);
 
@@ -148,7 +161,7 @@ export default function PauseMenu() {
           PAUSE MENU
         </div>
         <div className="flex flex-1 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-          {["MAP", "BRIEF", "STATS", "AUDIO", "DISPLAY", "GAME"].map((tab) => (
+          {["MAP", "BRIEF", "STATS", "AUDIO"].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -243,7 +256,7 @@ export default function PauseMenu() {
             {/* Player Character */}
             <div className="w-full md:w-1/3 h-[40vh] md:h-full flex items-end justify-center border-b-2 md:border-b-0 md:border-r-2 border-gta-sepia/20 relative overflow-hidden shrink-0">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(204,153,51,0.1),transparent)]" />
-              <img src="/ibraheem.png" alt="Player" className="w-[180%] md:w-[180%] scale-[1.2] md:scale-[1.6] origin-bottom translate-y-2 md:translate-y-6 object-bottom object-contain drop-shadow-[5px_5px_0_#000]" style={{ filter: 'sepia(30%) contrast(120%)' }} />
+              <img key={CHARACTERS[characterIndex]} src={CHARACTERS[characterIndex]} alt="Player" className="w-[180%] md:w-[180%] scale-[1.2] md:scale-[1.6] origin-bottom translate-y-2 md:translate-y-6 object-bottom object-contain drop-shadow-[5px_5px_0_#000] animate-[fadeIn_0.5s_ease-out]" style={{ filter: 'sepia(30%) contrast(120%)' }} />
             </div>
             
             {/* Player Stats */}
@@ -426,12 +439,7 @@ export default function PauseMenu() {
           </div>
         )}
 
-        {/* Placeholder for remaining tabs */}
-        {["DISPLAY", "GAME", "PROJECTS"].includes(activeTab) && (
-          <div className="w-full h-full flex items-center justify-center text-4xl text-gray-600 tracking-widest">
-            {activeTab} LOG DATA UNAVAILABLE
-          </div>
-        )}
+
       </div>
       
       {/* Footer controls */}
