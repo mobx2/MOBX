@@ -764,15 +764,39 @@ export default function MissionList() {
                         playHoverSound();
                         const cmd = terminalInput.trim().toLowerCase();
                         const newHistory = [...terminalHistory, `C:\\MOBX> ${terminalInput}`];
-                        if (cmd === 'help') newHistory.push('Commands: help, clear, ls, whoami, date, ping, exit');
+                        if (cmd === 'help') newHistory.push('Commands: help, clear, ls, cd, whoami, date, ping, pwd, echo, sudo, exit');
                         else if (cmd === 'clear') { setTerminalHistory([]); setTerminalInput(''); return; }
-                        else if (cmd === 'ls') newHistory.push('DIR: /projects\nDIR: /suspects\nDIR: /evidence');
+                        else if (cmd === 'ls' || cmd === 'dir') newHistory.push('DIR: /projects\nDIR: /contacts\nDIR: /suspects\nDIR: /evidence');
+                        else if (cmd.startsWith('cd ')) {
+                          const dir = cmd.substring(3).trim();
+                          if (dir === 'projects' || dir === '/projects') {
+                            setCurrentView('FILES');
+                            playHoverSound();
+                            return;
+                          } else if (dir === 'contacts' || dir === '/contacts') {
+                            setCurrentView('HELP');
+                            playHoverSound();
+                            return;
+                          } else if (dir === 'suspects' || dir === '/suspects') {
+                            newHistory.push('ACCESS DENIED: CLEARANCE LEVEL 5 REQUIRED.');
+                          } else if (dir === 'evidence' || dir === '/evidence') {
+                            newHistory.push('ACCESS DENIED: EVIDENCE LOG LOCKED.');
+                          } else if (dir === '..' || dir === '/') {
+                            newHistory.push('ALREADY AT ROOT DIRECTORY.');
+                          } else {
+                            newHistory.push(`The system cannot find the path specified: ${dir}`);
+                          }
+                        }
                         else if (cmd === 'whoami') {
                           newHistory.push('ADMIN: Detective Mobx');
                           newHistory.push('SECURE CONTACT CHANNELS:');
                           SOCIAL_LINKS.forEach(link => newHistory.push(`[${link.name.toUpperCase()}] ${link.url}`));
                         }
                         else if (cmd === 'date') newHistory.push(new Date().toString());
+                        else if (cmd === 'pwd') newHistory.push('C:\\MOBX');
+                        else if (cmd.startsWith('echo ')) newHistory.push(cmd.substring(5));
+                        else if (cmd.startsWith('sudo ')) newHistory.push('Detective Mobx is not in the sudoers file. This incident will be reported.');
+                        else if (cmd === 'sudo') newHistory.push('usage: sudo command');
                         else if (cmd.startsWith('ping')) newHistory.push('Pinging network...\nReply from 192.168.1.1: bytes=32 time=1ms TTL=64\nReply from 192.168.1.1: bytes=32 time=1ms TTL=64');
                         else if (cmd === 'exit') { setCurrentView('ROOT'); playHoverSound(); }
                         else if (cmd !== '') newHistory.push(`'${cmd}' is not recognized as an internal or external command.`);
