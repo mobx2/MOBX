@@ -59,15 +59,17 @@ export default function FinalCutscene() {
     tl.to(formRef.current, {
       scale: 0.8,
       opacity: 0,
-      duration: 1.5,
+      duration: 1,
       ease: "power2.out",
       force3D: true,
       onStart: () => gsap.set(formRef.current, { willChange: "transform, opacity" }),
       onComplete: () => {
         gsap.set(formRef.current, { willChange: "auto", display: "none" });
-        setIsSubmitted(true);
       }
     }, 0);
+    
+    // Set submitted state immediately so the image can render and animate
+    setIsSubmitted(true);
     
     // Pulse the wanted star violently
     tl.to(starRef.current, {
@@ -85,16 +87,31 @@ export default function FinalCutscene() {
   // Animate the Mission Passed Image when it renders
   useGSAP(() => {
     if (isSubmitted && missionPassedRef.current) {
-      gsap.fromTo(missionPassedRef.current, 
-        { scale: 5, opacity: 0 },
+      const tl = gsap.timeline();
+      
+      // Heavy cinematic impact (GTA IV style)
+      tl.fromTo(missionPassedRef.current, 
+        { scale: 2.5, opacity: 0, filter: 'brightness(3) blur(10px)', y: -50 },
         { 
           scale: 1, 
           opacity: 1, 
-          duration: 1.2, 
-          ease: "elastic.out(1, 0.3)", 
-          force3D: true 
+          filter: 'brightness(1) blur(0px)',
+          y: 0,
+          duration: 0.6, 
+          ease: "expo.out", 
+          force3D: true,
+          delay: 0.2 // Wait a tiny bit for the form to fade
         }
       );
+
+      // Subtle continuous heartbeat pulse after the hit
+      tl.to(missionPassedRef.current, {
+        scale: 1.05,
+        duration: 3,
+        yoyo: true,
+        repeat: -1,
+        ease: "sine.inOut"
+      });
     }
   }, { dependencies: [isSubmitted] });
 
