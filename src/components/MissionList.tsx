@@ -651,7 +651,7 @@ export default function MissionList() {
           </div>
 
           {/* Main Content Area (Two Columns) */}
-          <div className="flex flex-col md:flex-row flex-1 w-full px-4 md:px-16 pt-4 md:pt-16 pb-32 md:pb-24 z-20 relative overflow-y-auto overflow-x-hidden md:overflow-hidden custom-scrollbar">
+          <div className="flex flex-col md:flex-row flex-1 w-full px-4 md:px-16 pt-4 md:pt-16 pb-32 md:pb-24 z-20 relative overflow-y-auto overflow-x-hidden md:overflow-hidden custom-scrollbar min-h-0">
             
             {/* ---------------- ROOT VIEW ---------------- */}
             {(currentView === 'ROOT' || currentView === 'HELP') && (
