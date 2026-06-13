@@ -7,6 +7,7 @@ export default function FinalCutscene() {
   const containerRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const starRef = useRef<HTMLSpanElement>(null);
+  const missionPassedRef = useRef<HTMLImageElement>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -54,15 +55,18 @@ export default function FinalCutscene() {
       onComplete: () => gsap.set(containerRef.current, { willChange: "auto" })
     });
 
-    // Dramatic slow motion pull-back
+    // The form fades out and scales down
     tl.to(formRef.current, {
       scale: 0.8,
       opacity: 0,
-      duration: 4,
+      duration: 1.5,
       ease: "power2.out",
       force3D: true,
       onStart: () => gsap.set(formRef.current, { willChange: "transform, opacity" }),
-      onComplete: () => gsap.set(formRef.current, { willChange: "auto" })
+      onComplete: () => {
+        gsap.set(formRef.current, { willChange: "auto", display: "none" });
+        setIsSubmitted(true);
+      }
     }, 0);
     
     // Pulse the wanted star violently
@@ -78,6 +82,22 @@ export default function FinalCutscene() {
     }, 0);
   });
 
+  // Animate the Mission Passed Image when it renders
+  useGSAP(() => {
+    if (isSubmitted && missionPassedRef.current) {
+      gsap.fromTo(missionPassedRef.current, 
+        { scale: 5, opacity: 0 },
+        { 
+          scale: 1, 
+          opacity: 1, 
+          duration: 1.2, 
+          ease: "elastic.out(1, 0.3)", 
+          force3D: true 
+        }
+      );
+    }
+  }, { dependencies: [isSubmitted] });
+
   return (
     <section ref={containerRef} className="level-section relative w-full h-screen bg-[#020202] flex items-center justify-center overflow-hidden transition-all duration-[4000ms] contain-strict">
       
@@ -86,8 +106,8 @@ export default function FinalCutscene() {
 
       <div className="relative z-20 w-full max-w-2xl px-8 flex flex-col items-center">
         
-        {!isSubmitted ? (
-          <form ref={formRef} onSubmit={handleSubmit} className="w-full flex flex-col gap-8">
+        <div className="w-full flex flex-col gap-8 relative z-20" ref={formRef}>
+          <form onSubmit={handleSubmit} className="w-full flex flex-col gap-8">
             <div className="text-center mb-8">
               <h2 className="gta-title text-7xl text-gta-sepia tracking-tighter">CONTACT_</h2>
               <p className="gta-hud text-gta-brown mt-2">SECURE CONNECTION ESTABLISHED</p>
@@ -121,10 +141,16 @@ export default function FinalCutscene() {
               </span>
             </button>
           </form>
-        ) : (
-          <div className="text-center will-change-transform">
-            <h2 className="gta-title text-[8vw] text-gta-sepia text-shadow-md">MISSION PASSED</h2>
-            <p className="gta-hud text-gta-brown text-xl mt-4">RESPECT +</p>
+        </div>
+
+        {isSubmitted && (
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-50">
+            <img 
+              ref={missionPassedRef}
+              src="/5d0g3g.png" 
+              alt="Mission Passed Respect +" 
+              className="w-[90vw] md:w-[800px] object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)] will-change-transform"
+            />
           </div>
         )}
       </div>
