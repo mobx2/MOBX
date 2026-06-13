@@ -95,6 +95,46 @@ export default function PauseMenu() {
     }
   }, { dependencies: [activeTab, isOpen] });
 
+  // Map Player Tracking
+  useGSAP(() => {
+    import("@/lib/gsap").then(({ ScrollTrigger }) => {
+      ScrollTrigger.create({
+        trigger: document.body,
+        start: "top top",
+        end: "bottom bottom",
+        onUpdate: (self) => {
+          const progress = self.progress;
+          const waypoints = [
+            { x: 300, y: 200 },
+            { x: 700, y: 400 },
+            { x: 400, y: 700 },
+            { x: 750, y: 850 }
+          ];
+
+          let targetX, targetY;
+          if (progress < 0.33) {
+            const p = progress / 0.33;
+            targetX = waypoints[0].x + (waypoints[1].x - waypoints[0].x) * p;
+            targetY = waypoints[0].y + (waypoints[1].y - waypoints[0].y) * p;
+          } else if (progress < 0.66) {
+            const p = (progress - 0.33) / 0.33;
+            targetX = waypoints[1].x + (waypoints[2].x - waypoints[1].x) * p;
+            targetY = waypoints[1].y + (waypoints[2].y - waypoints[1].y) * p;
+          } else {
+            const p = (progress - 0.66) / 0.34;
+            targetX = waypoints[2].x + (waypoints[3].x - waypoints[2].x) * p;
+            targetY = waypoints[2].y + (waypoints[3].y - waypoints[2].y) * p;
+          }
+
+          const icon = document.getElementById('pause-player-icon');
+          if (icon) {
+            icon.style.transform = `translate(${targetX}px, ${targetY}px)`;
+          }
+        }
+      });
+    });
+  }, []);
+
   const handleWaypointClick = (x: number, y: number, section: string) => {
     if (!svgMapRef.current) return;
     
@@ -114,6 +154,7 @@ export default function PauseMenu() {
         if (section === "Profile") targetId = "hero";
         if (section === "Projects") targetId = "missions";
         if (section === "Skills") targetId = "stats";
+        if (section === "Ending") targetId = "ending";
         
         const element = document.getElementById(targetId);
         if (element) {
@@ -188,43 +229,63 @@ export default function PauseMenu() {
               {/* Waypoint 1: Safehouse (Profile) */}
               <g 
                 className="cursor-pointer group"
-                onClick={() => handleWaypointClick(250, 300, "Profile")}
+                onClick={() => handleWaypointClick(300, 200, "Profile")}
                 onMouseEnter={playHoverSound}
               >
                 {/* Invisible Hitbox for easier clicking */}
-                <circle cx="250" cy="300" r="60" fill="transparent" />
+                <circle cx="300" cy="200" r="60" fill="transparent" />
                 
-                <circle cx="250" cy="300" r="20" fill="#cc9933" className="group-hover:scale-125 transition-transform origin-center" />
-                <path d="M 240,305 L 250,290 L 260,305 Z" fill="black" />
-                <text x="250" y="340" fill="white" fontSize="16" textAnchor="middle" className="opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Safehouse (Profile)</text>
+                <circle cx="300" cy="200" r="20" fill="#cc9933" className="group-hover:scale-125 transition-transform origin-center" />
+                <path d="M 290,205 L 300,190 L 310,205 Z" fill="black" />
+                <text x="300" y="240" fill="white" fontSize="16" textAnchor="middle" className="opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Safehouse (Hero)</text>
               </g>
 
               {/* Waypoint 2: Mission (Projects) */}
               <g 
                 className="cursor-pointer group"
-                onClick={() => handleWaypointClick(700, 250, "Projects")}
+                onClick={() => handleWaypointClick(700, 400, "Projects")}
                 onMouseEnter={playHoverSound}
               >
                 {/* Invisible Hitbox for easier clicking */}
-                <circle cx="700" cy="250" r="60" fill="transparent" />
+                <circle cx="700" cy="400" r="60" fill="transparent" />
 
-                <circle cx="700" cy="250" r="20" fill="#ff3333" className="group-hover:scale-125 transition-transform origin-center" />
-                <text x="700" y="256" fill="white" fontSize="18" fontWeight="bold" textAnchor="middle" className="pointer-events-none">M</text>
-                <text x="700" y="290" fill="white" fontSize="16" textAnchor="middle" className="opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Missions (Projects)</text>
+                <circle cx="700" cy="400" r="20" fill="#ff3333" className="group-hover:scale-125 transition-transform origin-center" />
+                <text x="700" y="406" fill="white" fontSize="18" fontWeight="bold" textAnchor="middle" className="pointer-events-none">M</text>
+                <text x="700" y="440" fill="white" fontSize="16" textAnchor="middle" className="opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Missions (Projects)</text>
               </g>
 
               {/* Waypoint 3: Weapon Shop (Skills) */}
               <g 
                 className="cursor-pointer group"
-                onClick={() => handleWaypointClick(500, 700, "Skills")}
+                onClick={() => handleWaypointClick(400, 700, "Skills")}
                 onMouseEnter={playHoverSound}
               >
                 {/* Invisible Hitbox for easier clicking */}
-                <circle cx="500" cy="700" r="60" fill="transparent" />
+                <circle cx="400" cy="700" r="60" fill="transparent" />
 
-                <circle cx="500" cy="700" r="20" fill="#3399ff" className="group-hover:scale-125 transition-transform origin-center" />
-                <text x="500" y="706" fill="white" fontSize="18" fontWeight="bold" textAnchor="middle" className="pointer-events-none">W</text>
-                <text x="500" y="740" fill="white" fontSize="16" textAnchor="middle" className="opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Ammu-Nation (Skills)</text>
+                <circle cx="400" cy="700" r="20" fill="#3399ff" className="group-hover:scale-125 transition-transform origin-center" />
+                <text x="400" y="706" fill="white" fontSize="18" fontWeight="bold" textAnchor="middle" className="pointer-events-none">S</text>
+                <text x="400" y="740" fill="white" fontSize="16" textAnchor="middle" className="opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Ammu-Nation (Stats)</text>
+              </g>
+
+              {/* Waypoint 4: Airport (Ending) */}
+              <g 
+                className="cursor-pointer group"
+                onClick={() => handleWaypointClick(750, 850, "Ending")}
+                onMouseEnter={playHoverSound}
+              >
+                {/* Invisible Hitbox for easier clicking */}
+                <circle cx="750" cy="850" r="60" fill="transparent" />
+
+                <circle cx="750" cy="850" r="20" fill="#cc33ff" className="group-hover:scale-125 transition-transform origin-center" />
+                <text x="750" y="856" fill="white" fontSize="18" fontWeight="bold" textAnchor="middle" className="pointer-events-none">E</text>
+                <text x="750" y="890" fill="white" fontSize="16" textAnchor="middle" className="opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Airport (Ending)</text>
+              </g>
+
+              {/* Player Icon tracking scroll */}
+              <g id="pause-player-icon" className="transition-transform duration-75 ease-out" style={{ transform: 'translate(300px, 200px)' }}>
+                <circle cx="0" cy="0" r="12" fill="white" stroke="#000" strokeWidth="2" className="shadow-[0_0_10px_white]" />
+                <circle cx="0" cy="0" r="4" fill="black" />
               </g>
             </svg>
             
@@ -233,6 +294,7 @@ export default function PauseMenu() {
               <div className="flex items-center gap-3"><div className="w-3 h-3 md:w-4 md:h-4 bg-[#cc9933] rounded-full shrink-0" /> <span>Safehouse</span></div>
               <div className="flex items-center gap-3"><div className="w-3 h-3 md:w-4 md:h-4 bg-[#ff3333] rounded-full shrink-0" /> <span>Main Mission</span></div>
               <div className="flex items-center gap-3"><div className="w-3 h-3 md:w-4 md:h-4 bg-[#3399ff] rounded-full shrink-0" /> <span>Weapon Shop</span></div>
+              <div className="flex items-center gap-3"><div className="w-3 h-3 md:w-4 md:h-4 bg-[#cc33ff] rounded-full shrink-0" /> <span>Airport</span></div>
             </div>
           </div>
         )}
