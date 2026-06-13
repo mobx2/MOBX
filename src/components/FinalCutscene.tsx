@@ -22,20 +22,19 @@ export default function FinalCutscene() {
     setIsSubmitting(true);
 
     try {
-      // Free email API via FormSubmit.co (AJAX mode)
-      await fetch("https://formsubmit.co/ajax/ibraheemshaheeh54@gmail.com", {
+      // Reliable email API via Web3Forms
+      await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
           "Accept": "application/json"
         },
         body: JSON.stringify({ 
-          _subject: `[MOBX PORTFOLIO] New Contract from ${alias}`,
-          Alias: alias, 
-          Email: email,
-          Contract_Details: details,
-          _template: "box", // nice email template
-          _replyto: email // Enables you to hit 'Reply' directly to the sender
+          access_key: "YOUR_WEB3FORMS_ACCESS_KEY", // Get this from web3forms.com
+          subject: `[MOBX PORTFOLIO] New Contract from ${alias}`,
+          from_name: alias,
+          email: email, 
+          message: details
         })
       });
     } catch (error) {
