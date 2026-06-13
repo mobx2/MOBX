@@ -270,8 +270,8 @@ export default function MissionList() {
         } else if (e.key === 'Enter') {
           playHoverSound();
           if (rootActiveIndex === 0) setCurrentView('FILES');
-          else if (rootActiveIndex === 1) setCurrentView('TERMINAL');
-          else if (rootActiveIndex === 2) setCurrentView('HELP');
+          else if (rootActiveIndex === 1) setCurrentView('HELP');
+          else if (rootActiveIndex === 2) setCurrentView('TERMINAL');
         }
         return;
       }
@@ -296,7 +296,13 @@ export default function MissionList() {
       }
 
       if (currentView === 'TERMINAL') {
-        // Exit is handled by the input's onKeyDown (Backspace when empty)
+        if (e.key === 'Escape') {
+          setCurrentView('ROOT');
+          playHoverSound();
+        } else if (e.key === 'Backspace' && document.activeElement !== terminalInputRef.current) {
+          setCurrentView('ROOT');
+          playHoverSound();
+        }
         return;
       }
 
@@ -738,8 +744,8 @@ export default function MissionList() {
                   <span className="animate-pulse hidden md:inline">[BACKSPACE TO EXIT]</span>
                 </div>
                 
-                <div className="flex-1 overflow-y-auto mb-4 custom-scrollbar pr-4 flex flex-col justify-end">
-                  <div className="flex flex-col gap-2">
+                <div className="flex-1 overflow-y-auto mb-4 custom-scrollbar pr-4 flex flex-col">
+                  <div className="mt-auto flex flex-col gap-2">
                     {terminalHistory.map((line, i) => (
                       <div key={i} className="whitespace-pre-wrap">{line}</div>
                     ))}
@@ -761,7 +767,11 @@ export default function MissionList() {
                         if (cmd === 'help') newHistory.push('Commands: help, clear, ls, whoami, date, ping, exit');
                         else if (cmd === 'clear') { setTerminalHistory([]); setTerminalInput(''); return; }
                         else if (cmd === 'ls') newHistory.push('DIR: /projects\nDIR: /suspects\nDIR: /evidence');
-                        else if (cmd === 'whoami') newHistory.push('ADMIN: Detective Mobx');
+                        else if (cmd === 'whoami') {
+                          newHistory.push('ADMIN: Detective Mobx');
+                          newHistory.push('SECURE CONTACT CHANNELS:');
+                          SOCIAL_LINKS.forEach(link => newHistory.push(`[${link.name.toUpperCase()}] ${link.url}`));
+                        }
                         else if (cmd === 'date') newHistory.push(new Date().toString());
                         else if (cmd.startsWith('ping')) newHistory.push('Pinging network...\nReply from 192.168.1.1: bytes=32 time=1ms TTL=64\nReply from 192.168.1.1: bytes=32 time=1ms TTL=64');
                         else if (cmd === 'exit') { setCurrentView('ROOT'); playHoverSound(); }
