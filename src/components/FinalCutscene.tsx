@@ -12,6 +12,7 @@ export default function FinalCutscene() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const [alias, setAlias] = useState("");
+  const [email, setEmail] = useState("");
   const [details, setDetails] = useState("");
 
   const { contextSafe } = useGSAP();
@@ -31,8 +32,10 @@ export default function FinalCutscene() {
         body: JSON.stringify({ 
           _subject: `[MOBX PORTFOLIO] New Contract from ${alias}`,
           Alias: alias, 
+          Email: email,
           Contract_Details: details,
-          _template: "box" // nice email template
+          _template: "box", // nice email template
+          _replyto: email // Enables you to hit 'Reply' directly to the sender
         })
       });
     } catch (error) {
@@ -135,6 +138,14 @@ export default function FinalCutscene() {
               placeholder="YOUR ALIAS" 
               value={alias}
               onChange={(e) => setAlias(e.target.value)}
+              className="w-full bg-transparent border-b-2 border-gta-brown/50 py-4 gta-hud text-gta-sepia placeholder:text-gta-brown focus:outline-none focus:border-gta-sepia transition-colors"
+              required
+            />
+            <input 
+              type="email" 
+              placeholder="CONTACT EMAIL" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full bg-transparent border-b-2 border-gta-brown/50 py-4 gta-hud text-gta-sepia placeholder:text-gta-brown focus:outline-none focus:border-gta-sepia transition-colors"
               required
             />
