@@ -232,8 +232,8 @@ const MissionList = memo(function MissionList() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Block Numpad keys from navigating or scrolling the page
-      if (e.code.startsWith('Numpad')) {
-        if (e.key.startsWith('Arrow') || ['Home', 'End', 'PageUp', 'PageDown'].includes(e.key)) {
+      if (e.code && e.code.startsWith('Numpad')) {
+        if (e.key && (e.key.startsWith('Arrow') || ['Home', 'End', 'PageUp', 'PageDown'].includes(e.key))) {
           e.preventDefault();
         }
         return;
