@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useImperativeHandle, useRef, useEffect, useState } from "react";
+import { forwardRef, useImperativeHandle, useRef, useEffect, useState, memo } from "react";
 
 export interface AnimatedVideoPlayerProps {
   webmSrc: string;
@@ -14,18 +14,22 @@ export interface AnimatedVideoPlayerRef {
   pause: () => void;
 }
 
-const AnimatedVideoPlayer = forwardRef<AnimatedVideoPlayerRef, AnimatedVideoPlayerProps>(
+const AnimatedVideoPlayer = memo(forwardRef<AnimatedVideoPlayerRef, AnimatedVideoPlayerProps>(
   ({ webmSrc, mp4Src, poster, className = "" }, ref) => {
+    const containerRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
     const [inView, setInView] = useState(false);
 
     useEffect(() => {
-      const el = videoRef.current;
+      const el = containerRef.current;
       if (!el) return;
 
       const observer = new IntersectionObserver(
         ([entry]) => {
-          setInView(entry.isIntersecting);
+          // Use requestAnimationFrame to debounce state changes
+          requestAnimationFrame(() => {
+            setInView(entry.isIntersecting);
+          });
         },
         { rootMargin: "300px" } // Load before coming into view
       );
@@ -34,18 +38,9 @@ const AnimatedVideoPlayer = forwardRef<AnimatedVideoPlayerRef, AnimatedVideoPlay
       return () => observer.disconnect();
     }, []);
 
-    useEffect(() => {
-      // Force garbage collection when completely out of view
-      if (!inView && videoRef.current) {
-        videoRef.current.src = "";
-        videoRef.current.load();
-      }
-    }, [inView]);
-
     useImperativeHandle(ref, () => ({
       play: () => {
         if (videoRef.current) {
-          // Play returns a promise, we catch it to prevent uncaught exceptions if interrupted
           videoRef.current.play().catch(() => {
             console.log("Video playback was interrupted or not allowed.");
           });
@@ -59,9 +54,14 @@ const AnimatedVideoPlayer = forwardRef<AnimatedVideoPlayerRef, AnimatedVideoPlay
     }));
 
     return (
-      <div className={`relative border-4 border-black overflow-hidden bg-black contain-strict ${className}`}>
-        <video
-          ref={videoRef}
+      <div 
+        ref={containerRef}
+        className={`relative border-4 border-black overflow-hidden bg-black contain-strict ${className}`}
+        style={{ contentVisibility: 'auto', containIntrinsicSize: '100% 100%' }}
+      >
+        {inView ? (
+          <video
+            ref={videoRef}
           loop
           muted
           playsInline
@@ -70,20 +70,21 @@ const AnimatedVideoPlayer = forwardRef<AnimatedVideoPlayerRef, AnimatedVideoPlay
           poster={poster}
           className="w-full h-full object-cover will-change-transform"
         >
-          {inView && (
-            <>
-              <source src={webmSrc} type="video/webm" />
-              <source src={mp4Src} type="video/mp4" />
-            </>
-          )}
-          Your browser does not support the video tag.
-        </video>
+            <source src={webmSrc} type="video/webm" />
+            <source src={mp4Src} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        ) : (
+          <div className="w-full h-full bg-black/50" />
+        )}
         {/* Subtle CSS noise/grain overlay for gritty GTA IV aesthetic */}
         <div className="absolute inset-0 gta-noise opacity-30 mix-blend-overlay pointer-events-none" />
       </div>
     );
   }
-);
+), (prevProps, nextProps) => {
+  return prevProps.webmSrc === nextProps.webmSrc && prevProps.mp4Src === nextProps.mp4Src;
+});
 
 AnimatedVideoPlayer.displayName = "AnimatedVideoPlayer";
 

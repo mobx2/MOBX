@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, Fragment, useEffect, useMemo } from "react";
+import { useState, useRef, Fragment, useEffect, useMemo, memo } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { useHoverSound } from "@/hooks/useHoverSound";const MISSIONS = [
   {
@@ -139,7 +139,7 @@ type VisibleItem =
   | { type: 'MISSION', mission: any, index: number }
   | { type: 'FILE', file: any, missionIndex: number, fileIndex: number };
 
-export default function MissionList() {
+const MissionList = memo(function MissionList() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [loginStep, setLoginStep] = useState<'LOGIN' | 'AUTHENTICATING' | 'GRANTED' | 'DENIED'>('LOGIN');
   const [password, setPassword] = useState('');
@@ -570,8 +570,8 @@ export default function MissionList() {
         </div>
       </section>
 
+    <div style={{ contentVisibility: 'auto', containIntrinsicSize: '100% 1000px' }}>
     <section ref={wrapperRef} className="relative w-full h-screen bg-[#020202] overflow-hidden font-gta-hud z-[10000] selection:bg-cyan-900 selection:text-cyan-100">
-       
        {/* THE ENTIRE MOBX TERMINAL THAT SCALES UP TO FULL SCREEN */}
        <div ref={terminalRef} className="absolute inset-0 w-full h-full bg-[#05051a] flex flex-col will-change-transform origin-center z-[10000] shadow-[inset_0_0_150px_rgba(0,0,0,1)] pointer-events-auto overflow-hidden">
           
@@ -1100,5 +1100,8 @@ export default function MissionList() {
 
     </section>
     </div>
+    </div>
   );
-}
+});
+
+export default MissionList;

@@ -7,7 +7,15 @@ import { useGSAP } from "@gsap/react";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, Flip, useGSAP);
-  ScrollTrigger.config({ limitCallbacks: true });
+  
+  // Aggressive GSAP Timeline Freezing & Throttling
+  ScrollTrigger.config({ 
+    limitCallbacks: true, 
+    ignoreMobileResize: true 
+  });
+  
+  // Drop frames gracefully to prevent CPU melting
+  gsap.ticker.lagSmoothing(1000, 16);
 }
 
 export { gsap, ScrollTrigger, Flip, useGSAP };

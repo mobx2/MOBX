@@ -61,16 +61,16 @@ export default function Home() {
         <div className={`fixed inset-0 pointer-events-none z-[60] transition-opacity duration-[1500ms] ease-in-out ${loading ? "opacity-0" : "opacity-100"}`}>
           {!loading && <GameHUD />}
         </div>
-        <div id="hero" className="relative z-10">
+        <div id="hero" className="relative z-10" style={{ contentVisibility: 'auto', containIntrinsicSize: '1000px' }}>
           <HeroSlider />
         </div>
-        <div id="missions" className="relative z-[10000]">
+        <div id="missions" className="relative z-[10000]" style={{ contentVisibility: 'auto', containIntrinsicSize: '1000px' }}>
           <MissionList />
         </div>
-        <div id="stats" className="relative z-10">
+        <div id="stats" className="relative z-10" style={{ contentVisibility: 'auto', containIntrinsicSize: '1000px' }}>
           <StatsHUD />
         </div>
-        <div id="ending" className="relative z-10">
+        <div id="ending" className="relative z-10" style={{ contentVisibility: 'auto', containIntrinsicSize: '1000px' }}>
           <FinalCutscene />
         </div>
       </div>
