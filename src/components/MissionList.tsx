@@ -181,27 +181,26 @@ export default function MissionList() {
     return () => observer.disconnect();
   }, [isAuthenticated]);
 
-  // Compute the flat list of visible items based on what is expanded
   const visibleItems = useMemo(() => {
     const items: VisibleItem[] = [];
-    MISSIONS.forEach((m, i) => {
-      items.push({ type: 'MISSION', mission: m, index: i });
-      if (expandedMissionIndex === i) {
-        items.push({ type: 'FILE', file: { name: '00_project_evidence_img.exe (View Image)', size: 'EXE' }, missionIndex: i, fileIndex: -1 });
-        MOCK_FILES.forEach((f, fi) => {
-          items.push({ type: 'FILE', file: f, missionIndex: i, fileIndex: fi });
-        });
-      }
-    });
+    if (expandedMissionIndex !== null) {
+      const i = expandedMissionIndex;
+      items.push({ type: 'FILE', file: { name: '00_project_evidence_img.exe (View Image)', size: 'EXE' }, missionIndex: i, fileIndex: -1 });
+      MOCK_FILES.forEach((f, fi) => {
+        items.push({ type: 'FILE', file: f, missionIndex: i, fileIndex: fi });
+      });
+    } else {
+      MISSIONS.forEach((m, i) => {
+        items.push({ type: 'MISSION', mission: m, index: i });
+      });
+    }
     return items;
   }, [expandedMissionIndex]);
 
-  // Adjust active index if it goes out of bounds when collapsing a folder
+  // Reset or adjust active index when view changes
   useEffect(() => {
-    if (activeIndex >= visibleItems.length) {
-      setActiveIndex(Math.max(0, visibleItems.length - 1));
-    }
-  }, [visibleItems.length, activeIndex]);
+    setActiveIndex(0);
+  }, [expandedMissionIndex]);
 
   useEffect(() => {
     if (currentView === 'TERMINAL') {
@@ -795,7 +794,7 @@ export default function MissionList() {
                       else setCurrentView('ROOT');
                       playHoverSound();
                     }} 
-                    className="md:hidden px-3 py-1 border border-[#ffcc00] text-[#ffcc00] text-xs font-bold bg-black/50 tracking-widest whitespace-nowrap"
+                    className={`px-3 py-1 border border-[#ffcc00] text-[#ffcc00] text-xs font-bold bg-black/50 tracking-widest whitespace-nowrap ${expandedMissionIndex !== null ? 'block' : 'md:hidden'}`}
                   >
                     &lt; BACK
                   </button>
