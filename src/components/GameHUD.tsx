@@ -69,6 +69,35 @@ export default function GameHUD() {
           newMission = "MISSION: REVIEW DOSSIERS";
         }
 
+        // Move Player Icon on the Map
+        const waypoints = [
+          { top: 20, left: 30 }, // Hero
+          { top: 40, left: 70 }, // Missions
+          { top: 70, left: 40 }, // Stats
+          { top: 85, left: 75 }  // Ending
+        ];
+
+        let targetTop, targetLeft;
+        if (progress < 0.33) {
+          const p = progress / 0.33;
+          targetTop = waypoints[0].top + (waypoints[1].top - waypoints[0].top) * p;
+          targetLeft = waypoints[0].left + (waypoints[1].left - waypoints[0].left) * p;
+        } else if (progress < 0.66) {
+          const p = (progress - 0.33) / 0.33;
+          targetTop = waypoints[1].top + (waypoints[2].top - waypoints[1].top) * p;
+          targetLeft = waypoints[1].left + (waypoints[2].left - waypoints[1].left) * p;
+        } else {
+          const p = (progress - 0.66) / 0.34;
+          targetTop = waypoints[2].top + (waypoints[3].top - waypoints[2].top) * p;
+          targetLeft = waypoints[2].left + (waypoints[3].left - waypoints[2].left) * p;
+        }
+
+        const playerIcon = document.getElementById('player-icon');
+        if (playerIcon) {
+          playerIcon.style.top = `${targetTop}%`;
+          playerIcon.style.left = `${targetLeft}%`;
+        }
+
         setMissionText((prev) => {
           if (prev !== newMission) {
             const target = document.getElementById("hud-mission-text");
@@ -220,25 +249,36 @@ export default function GameHUD() {
           className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2074')] bg-cover bg-center opacity-40 mix-blend-screen transition-transform duration-500 group-hover:scale-110"
           style={{ filter: 'grayscale(100%) sepia(100%) hue-rotate(60deg)' }}
         />
-        {/* Player Icon (Center) */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-white rotate-45 border-2 border-gta-black shadow-[0_0_10px_white] z-10" />
+        {/* Player Icon (Dynamic Position) */}
+        <div id="player-icon" className="absolute w-4 h-4 bg-white rotate-45 border-2 border-gta-black shadow-[0_0_10px_white] z-30 transition-all duration-75 ease-out -translate-x-1/2 -translate-y-1/2" style={{ top: '20%', left: '30%' }} />
         
         {/* Radar Scanner Line */}
         <div className="absolute top-1/2 left-1/2 w-1/2 h-[2px] bg-gta-green/50 origin-left animate-[spin_4s_linear_infinite] z-0" />
         
         {/* Navigation Waypoints */}
-        <div className="absolute top-[20%] left-[30%] w-4 h-4 bg-[#cc9933] rounded-full border-2 border-gta-black shadow-[0_0_5px_#cc9933] hover:scale-150 transition-transform z-20 peer/home" />
+        {/* 1. Hero */}
+        <div className="absolute top-[20%] left-[30%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-[#cc9933] rounded-full border-2 border-gta-black shadow-[0_0_5px_#cc9933] hover:scale-150 transition-transform z-20 peer/home">
+          <span className="absolute inset-0 flex items-center justify-center text-[8px] font-bold text-white">H</span>
+        </div>
         <span className="absolute top-[10%] left-[30%] -translate-x-1/2 text-[10px] font-bold text-white bg-black/80 px-1 rounded opacity-0 peer-hover/home:opacity-100 transition-opacity z-30 pointer-events-none">HOME</span>
 
-        <div className="absolute top-[60%] right-[20%] w-4 h-4 bg-[#ff3333] rounded-full border-2 border-gta-black shadow-[0_0_5px_#ff3333] hover:scale-150 transition-transform z-20 peer/projects">
+        {/* 2. Missions */}
+        <div className="absolute top-[40%] left-[70%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-[#ff3333] rounded-full border-2 border-gta-black shadow-[0_0_5px_#ff3333] hover:scale-150 transition-transform z-20 peer/projects">
           <span className="absolute inset-0 flex items-center justify-center text-[8px] font-bold text-white">M</span>
         </div>
-        <span className="absolute top-[50%] right-[20%] translate-x-1/2 text-[10px] font-bold text-white bg-black/80 px-1 rounded opacity-0 peer-hover/projects:opacity-100 transition-opacity z-30 pointer-events-none">MISSIONS</span>
+        <span className="absolute top-[30%] left-[70%] -translate-x-1/2 text-[10px] font-bold text-white bg-black/80 px-1 rounded opacity-0 peer-hover/projects:opacity-100 transition-opacity z-30 pointer-events-none">MISSIONS</span>
 
-        <div className="absolute bottom-[20%] left-[40%] w-4 h-4 bg-[#3399ff] rounded-full border-2 border-gta-black shadow-[0_0_5px_#3399ff] hover:scale-150 transition-transform z-20 peer/skills">
-          <span className="absolute inset-0 flex items-center justify-center text-[8px] font-bold text-white">W</span>
+        {/* 3. Stats */}
+        <div className="absolute top-[70%] left-[40%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-[#3399ff] rounded-full border-2 border-gta-black shadow-[0_0_5px_#3399ff] hover:scale-150 transition-transform z-20 peer/skills">
+          <span className="absolute inset-0 flex items-center justify-center text-[8px] font-bold text-white">S</span>
         </div>
-        <span className="absolute bottom-[10%] left-[40%] -translate-x-1/2 text-[10px] font-bold text-white bg-black/80 px-1 rounded opacity-0 peer-hover/skills:opacity-100 transition-opacity z-30 pointer-events-none">WEAPONS</span>
+        <span className="absolute top-[60%] left-[40%] -translate-x-1/2 text-[10px] font-bold text-white bg-black/80 px-1 rounded opacity-0 peer-hover/skills:opacity-100 transition-opacity z-30 pointer-events-none">STATS</span>
+        
+        {/* 4. Ending */}
+        <div className="absolute top-[85%] left-[75%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-[#cc33ff] rounded-full border-2 border-gta-black shadow-[0_0_5px_#cc33ff] hover:scale-150 transition-transform z-20 peer/end">
+          <span className="absolute inset-0 flex items-center justify-center text-[8px] font-bold text-white">E</span>
+        </div>
+        <span className="absolute top-[75%] left-[75%] -translate-x-1/2 text-[10px] font-bold text-white bg-black/80 px-1 rounded opacity-0 peer-hover/end:opacity-100 transition-opacity z-30 pointer-events-none">ENDING</span>
         
         {/* Click to open menu overlay text */}
         <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity z-40">
