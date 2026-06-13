@@ -570,7 +570,6 @@ const MissionList = memo(function MissionList() {
         </div>
       </section>
 
-    <div style={{ contentVisibility: 'auto', containIntrinsicSize: '100% 1000px' }}>
     <section ref={wrapperRef} className="relative w-full h-screen bg-[#020202] overflow-hidden font-gta-hud z-[10000] selection:bg-cyan-900 selection:text-cyan-100">
        {/* THE ENTIRE MOBX TERMINAL THAT SCALES UP TO FULL SCREEN */}
        <div ref={terminalRef} className="absolute inset-0 w-full h-full bg-[#05051a] flex flex-col will-change-transform origin-center z-[10000] shadow-[inset_0_0_150px_rgba(0,0,0,1)] pointer-events-auto overflow-hidden">
@@ -1099,7 +1098,6 @@ const MissionList = memo(function MissionList() {
        )}
 
     </section>
-    </div>
     </div>
   );
 });
