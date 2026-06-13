@@ -8,11 +8,37 @@ export default function FinalCutscene() {
   const formRef = useRef<HTMLFormElement>(null);
   const starRef = useRef<HTMLSpanElement>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const [alias, setAlias] = useState("");
+  const [details, setDetails] = useState("");
 
   const { contextSafe } = useGSAP();
 
-  const handleSubmit = contextSafe((e: React.FormEvent) => {
+  const handleSubmit = contextSafe(async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      // Free email API via FormSubmit.co (AJAX mode)
+      await fetch("https://formsubmit.co/ajax/ibraheemshaheeh54@gmail.com", {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({ 
+          _subject: `[MOBX PORTFOLIO] New Contract from ${alias}`,
+          Alias: alias, 
+          Contract_Details: details,
+          _template: "box" // nice email template
+        })
+      });
+    } catch (error) {
+      console.error("Transmission failed", error);
+    }
+
+    setIsSubmitting(false);
     setIsSubmitted(true);
 
     // GTA IV Mission Passed / Wasted Style Effect
@@ -70,22 +96,29 @@ export default function FinalCutscene() {
             <input 
               type="text" 
               placeholder="YOUR ALIAS" 
+              value={alias}
+              onChange={(e) => setAlias(e.target.value)}
               className="w-full bg-transparent border-b-2 border-gta-brown/50 py-4 gta-hud text-gta-sepia placeholder:text-gta-brown focus:outline-none focus:border-gta-sepia transition-colors"
               required
             />
             <textarea 
               placeholder="CONTRACT DETAILS" 
               rows={4}
+              value={details}
+              onChange={(e) => setDetails(e.target.value)}
               className="w-full bg-transparent border-b-2 border-gta-brown/50 py-4 gta-hud text-gta-sepia placeholder:text-gta-brown focus:outline-none focus:border-gta-sepia transition-colors resize-none"
               required
             />
 
             <button 
               type="submit"
-              className="group flex items-center justify-center gap-4 bg-[#111] border-2 border-[#333] hover:border-gta-sepia py-6 px-10 mt-8 transition-colors"
+              disabled={isSubmitting}
+              className={`group flex items-center justify-center gap-4 bg-[#111] border-2 border-[#333] hover:border-gta-sepia py-6 px-10 mt-8 transition-colors ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               <span ref={starRef} className="text-gta-red text-2xl group-hover:scale-125 transition-transform">★</span>
-              <span className="gta-title text-3xl text-gta-sepia group-hover:text-gta-red transition-colors">EXECUTE CONTRACT</span>
+              <span className="gta-title text-3xl text-gta-sepia group-hover:text-gta-red transition-colors">
+                {isSubmitting ? 'TRANSMITTING...' : 'EXECUTE CONTRACT'}
+              </span>
             </button>
           </form>
         ) : (
