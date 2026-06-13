@@ -527,7 +527,7 @@ const MissionList = memo(function MissionList() {
             <Fragment key={`loop-${loopIdx}`}>
               {PROJECT_SCREENSHOTS.map((src, i) => (
                 <div key={`img-${loopIdx}-${i}`} className="relative aspect-video w-full rounded overflow-hidden border border-gta-sepia/20">
-                  <img src={encodeURI(`/${src}`)} alt="Project" className="object-cover w-full h-full" />
+                  <img src={encodeURI(`/${src}`)} alt="Project" className="object-cover w-full h-full" loading="lazy" decoding="async" />
                 </div>
               ))}
             </Fragment>
@@ -561,6 +561,7 @@ const MissionList = memo(function MissionList() {
                 src="/5d0g3g.png" 
                 alt="Mission Passed Respect +" 
                 className="w-[80vw] md:w-[600px] object-contain drop-shadow-xl"
+                loading="lazy" decoding="async"
               />
             </div>
             <span className="archive-title-word block origin-center will-change-transform font-sans font-black text-gta-brown text-2xl md:text-4xl tracking-[0.2em] uppercase">
@@ -581,7 +582,7 @@ const MissionList = memo(function MissionList() {
           {!isAuthenticated ? (
              <div className="w-full h-full flex flex-col items-center justify-center font-gta-hud relative z-20 px-4">
                 <div className="flex flex-col items-center w-full max-w-2xl text-center">
-                  <img src="/lcpd_hd_logo_by_interglobalfilms_d4eq983-375w-2x.png" className="w-24 h-32 md:w-40 md:h-48 mb-4 md:mb-8 drop-shadow-[4px_4px_0_rgba(0,0,0,1)]" />
+                  <img src="/lcpd_hd_logo_by_interglobalfilms_d4eq983-375w-2x.png" className="w-24 h-32 md:w-40 md:h-48 mb-4 md:mb-8 drop-shadow-[4px_4px_0_rgba(0,0,0,1)]" loading="lazy" decoding="async" />
                   <h1 className="text-[#ffcc00] text-2xl md:text-5xl tracking-widest mb-2 drop-shadow-[2px_2px_0_#000]">MOBX SECURE NETWORK</h1>
                   <div className="text-[#3399ff] text-sm md:text-xl tracking-widest uppercase font-bold drop-shadow-[1px_1px_0_#000] mb-8 md:mb-16">
                     RESTRICTED ACCESS ONLY
@@ -648,7 +649,7 @@ const MissionList = memo(function MissionList() {
                  <div className="w-full h-2 md:h-3 bg-[#ffcc00] relative drop-shadow-[0_2px_5px_rgba(0,0,0,0.5)]">
                    {/* Floating Police Badge */}
                    <div className="absolute top-1/2 -translate-y-1/2 left-4 md:left-12 w-[50px] h-[70px] md:w-[110px] md:h-[130px] z-30 drop-shadow-[4px_4px_0_rgba(0,0,0,0.8)]">
-                     <img src="/lcpd_hd_logo_by_interglobalfilms_d4eq983-375w-2x.png" alt="MOBX Badge" className="w-full h-full object-contain" />
+                     <img src="/lcpd_hd_logo_by_interglobalfilms_d4eq983-375w-2x.png" alt="MOBX Badge" className="w-full h-full object-contain" loading="lazy" decoding="async" />
                    </div>
           
               {/* Header Text */}
@@ -941,6 +942,7 @@ const MissionList = memo(function MissionList() {
                       alt={activeMissionData.title}
                       className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 z-10 cursor-pointer"
                       style={{ filter: 'grayscale(30%) contrast(120%) brightness(0.9) sepia(20%)' }}
+                      loading="lazy" decoding="async"
                       onClick={() => {
                         const missionIndex = visibleItems[activeIndex]?.type === 'MISSION' 
                           ? visibleItems[activeIndex].index 
@@ -1084,6 +1086,7 @@ const MissionList = memo(function MissionList() {
              alt="Fullscreen Evidence" 
              className="max-w-[95vw] md:max-w-[90vw] max-h-[85vh] object-contain z-20 shadow-[0_0_50px_rgba(255,255,255,0.1)] border-2 md:border-4 border-gray-800" 
              style={{ filter: 'grayscale(10%) contrast(110%) brightness(0.9)' }}
+             loading="lazy" decoding="async"
              onClick={(e) => {
                e.stopPropagation();
                setFullScreenState(prev => {
