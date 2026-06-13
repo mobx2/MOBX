@@ -555,7 +555,7 @@ export default function MissionList() {
        <div ref={terminalRef} className="absolute inset-0 w-full h-full bg-[#05051a] flex flex-col will-change-transform origin-center z-[10000] shadow-[inset_0_0_150px_rgba(0,0,0,1)] pointer-events-auto overflow-hidden">
           
           {/* Scanlines / CRT Effect */}
-          <div className="absolute inset-0 pointer-events-none opacity-30 bg-[url('/noise.png')] mix-blend-overlay z-[100]" />
+          <div className="absolute inset-0 pointer-events-none opacity-30 bg-noise mix-blend-overlay z-[100]" />
           <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] z-[100] animate-crt-scroll" />
           
           {!isAuthenticated ? (
@@ -873,7 +873,7 @@ export default function MissionList() {
               
               <div className="relative w-full h-[180px] md:h-[400px] border-2 md:border-4 border-gray-800 bg-black overflow-hidden mt-0 md:mt-8 shadow-[5px_5px_0_rgba(0,0,0,0.5)] md:shadow-[10px_10px_0_rgba(0,0,0,0.5)] shrink-0">
                 {/* CRT Glitch overlay on image */}
-                <div className="absolute inset-0 bg-[url('/noise.png')] opacity-30 mix-blend-overlay z-20 pointer-events-none" />
+                <div className="absolute inset-0 bg-noise opacity-30 mix-blend-overlay z-20 pointer-events-none" />
                 
                 {(() => {
                   const activeMissionData = visibleItems[activeIndex]?.type === 'MISSION' 
@@ -1021,7 +1021,7 @@ export default function MissionList() {
             </button>
            
            {/* CRT Overlays for Fullscreen */}
-           <div className="absolute inset-0 pointer-events-none opacity-30 bg-[url('/noise.png')] mix-blend-overlay z-10" />
+           <div className="absolute inset-0 pointer-events-none opacity-30 bg-noise mix-blend-overlay z-10" />
            <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] z-10 animate-crt-scroll" />
            
            <img 
