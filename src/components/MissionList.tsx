@@ -164,6 +164,14 @@ export default function MissionList() {
   const containerRef = useRef<HTMLDivElement>(null);
   const loginInputRef = useRef<HTMLInputElement>(null);
   const terminalInputRef = useRef<HTMLInputElement>(null);
+  const terminalEndRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll terminal to bottom
+  useEffect(() => {
+    if (currentView === 'TERMINAL' && terminalEndRef.current) {
+      terminalEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [terminalHistory, currentView]);
 
   // Focus login input only when terminal is in view to prevent page load scroll jumps
   useEffect(() => {
@@ -749,6 +757,7 @@ export default function MissionList() {
                     {terminalHistory.map((line, i) => (
                       <div key={i} className="whitespace-pre-wrap">{line}</div>
                     ))}
+                    <div ref={terminalEndRef} />
                   </div>
                 </div>
                 
