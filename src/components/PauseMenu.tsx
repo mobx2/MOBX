@@ -301,7 +301,7 @@ export default function PauseMenu() {
 
         {/* STATS TAB (Profile) */}
         {activeTab === "STATS" && (
-          <div className="w-full h-full flex flex-col md:flex-row p-4 md:p-8 gap-4 md:gap-8 overflow-y-auto">
+          <div className="w-full h-full flex flex-col md:flex-row p-4 md:p-8 gap-4 md:gap-8 overflow-y-auto" data-lenis-prevent="true">
             {/* Player Character */}
             <div className="w-full md:w-1/3 h-[40vh] md:h-full flex items-end justify-center border-b-2 md:border-b-0 md:border-r-2 border-gta-sepia/20 relative overflow-hidden shrink-0">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(204,153,51,0.1),transparent)]" />
@@ -335,7 +335,7 @@ export default function PauseMenu() {
 
         {/* AUDIO TAB */}
         {activeTab === "AUDIO" && (
-          <div className="w-full h-full flex flex-col items-center justify-center p-4 md:p-8 relative overflow-y-auto">
+          <div className="w-full h-full flex flex-col items-center justify-center p-4 md:p-8 relative overflow-y-auto" data-lenis-prevent="true">
             <div className="w-full max-w-3xl bg-[#080808] border border-gta-sepia/20 p-6 md:p-12 flex flex-col items-center text-center gap-8 md:gap-12 drop-shadow-[0_0_50px_rgba(204,153,51,0.05)] relative overflow-hidden">
               
               {/* Subtle Background Glow */}
@@ -414,7 +414,7 @@ export default function PauseMenu() {
 
         {/* BRIEF TAB (Mission Log / CV) */}
         {activeTab === "BRIEF" && (
-          <div className="w-full h-full p-4 md:p-8 overflow-y-auto">
+          <div className="w-full h-full p-4 md:p-8 overflow-y-auto" data-lenis-prevent="true">
             <div className="max-w-4xl mx-auto flex flex-col gap-6 md:gap-8 pb-20">
               
               <div className="border-l-4 border-gta-sepia pl-4 md:pl-6">
