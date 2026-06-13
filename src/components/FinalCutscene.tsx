@@ -30,7 +30,7 @@ export default function FinalCutscene() {
           "Accept": "application/json"
         },
         body: JSON.stringify({ 
-          access_key: "YOUR_WEB3FORMS_ACCESS_KEY", // Get this from web3forms.com
+          access_key: "8fa94102-2cea-460a-b92a-bdd6d673631f",
           subject: `[MOBX PORTFOLIO] New Contract from ${alias}`,
           from_name: alias,
           email: email, 
