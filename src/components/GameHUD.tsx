@@ -289,7 +289,7 @@ export default function GameHUD() {
       {/* Action Text (Bottom Center) */}
       <div className="absolute bottom-10 md:bottom-12 left-1/2 -translate-x-1/2 w-full px-4 pointer-events-none z-0">
         <h3 className="gta-hud text-gta-sepia/70 text-[10px] md:text-lg drop-shadow-[2px_2px_0_#050505] text-center">
-          SCROLL TO NAVIGATE LIBERTY CITY
+          SCROLL TO NAVIGATE MOBX CITY
         </h3>
       </div>
 
