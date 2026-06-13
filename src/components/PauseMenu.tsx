@@ -9,8 +9,6 @@ export default function PauseMenu() {
   const [activeTab, setActiveTab] = useState("MAP");
   const [musicPlaying, setMusicPlaying] = useState(false);
   const [volume, setVolume] = useState(1);
-  const [characterIndex, setCharacterIndex] = useState(0);
-  const CHARACTERS = ["/ibraheem.png", "/loader3.png", "/fg3.png", "/fg2.png", "/loading1.png"];
   const menuRef = useRef<HTMLDivElement>(null);
   const svgMapRef = useRef<SVGSVGElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -48,17 +46,6 @@ export default function PauseMenu() {
       window.removeEventListener("togglePauseMenu", handleToggleEvent);
     };
   }, []);
-
-
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isOpen && activeTab === "STATS") {
-      interval = setInterval(() => {
-        setCharacterIndex((prev) => (prev + 1) % CHARACTERS.length);
-      }, 4000);
-    }
-    return () => clearInterval(interval);
-  }, [isOpen, activeTab]);
 
   const isInitialMount = useRef(true);
 
@@ -177,7 +164,7 @@ export default function PauseMenu() {
       </div>
 
       {/* Main Content Area */}
-      <div ref={contentRef} className="flex-1 relative overflow-hidden bg-[#0a0a0a] min-h-0">
+      <div ref={contentRef} className="flex-1 relative overflow-hidden bg-[#0a0a0a]">
         
         {/* MAP TAB */}
         {activeTab === "MAP" && (
@@ -252,11 +239,11 @@ export default function PauseMenu() {
 
         {/* STATS TAB (Profile) */}
         {activeTab === "STATS" && (
-          <div className="w-full h-full flex flex-col md:flex-row p-4 md:p-8 gap-4 md:gap-8 overflow-y-auto custom-scrollbar">
+          <div className="w-full h-full flex flex-col md:flex-row p-4 md:p-8 gap-4 md:gap-8 overflow-y-auto">
             {/* Player Character */}
             <div className="w-full md:w-1/3 h-[40vh] md:h-full flex items-end justify-center border-b-2 md:border-b-0 md:border-r-2 border-gta-sepia/20 relative overflow-hidden shrink-0">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(204,153,51,0.1),transparent)]" />
-              <img key={CHARACTERS[characterIndex]} src={CHARACTERS[characterIndex]} alt="Player" className="w-[180%] md:w-[180%] scale-[1.2] md:scale-[1.6] origin-bottom translate-y-2 md:translate-y-6 object-bottom object-contain drop-shadow-[5px_5px_0_#000] animate-[fadeIn_0.5s_ease-out]" style={{ filter: 'sepia(30%) contrast(120%)' }} />
+              <img src="/ibraheem.png" alt="Player" className="w-[180%] md:w-[180%] scale-[1.2] md:scale-[1.6] origin-bottom translate-y-2 md:translate-y-6 object-bottom object-contain drop-shadow-[5px_5px_0_#000]" style={{ filter: 'sepia(30%) contrast(120%)' }} />
             </div>
             
             {/* Player Stats */}
@@ -286,7 +273,7 @@ export default function PauseMenu() {
 
         {/* AUDIO TAB */}
         {activeTab === "AUDIO" && (
-          <div className="w-full h-full flex flex-col items-center justify-center p-4 md:p-8 relative overflow-y-auto custom-scrollbar">
+          <div className="w-full h-full flex flex-col items-center justify-center p-4 md:p-8 relative overflow-y-auto">
             <div className="w-full max-w-3xl bg-[#080808] border border-gta-sepia/20 p-6 md:p-12 flex flex-col items-center text-center gap-8 md:gap-12 drop-shadow-[0_0_50px_rgba(204,153,51,0.05)] relative overflow-hidden">
               
               {/* Subtle Background Glow */}
@@ -365,7 +352,7 @@ export default function PauseMenu() {
 
         {/* BRIEF TAB (Mission Log / CV) */}
         {activeTab === "BRIEF" && (
-          <div className="w-full h-full p-4 md:p-8 overflow-y-auto custom-scrollbar">
+          <div className="w-full h-full p-4 md:p-8 overflow-y-auto">
             <div className="max-w-4xl mx-auto flex flex-col gap-6 md:gap-8 pb-20">
               
               <div className="border-l-4 border-gta-sepia pl-4 md:pl-6">
