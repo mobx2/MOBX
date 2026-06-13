@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { gsap } from "@/lib/gsap";
+import { gsap, useGSAP } from "@/lib/gsap";
 
 export default function FinalCutscene() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -9,7 +9,9 @@ export default function FinalCutscene() {
   const starRef = useRef<HTMLSpanElement>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const { contextSafe } = useGSAP();
+
+  const handleSubmit = contextSafe((e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitted(true);
 
@@ -20,7 +22,10 @@ export default function FinalCutscene() {
     tl.to(containerRef.current, {
       filter: "sepia(100%) contrast(200%) brightness(0.5)",
       duration: 0.1,
-      ease: "power4.in"
+      ease: "power4.in",
+      force3D: true,
+      onStart: () => gsap.set(containerRef.current, { willChange: "filter" }),
+      onComplete: () => gsap.set(containerRef.current, { willChange: "auto" })
     });
 
     // Dramatic slow motion pull-back
@@ -28,7 +33,10 @@ export default function FinalCutscene() {
       scale: 0.8,
       opacity: 0,
       duration: 4,
-      ease: "power2.out"
+      ease: "power2.out",
+      force3D: true,
+      onStart: () => gsap.set(formRef.current, { willChange: "transform, opacity" }),
+      onComplete: () => gsap.set(formRef.current, { willChange: "auto" })
     }, 0);
     
     // Pulse the wanted star violently
@@ -37,12 +45,15 @@ export default function FinalCutscene() {
       rotation: 360,
       opacity: 0,
       duration: 1,
-      ease: "power4.out"
+      ease: "power4.out",
+      force3D: true,
+      onStart: () => gsap.set(starRef.current, { willChange: "transform, opacity" }),
+      onComplete: () => gsap.set(starRef.current, { willChange: "auto" })
     }, 0);
-  };
+  });
 
   return (
-    <section ref={containerRef} className="level-section relative w-full h-screen bg-[#020202] flex items-center justify-center overflow-hidden transition-all duration-[4000ms]">
+    <section ref={containerRef} className="level-section relative w-full h-screen bg-[#020202] flex items-center justify-center overflow-hidden transition-all duration-[4000ms] contain-strict">
       
       <div className="absolute inset-0 gta-noise z-0 pointer-events-none" />
       <div className="absolute inset-0 gta-vignette opacity-100 z-10 pointer-events-none" />

@@ -150,10 +150,21 @@ body {
   animation: crt-scroll 0.2s linear infinite;
 }
 
-/* Hardware acceleration */
+/* Hardware acceleration & Performance Utilities */
 .gpu-accelerated {
   transform: translateZ(0);
+}
+.will-change-transform {
   will-change: transform, opacity;
+}
+.will-change-auto {
+  will-change: auto;
+}
+.contain-strict {
+  contain: strict;
+}
+.contain-layout-paint {
+  contain: layout paint;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

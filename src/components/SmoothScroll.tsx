@@ -14,17 +14,33 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       touchMultiplier: 2,
     });
 
-    lenis.on('scroll', ScrollTrigger.update);
+    let frame: number;
+    const throttledUpdate = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        ScrollTrigger.update();
+      });
+    };
 
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
+    lenis.on('scroll', throttledUpdate);
+
+    let lastTime = 0;
+    const tickerUpdate = (time: number) => {
+      // Throttle GSAP ticker to max 60fps execution to prevent CPU saturation
+      if (time - lastTime > 0.016) {
+        lenis.raf(time * 1000);
+        lastTime = time;
+      }
+    };
+
+    gsap.ticker.add(tickerUpdate);
 
     gsap.ticker.lagSmoothing(0);
 
     return () => {
       lenis.destroy();
-      gsap.ticker.remove(lenis.raf);
+      gsap.ticker.remove(tickerUpdate);
+      cancelAnimationFrame(frame);
     };
   }, []);
 

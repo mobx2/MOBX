@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { gsap } from "@/lib/gsap";
+import { gsap, useGSAP } from "@/lib/gsap";
 
 export default function BootLoader({ onComplete }: { onComplete: () => void }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -19,7 +19,7 @@ export default function BootLoader({ onComplete }: { onComplete: () => void }) {
     { fg: "/loader3.png", bg: "/loader3bg.png" }
   ];
 
-  useEffect(() => {
+  useGSAP(() => {
     // Trigger initial CSS transitions
     const mountTimer = setTimeout(() => setIsMounted(true), 50);
 
@@ -28,15 +28,30 @@ export default function BootLoader({ onComplete }: { onComplete: () => void }) {
     
     tl.fromTo(rLogoRef.current, 
       { scale: 0.8, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 0.2, ease: "power4.out" }
+      { 
+        scale: 1, opacity: 1, duration: 0.2, ease: "power4.out",
+        force3D: true,
+        onStart: () => gsap.set(rLogoRef.current, { willChange: "transform, opacity" }),
+        onComplete: () => gsap.set(rLogoRef.current, { willChange: "auto" })
+      }
     );
     // Wait a moment, then scale to fill screen
-    tl.to(rLogoRef.current, { scale: 50, opacity: 0, duration: 0.8, ease: "power2.in", delay: 1.5 });
+    tl.to(rLogoRef.current, { 
+      scale: 50, opacity: 0, duration: 0.8, ease: "power2.in", delay: 1.5,
+      force3D: true,
+      onStart: () => gsap.set(rLogoRef.current, { willChange: "transform, opacity" }),
+      onComplete: () => gsap.set(rLogoRef.current, { willChange: "auto" })
+    });
 
     // 2. Fade in background and loading bar
     tl.fromTo([bgRef.current, loadingBarRef.current, progressTextRef.current],
       { opacity: 0 },
-      { opacity: 1, duration: 0.5, ease: "none" },
+      { 
+        opacity: 1, duration: 0.5, ease: "none",
+        force3D: true,
+        onStart: () => gsap.set([bgRef.current, loadingBarRef.current, progressTextRef.current], { willChange: "opacity" }),
+        onComplete: () => gsap.set([bgRef.current, loadingBarRef.current, progressTextRef.current], { willChange: "auto" })
+      },
       "-=0.2"
     );
 
@@ -55,7 +70,12 @@ export default function BootLoader({ onComplete }: { onComplete: () => void }) {
           duration: 1,
           delay: 0.5,
           ease: "power2.inOut",
-          onComplete: onComplete
+          force3D: true,
+          onStart: () => gsap.set(containerRef.current, { willChange: "opacity" }),
+          onComplete: () => {
+            gsap.set(containerRef.current, { willChange: "auto" });
+            onComplete();
+          }
         });
       }
 
@@ -70,7 +90,10 @@ export default function BootLoader({ onComplete }: { onComplete: () => void }) {
       gsap.to(".loading-fill", {
         width: `${current}%`,
         duration: 0.08,
-        ease: "none"
+        ease: "none",
+        force3D: true,
+        onStart: () => gsap.set(".loading-fill", { willChange: "width" }),
+        onComplete: () => gsap.set(".loading-fill", { willChange: "auto" })
       });
       
     }, 80);
@@ -79,10 +102,10 @@ export default function BootLoader({ onComplete }: { onComplete: () => void }) {
       clearInterval(interval);
       clearTimeout(mountTimer);
     };
-  }, [onComplete]);
+  }, { dependencies: [onComplete] });
 
   return (
-    <div ref={containerRef} className="fixed inset-0 z-[100] bg-gta-black flex items-center justify-center overflow-hidden">
+    <div ref={containerRef} className="fixed inset-0 z-[100] bg-gta-black flex items-center justify-center overflow-hidden contain-strict">
       
       {/* Noise overlay */}
       <div className="absolute inset-0 gta-noise z-50" />

@@ -7,6 +7,7 @@ import { useGSAP } from "@gsap/react";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, Flip, useGSAP);
+  ScrollTrigger.config({ limitCallbacks: true });
 }
 
 export { gsap, ScrollTrigger, Flip, useGSAP };

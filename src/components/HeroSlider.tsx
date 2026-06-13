@@ -57,35 +57,63 @@ export default function HeroSlider() {
 
         // 1. Fade transition to prevent any horizontal layout shifts
         if (index > 0) {
-          tl.to(slides[index - 1], { autoAlpha: 0, duration: 1, ease: "power2.inOut" }, `slide${index}`);
-          tl.fromTo(slide, { autoAlpha: 0, scale: isMobile ? 1.05 : 1.1 }, { autoAlpha: 1, scale: 1, duration: 1, ease: "power2.out" }, `slide${index}`);
+          tl.to(slides[index - 1], { 
+            autoAlpha: 0, duration: 1, ease: "power2.inOut", force3D: true,
+            onStart: () => gsap.set(slides[index - 1], { willChange: "opacity" }),
+            onComplete: () => gsap.set(slides[index - 1], { willChange: "auto" })
+          }, `slide${index}`);
+          tl.fromTo(slide, { autoAlpha: 0, scale: isMobile ? 1.05 : 1.1 }, { 
+            autoAlpha: 1, scale: 1, duration: 1, ease: "power2.out", force3D: true,
+            onStart: () => gsap.set(slide, { willChange: "transform, opacity" }),
+            onComplete: () => gsap.set(slide, { willChange: "auto" })
+          }, `slide${index}`);
         } else {
           tl.addLabel(`slide${index}`);
         }
 
         // 2. Zoom background slowly over the duration of this slide
         if (bg) {
-          tl.to(bg, { scale: isMobile ? 1.05 : 1.2, ease: "none", duration: 2.5 }, `slide${index}`);
+          tl.to(bg, { 
+            scale: isMobile ? 1.05 : 1.2, ease: "none", duration: 2.5, force3D: true,
+            onStart: () => gsap.set(bg, { willChange: "transform" }),
+            onComplete: () => gsap.set(bg, { willChange: "auto" })
+          }, `slide${index}`);
         }
 
         // 3. Move/Scale foreground slightly differently for parallax
         if (fg) {
-          tl.to(fg, { scale: isMobile ? 1.02 : 1.05, ease: "none", duration: 2 }, `slide${index}`);
+          tl.to(fg, { 
+            scale: isMobile ? 1.02 : 1.05, ease: "none", duration: 2, force3D: true,
+            onStart: () => gsap.set(fg, { willChange: "transform" }),
+            onComplete: () => gsap.set(fg, { willChange: "auto" })
+          }, `slide${index}`);
         }
 
         // 4. Animate Text (fade in from bottom, then fade out up)
         if (text) {
           tl.fromTo(text, 
             { y: isMobile ? 20 : 50, autoAlpha: 0 }, 
-            { y: 0, autoAlpha: 1, duration: 0.4, ease: "power2.out" }, 
+            { 
+              y: 0, autoAlpha: 1, duration: 0.4, ease: "power2.out", force3D: true,
+              onStart: () => gsap.set(text, { willChange: "transform, opacity" }),
+              onComplete: () => gsap.set(text, { willChange: "auto" })
+            }, 
             `slide${index}+=0.2`
           );
-          tl.to(text, { y: isMobile ? -20 : -50, autoAlpha: 0, duration: 0.4, ease: "power2.in" }, `slide${index}+=1.4`);
+          tl.to(text, { 
+            y: isMobile ? -20 : -50, autoAlpha: 0, duration: 0.4, ease: "power2.in", force3D: true,
+            onStart: () => gsap.set(text, { willChange: "transform, opacity" }),
+            onComplete: () => gsap.set(text, { willChange: "auto" })
+          }, `slide${index}+=1.4`);
         }
 
         // 5. Crosshair pulse & scale on the first slide
         if (crosshair) {
-          tl.to(crosshair, { scale: isMobile ? 2 : 5, autoAlpha: 0, duration: 0.5, ease: "power3.in" }, `slide${index}+=1.5`);
+          tl.to(crosshair, { 
+            scale: isMobile ? 2 : 5, autoAlpha: 0, duration: 0.5, ease: "power3.in", force3D: true,
+            onStart: () => gsap.set(crosshair, { willChange: "transform, opacity" }),
+            onComplete: () => gsap.set(crosshair, { willChange: "auto" })
+          }, `slide${index}+=1.5`);
         }
       });
     });
@@ -100,7 +128,7 @@ export default function HeroSlider() {
   };
 
   return (
-    <section ref={containerRef} className="level-section relative w-full h-screen overflow-hidden bg-gta-black">
+    <section ref={containerRef} className="level-section relative w-full h-screen overflow-hidden bg-gta-black contain-strict">
       
       {/* Global Noise & Vignette & CRT */}
       <div className="absolute inset-0 gta-noise z-50 pointer-events-none opacity-50 md:opacity-100" />

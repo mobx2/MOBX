@@ -42,6 +42,7 @@ export default function GameHUD() {
       gsap.to(crosshair, {
         top: "100%",
         ease: "none",
+        force3D: true,
         scrollTrigger: {
           trigger: document.body,
           start: "top top",
@@ -74,7 +75,11 @@ export default function GameHUD() {
             if (target) {
               gsap.fromTo(target, 
                 { opacity: 0, x: -10 },
-                { opacity: 1, x: 0, duration: 0.2, ease: "power4.out" }
+                { 
+                  opacity: 1, x: 0, duration: 0.2, ease: "power4.out", force3D: true,
+                  onStart: () => gsap.set(target, { willChange: "transform, opacity" }),
+                  onComplete: () => gsap.set(target, { willChange: "auto" })
+                }
               );
             }
             return newMission;
@@ -87,7 +92,7 @@ export default function GameHUD() {
   }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-[60] select-none">
+    <div className="fixed inset-0 pointer-events-none z-[60] select-none contain-strict">
       
       {/* Top Left: Mission Objective & Music Player */}
       <div className="absolute top-12 left-4 md:top-8 md:left-8 flex flex-col gap-2 md:gap-6 items-start pointer-events-auto">

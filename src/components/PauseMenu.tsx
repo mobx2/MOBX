@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { gsap } from "@/lib/gsap";
+import { gsap, useGSAP } from "@/lib/gsap";
 import { useHoverSound } from "@/hooks/useHoverSound";
 
 export default function PauseMenu() {
@@ -50,7 +50,7 @@ export default function PauseMenu() {
   const isInitialMount = useRef(true);
 
   // Animation for opening/closing the menu
-  useEffect(() => {
+  useGSAP(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
       gsap.set(menuRef.current, { autoAlpha: 0, scale: 1.1 });
@@ -62,25 +62,38 @@ export default function PauseMenu() {
       document.body.style.overflow = "hidden";
       gsap.fromTo(menuRef.current, 
         { autoAlpha: 0, scale: 1.1 },
-        { autoAlpha: 1, scale: 1, duration: 0.3, ease: "power2.out" }
+        { 
+          autoAlpha: 1, scale: 1, duration: 0.3, ease: "power2.out",
+          force3D: true,
+          onStart: () => gsap.set(menuRef.current, { willChange: "transform, opacity" }),
+          onComplete: () => gsap.set(menuRef.current, { willChange: "auto" })
+        }
       );
     } else {
       document.body.style.overflow = "auto";
       gsap.to(menuRef.current, {
-        autoAlpha: 0, scale: 1.1, duration: 0.3, ease: "power2.in"
+        autoAlpha: 0, scale: 1.1, duration: 0.3, ease: "power2.in",
+        force3D: true,
+        onStart: () => gsap.set(menuRef.current, { willChange: "transform, opacity" }),
+        onComplete: () => gsap.set(menuRef.current, { willChange: "auto" })
       });
     }
-  }, [isOpen]);
+  }, { dependencies: [isOpen] });
 
   // Tab switching animation
-  useEffect(() => {
+  useGSAP(() => {
     if (isOpen && contentRef.current) {
       gsap.fromTo(contentRef.current,
         { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }
+        { 
+          opacity: 1, y: 0, duration: 0.3, ease: "power2.out",
+          force3D: true,
+          onStart: () => gsap.set(contentRef.current, { willChange: "transform, opacity" }),
+          onComplete: () => gsap.set(contentRef.current, { willChange: "auto" })
+        }
       );
     }
-  }, [activeTab, isOpen]);
+  }, { dependencies: [activeTab, isOpen] });
 
   const handleWaypointClick = (x: number, y: number, section: string) => {
     if (!svgMapRef.current) return;
@@ -92,7 +105,10 @@ export default function PauseMenu() {
       y: -y * 10,
       duration: 0.5,
       ease: "power4.in",
+      force3D: true,
+      onStart: () => gsap.set(svgMapRef.current, { willChange: "transform, opacity" }),
       onComplete: () => {
+        gsap.set(svgMapRef.current, { willChange: "auto" });
         // Scroll the page to the exact element instantly to avoid stutter
         let targetId = "hero";
         if (section === "Profile") targetId = "hero";
@@ -118,7 +134,7 @@ export default function PauseMenu() {
   return (
     <div 
       ref={menuRef} 
-      className="fixed inset-0 z-[100] bg-gta-black text-brand-white flex flex-col font-sans invisible"
+      className="fixed inset-0 z-[100] bg-gta-black text-brand-white flex flex-col font-sans invisible contain-strict"
       style={{ pointerEvents: isOpen ? 'auto' : 'none' }}
     >
       
@@ -433,14 +449,19 @@ function StatBar({ label, value, color = "#cc9933" }: { label: string, value: nu
   const barRef = useRef<HTMLDivElement>(null);
   
   // Smooth fill animation for stats
-  useEffect(() => {
+  useGSAP(() => {
     if (barRef.current) {
       gsap.fromTo(barRef.current, 
         { width: "0%" },
-        { width: `${value}%`, duration: 1.2, ease: "power3.out", delay: 0.1 }
+        { 
+          width: `${value}%`, duration: 1.2, ease: "power3.out", delay: 0.1,
+          force3D: true,
+          onStart: () => gsap.set(barRef.current, { willChange: "transform, opacity" }),
+          onComplete: () => gsap.set(barRef.current, { willChange: "auto" })
+        }
       );
     }
-  }, [value]);
+  }, { dependencies: [value] });
 
   return (
     <div className="flex flex-col gap-1 w-full max-w-2xl">

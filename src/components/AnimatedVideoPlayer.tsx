@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useImperativeHandle, useRef } from "react";
+import { forwardRef, useImperativeHandle, useRef, useEffect, useState } from "react";
 
 export interface AnimatedVideoPlayerProps {
   webmSrc: string;
@@ -17,6 +17,30 @@ export interface AnimatedVideoPlayerRef {
 const AnimatedVideoPlayer = forwardRef<AnimatedVideoPlayerRef, AnimatedVideoPlayerProps>(
   ({ webmSrc, mp4Src, poster, className = "" }, ref) => {
     const videoRef = useRef<HTMLVideoElement>(null);
+    const [inView, setInView] = useState(false);
+
+    useEffect(() => {
+      const el = videoRef.current;
+      if (!el) return;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          setInView(entry.isIntersecting);
+        },
+        { rootMargin: "300px" } // Load before coming into view
+      );
+      
+      observer.observe(el);
+      return () => observer.disconnect();
+    }, []);
+
+    useEffect(() => {
+      // Force garbage collection when completely out of view
+      if (!inView && videoRef.current) {
+        videoRef.current.src = "";
+        videoRef.current.load();
+      }
+    }, [inView]);
 
     useImperativeHandle(ref, () => ({
       play: () => {
@@ -35,7 +59,7 @@ const AnimatedVideoPlayer = forwardRef<AnimatedVideoPlayerRef, AnimatedVideoPlay
     }));
 
     return (
-      <div className={`relative border-4 border-black overflow-hidden bg-black ${className}`}>
+      <div className={`relative border-4 border-black overflow-hidden bg-black contain-strict ${className}`}>
         <video
           ref={videoRef}
           loop
@@ -46,8 +70,12 @@ const AnimatedVideoPlayer = forwardRef<AnimatedVideoPlayerRef, AnimatedVideoPlay
           poster={poster}
           className="w-full h-full object-cover will-change-transform"
         >
-          <source src={webmSrc} type="video/webm" />
-          <source src={mp4Src} type="video/mp4" />
+          {inView && (
+            <>
+              <source src={webmSrc} type="video/webm" />
+              <source src={mp4Src} type="video/mp4" />
+            </>
+          )}
           Your browser does not support the video tag.
         </video>
         {/* Subtle CSS noise/grain overlay for gritty GTA IV aesthetic */}

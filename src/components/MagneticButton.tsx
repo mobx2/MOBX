@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useEffect } from "react";
-import { gsap } from "@/lib/gsap";
+import { useRef } from "react";
+import { gsap, useGSAP } from "@/lib/gsap";
 
 interface MagneticButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
@@ -10,12 +10,14 @@ interface MagneticButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEleme
 export default function MagneticButton({ children, className, ...props }: MagneticButtonProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
+  const { contextSafe } = useGSAP();
+
+  useGSAP(() => {
     const button = buttonRef.current;
     if (!button) return;
 
     // Extreme magnetic effect
-    const hoverEffect = (e: MouseEvent) => {
+    const hoverEffect = contextSafe((e: MouseEvent) => {
       const rect = button.getBoundingClientRect();
       const x = e.clientX - rect.left - rect.width / 2;
       const y = e.clientY - rect.top - rect.height / 2;
@@ -26,17 +28,21 @@ export default function MagneticButton({ children, className, ...props }: Magnet
         y: y * 0.4,
         duration: 0.8,
         ease: "power3.out",
+        force3D: true,
+        onStart: () => gsap.set(button, { willChange: "transform" })
       });
-    };
+    });
 
-    const resetEffect = () => {
+    const resetEffect = contextSafe(() => {
       gsap.to(button, {
         x: 0,
         y: 0,
         duration: 0.8,
         ease: "elastic.out(1, 0.3)",
+        force3D: true,
+        onComplete: () => gsap.set(button, { willChange: "auto" })
       });
-    };
+    });
 
     button.addEventListener("mousemove", hoverEffect);
     button.addEventListener("mouseleave", resetEffect);

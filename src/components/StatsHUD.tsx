@@ -20,6 +20,7 @@ export default function StatsHUD() {
     gsap.to(".hud-bg", {
       yPercent: 30,
       ease: "none",
+      force3D: true,
       scrollTrigger: {
         trigger: containerRef.current,
         start: "top bottom",
@@ -39,6 +40,9 @@ export default function StatsHUD() {
           width: `${width}%`,
           duration: 1.5,
           ease: "power2.out",
+          force3D: true,
+          onStart: () => gsap.set(bar, { willChange: "width" }),
+          onComplete: () => gsap.set(bar, { willChange: "auto" }),
           scrollTrigger: {
             trigger: bar,
             start: "top 90%",
@@ -53,6 +57,9 @@ export default function StatsHUD() {
         duration: 0.05,
         repeat: 10,
         yoyo: true,
+        force3D: true,
+        onStart: () => gsap.set(bar, { willChange: "opacity" }),
+        onComplete: () => gsap.set(bar, { willChange: "auto" }),
         scrollTrigger: {
           trigger: bar,
           start: "top 90%",
@@ -63,7 +70,7 @@ export default function StatsHUD() {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="level-section relative w-full h-screen bg-gta-black py-32 px-4 md:px-20 overflow-hidden border-t-2 border-b-2 border-gta-brown/30 flex items-center justify-center">
+    <section ref={containerRef} className="level-section relative w-full h-screen bg-gta-black py-32 px-4 md:px-20 overflow-hidden border-t-2 border-b-2 border-gta-brown/30 flex items-center justify-center contain-strict">
       
       {/* Dark Desaturated Map Background */}
       <div 

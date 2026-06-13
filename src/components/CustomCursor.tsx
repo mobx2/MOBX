@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useEffect } from "react";
-import { gsap } from "@/lib/gsap";
+import { useRef } from "react";
+import { gsap, useGSAP } from "@/lib/gsap";
 import { useHoverSound } from "@/hooks/useHoverSound";
 
 export default function CustomCursor() {
@@ -9,7 +9,9 @@ export default function CustomCursor() {
   const cursorOutline = useRef<HTMLDivElement>(null);
   const { playHoverSound } = useHoverSound();
 
-  useEffect(() => {
+  const { contextSafe } = useGSAP();
+
+  useGSAP(() => {
     if (!cursorDot.current || !cursorOutline.current) return;
 
     // We use GSAP quickTo for maximum performance cursor tracking (bypasses standard timeline overhead)
@@ -19,51 +21,75 @@ export default function CustomCursor() {
     const xMoveOutline = gsap.quickTo(cursorOutline.current, "x", { duration: 0.25, ease: "power3.out" });
     const yMoveOutline = gsap.quickTo(cursorOutline.current, "y", { duration: 0.25, ease: "power3.out" });
 
-    const handleMouseMove = (e: MouseEvent) => {
-      // Center the cursor
-      xMoveDot(e.clientX - 4);
-      yMoveDot(e.clientY - 4);
-      
-      xMoveOutline(e.clientX - 20);
-      yMoveOutline(e.clientY - 20);
-    };
+    let frame: number;
+    const handleMouseMove = contextSafe((e: MouseEvent) => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        // Center the cursor
+        xMoveDot(e.clientX - 4);
+        yMoveDot(e.clientY - 4);
+        
+        xMoveOutline(e.clientX - 20);
+        yMoveOutline(e.clientY - 20);
+      });
+    });
 
     // Scale up on clickable elements
-    const handleMouseOver = (e: MouseEvent) => {
+    const handleMouseOver = contextSafe((e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (target.closest("a") || target.closest("button") || target.closest(".project-card")) {
         gsap.to(cursorOutline.current, {
           scale: 2.5,
           backgroundColor: "transparent",
           duration: 0.3,
+          force3D: true,
+          onStart: () => gsap.set(cursorOutline.current, { willChange: "transform, background-color" }),
+          onComplete: () => gsap.set(cursorOutline.current, { willChange: "auto" })
         });
         gsap.to(cursorDot.current, {
           scale: 0,
           duration: 0.3,
+          force3D: true,
+          onStart: () => gsap.set(cursorDot.current, { willChange: "transform" }),
+          onComplete: () => gsap.set(cursorDot.current, { willChange: "auto" })
         });
       }
-    };
+    });
 
-    const handleMouseOut = () => {
+    const handleMouseOut = contextSafe(() => {
       gsap.to(cursorOutline.current, {
         scale: 1,
         backgroundColor: "transparent",
         duration: 0.3,
+        force3D: true,
+        onStart: () => gsap.set(cursorOutline.current, { willChange: "transform, background-color" }),
+        onComplete: () => gsap.set(cursorOutline.current, { willChange: "auto" })
       });
       gsap.to(cursorDot.current, {
         scale: 1,
         duration: 0.3,
+        force3D: true,
+        onStart: () => gsap.set(cursorDot.current, { willChange: "transform" }),
+        onComplete: () => gsap.set(cursorDot.current, { willChange: "auto" })
       });
-    };
+    });
 
-    const handleMouseDown = () => {
-      gsap.to(cursorOutline.current, { scale: 0.8, duration: 0.1 });
+    const handleMouseDown = contextSafe(() => {
+      gsap.to(cursorOutline.current, { 
+        scale: 0.8, duration: 0.1, force3D: true,
+        onStart: () => gsap.set(cursorOutline.current, { willChange: "transform" }),
+        onComplete: () => gsap.set(cursorOutline.current, { willChange: "auto" })
+      });
       playHoverSound();
-    };
+    });
 
-    const handleMouseUp = () => {
-      gsap.to(cursorOutline.current, { scale: 1, duration: 0.1 });
-    };
+    const handleMouseUp = contextSafe(() => {
+      gsap.to(cursorOutline.current, { 
+        scale: 1, duration: 0.1, force3D: true,
+        onStart: () => gsap.set(cursorOutline.current, { willChange: "transform" }),
+        onComplete: () => gsap.set(cursorOutline.current, { willChange: "auto" })
+      });
+    });
 
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseover", handleMouseOver);
@@ -72,6 +98,7 @@ export default function CustomCursor() {
     window.addEventListener("mouseup", handleMouseUp);
 
     return () => {
+      cancelAnimationFrame(frame);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseover", handleMouseOver);
       window.removeEventListener("mouseout", handleMouseOut);
