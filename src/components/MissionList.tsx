@@ -788,16 +788,17 @@ export default function MissionList() {
             <div className="w-full md:w-1/2 flex flex-col flex-1 md:h-full md:pr-8 shrink-0 order-last md:order-first md:overflow-y-auto md:custom-scrollbar border-t-2 md:border-t-0 border-[#ffcc00]/30 pt-4 md:pt-0 mt-4 md:mt-0">
               <div className="flex flex-col md:flex-row md:justify-between md:items-end mb-4 gap-2 shrink-0">
                 <div className="flex items-center gap-4">
-                  <button 
-                    onClick={() => {
-                      if (expandedMissionIndex !== null) setExpandedMissionIndex(null);
-                      else setCurrentView('ROOT');
-                      playHoverSound();
-                    }} 
-                    className={`px-3 py-1 border border-[#ffcc00] text-[#ffcc00] text-xs font-bold bg-black/50 tracking-widest whitespace-nowrap ${expandedMissionIndex !== null ? 'block' : 'md:hidden'}`}
-                  >
-                    &lt; BACK
-                  </button>
+                  {expandedMissionIndex !== null && (
+                    <button 
+                      onClick={() => {
+                        setExpandedMissionIndex(null);
+                        playHoverSound();
+                      }} 
+                      className="px-3 py-1 border border-[#ffcc00] text-[#ffcc00] text-xs font-bold bg-black/50 tracking-widest whitespace-nowrap"
+                    >
+                      &lt; BACK
+                    </button>
+                  )}
                   <h2 className="text-[#ffcc00] text-2xl md:text-3xl font-gta-hud tracking-widest drop-shadow-[2px_2px_0_#000] m-0">
                     {expandedMissionIndex !== null ? 'PROJECT FILES' : 'PROJECTS'}
                   </h2>
