@@ -404,20 +404,40 @@ export default function PauseMenu() {
                 <h3 className="text-2xl font-bold tracking-widest text-white mb-4 border-b border-gray-800 pb-2">RECENT HITS (PROJECTS)</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-sans">
                   <div>
-                    <div className="text-gta-sepia font-bold text-lg">Pizza Plaza Menu</div>
-                    <p className="text-gray-400 text-sm mt-1">A mobile-first React app, responsive on all devices, with interactive menu browsing and smooth UX, including a dashboard to manage menu items.</p>
+                    <a href="http://elfakharanypastry.com/" target="_blank" rel="noreferrer" className="text-gta-sepia font-bold text-lg hover:text-white transition-colors flex items-center gap-2">
+                      El Fakharany Pastry <span className="text-xs">↗</span>
+                    </a>
+                    <p className="text-gray-400 text-sm mt-1">A comprehensive mobile application, smart menu, high-conversion landing page, and a professional management dashboard.</p>
                   </div>
                   <div>
-                    <div className="text-gta-sepia font-bold text-lg">El Fakharany Pastry</div>
-                    <p className="text-gray-400 text-sm mt-1">A mobile-first pastry menu application built with Next.js, designed like a mobile app, fully responsive with a management dashboard.</p>
+                    <a href="https://waelelgendy.com/" target="_blank" rel="noreferrer" className="text-gta-sepia font-bold text-lg hover:text-white transition-colors flex items-center gap-2">
+                      Wael El Gendy Portal <span className="text-xs">↗</span>
+                    </a>
+                    <p className="text-gray-400 text-sm mt-1">Official platform for Parliament Member Wael El Gendy, featuring a highly secure, private management dashboard.</p>
                   </div>
                   <div>
-                    <div className="text-gta-sepia font-bold text-lg">The Wild Oasis</div>
-                    <p className="text-gray-400 text-sm mt-1">A hotel management application built with React.js, handling room bookings, guest management, with a focus on clean UI and efficient workflow.</p>
+                    <a href="https://reyaza.startagency.net/" target="_blank" rel="noreferrer" className="text-gta-sepia font-bold text-lg hover:text-white transition-colors flex items-center gap-2">
+                      Reyaza E-Commerce & ERP <span className="text-xs">↗</span>
+                    </a>
+                    <p className="text-gray-400 text-sm mt-1">Full e-commerce platform for Reyaza Plant Fertilizers with an advanced ERP dashboard for inventory and orders.</p>
                   </div>
                   <div>
-                    <div className="text-gta-sepia font-bold text-lg">WorldWise</div>
-                    <p className="text-gray-400 text-sm mt-1">A React app for tracking visited cities on an interactive map. Features geolocation, protected routes, note-taking using Context API and Leaflet.</p>
+                    <a href="https://www.startagency.net/" target="_blank" rel="noreferrer" className="text-gta-sepia font-bold text-lg hover:text-white transition-colors flex items-center gap-2">
+                      Start Agency <span className="text-xs">↗</span>
+                    </a>
+                    <p className="text-gray-400 text-sm mt-1">The core digital footprint and official website for Start Digital Marketing Agency.</p>
+                  </div>
+                  <div>
+                    <a href="https://eparkeg.startagency.net/" target="_blank" rel="noreferrer" className="text-gta-sepia font-bold text-lg hover:text-white transition-colors flex items-center gap-2">
+                      ePark Landing Page <span className="text-xs">↗</span>
+                    </a>
+                    <p className="text-gray-400 text-sm mt-1">A high-conversion landing page designed for ePark to showcase their services and features.</p>
+                  </div>
+                  <div>
+                    <a href="https://start-agency-v1-1at1.vercel.app/" target="_blank" rel="noreferrer" className="text-gta-sepia font-bold text-lg hover:text-white transition-colors flex items-center gap-2">
+                      Start Agency (Unofficial) <span className="text-xs">↗</span>
+                    </a>
+                    <p className="text-gray-400 text-sm mt-1">An experimental, heavily animated and highly interactive concept website developed for Start Agency.</p>
                   </div>
                 </div>
               </div>
