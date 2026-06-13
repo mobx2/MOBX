@@ -170,7 +170,7 @@ export default function MissionList() {
   // Auto-scroll active item in lists
   useEffect(() => {
     if (activeItemRef.current) {
-      activeItemRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      activeItemRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }, [activeIndex, rootActiveIndex, helpActiveIndex]);
 
