@@ -120,7 +120,7 @@ const PROJECT_SCREENSHOTS = MISSIONS.map(m => m.images[0]);
 const MOCK_FILES = [
   { name: 'sys_override_protocol.sh', size: '4.2 KB' },
   { name: 'intercepted_comms_09.pcap', size: '14.5 MB' },
-  { name: 'lcpd_database_dump.sql', size: 'ENCRYPTED' },
+  { name: 'mobx_database_dump.sql', size: 'ENCRYPTED' },
   { name: 'surveillance_footage_cam04.mp4', size: '210.4 MB' },
   { name: 'backdoor_payload_v2.bin', size: '1.8 MB' },
   { name: 'target_gps_coordinates.dat', size: '89 KB' },
@@ -140,7 +140,7 @@ type VisibleItem =
   | { type: 'FILE', file: any, missionIndex: number, fileIndex: number };
 
 export default function MissionList() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [loginStep, setLoginStep] = useState<'LOGIN' | 'AUTHENTICATING' | 'GRANTED' | 'DENIED'>('LOGIN');
   const [password, setPassword] = useState('');
   const [hintVisible, setHintVisible] = useState(false);
@@ -149,7 +149,7 @@ export default function MissionList() {
   const [rootActiveIndex, setRootActiveIndex] = useState(0);
   const [helpActiveIndex, setHelpActiveIndex] = useState(0);
 
-  const [terminalHistory, setTerminalHistory] = useState<string[]>(['LCPD OS v9.2', 'Type "help" for a list of commands.']);
+  const [terminalHistory, setTerminalHistory] = useState<string[]>(['MOBX OS v9.2', 'Type "help" for a list of commands.']);
   const [terminalInput, setTerminalInput] = useState('');
 
   const [expandedMissionIndex, setExpandedMissionIndex] = useState<number | null>(null);
@@ -400,7 +400,7 @@ export default function MissionList() {
         });
 
         // Removed filter: "blur" to ensure highest efficiency on crappiest devices
-        gsap.set(terminal, { scale: 0.9, opacity: 0 });
+        gsap.set(terminal, { scale: 0.9, opacity: 0.3 }); // Starts faintly visible instead of pitch black
 
         tl.to(terminal, {
           scale: 1,
@@ -469,7 +469,7 @@ export default function MissionList() {
       });
 
       // Start slightly scaled down but mostly visible so it doesn't take forever to appear
-      gsap.set(terminal, { scale: 0.85, opacity: 0, filter: "blur(5px)" });
+      gsap.set(terminal, { scale: 0.85, opacity: 0.3, filter: "blur(5px)" }); // Starts faintly visible instead of pitch black
 
       tl.to(terminal, {
         scale: 1,
@@ -494,7 +494,7 @@ export default function MissionList() {
       {/* MASSIVE STICKY TICKER THAT STAYS WITH YOU */}
       <div className="sticky top-[45vh] left-0 w-[300vw] h-0 z-0 pointer-events-none opacity-[0.03] overflow-visible">
         <h1 className="massive-sticky-ticker gta-title text-[15vw] leading-none text-white whitespace-nowrap will-change-transform">
-          LCPD DATABASE // LCPD DATABASE // LCPD DATABASE // LCPD DATABASE // LCPD DATABASE // LCPD DATABASE //
+          MOBX DATABASE // MOBX DATABASE // MOBX DATABASE // MOBX DATABASE // MOBX DATABASE // MOBX DATABASE //
         </h1>
       </div>
 
@@ -520,7 +520,7 @@ export default function MissionList() {
         <div className="absolute top-[5%] md:top-[10%] -left-10 rotate-[-3deg] w-[200vw] h-10 md:h-14 bg-[#e6b800] z-10 flex items-center overflow-hidden pointer-events-none border-y-4 border-black drop-shadow-xl">
           <div className="header-tape-left flex gap-4 whitespace-nowrap font-sans font-black tracking-[0.2em] text-xl md:text-3xl text-black w-full" style={{ WebkitTextStroke: '0px', textShadow: 'none' }}>
             {[...Array(30)].map((_, idx) => (
-              <span key={idx}>POLICE LINE DO NOT CROSS // LCPD // </span>
+              <span key={idx}>POLICE LINE DO NOT CROSS // MOBX // </span>
             ))}
           </div>
         </div>
@@ -528,7 +528,7 @@ export default function MissionList() {
         <div className="absolute bottom-[5%] md:bottom-[10%] -left-[100vw] rotate-[3deg] w-[200vw] h-10 md:h-14 bg-[#e6b800] z-10 flex items-center overflow-hidden pointer-events-none border-y-4 border-black drop-shadow-xl">
           <div className="header-tape-right flex gap-4 whitespace-nowrap font-sans font-black tracking-[0.2em] text-xl md:text-3xl text-black w-full" style={{ WebkitTextStroke: '0px', textShadow: 'none' }}>
             {[...Array(30)].map((_, idx) => (
-              <span key={idx}>LCPD // POLICE LINE DO NOT CROSS // </span>
+              <span key={idx}>MOBX // POLICE LINE DO NOT CROSS // </span>
             ))}
           </div>
         </div>
@@ -543,7 +543,7 @@ export default function MissionList() {
               />
             </div>
             <span className="archive-title-word block origin-center will-change-transform font-sans font-black text-gta-brown text-2xl md:text-4xl tracking-[0.2em] uppercase">
-              ACCESSING LCPD DATABASE...
+              ACCESSING MOBX DATABASE...
             </span>
           </div>
         </div>
@@ -551,7 +551,7 @@ export default function MissionList() {
 
     <section ref={wrapperRef} className="relative w-full h-screen bg-[#020202] overflow-hidden font-gta-hud z-[10000] selection:bg-cyan-900 selection:text-cyan-100">
        
-       {/* THE ENTIRE LCPD TERMINAL THAT SCALES UP TO FULL SCREEN */}
+       {/* THE ENTIRE MOBX TERMINAL THAT SCALES UP TO FULL SCREEN */}
        <div ref={terminalRef} className="absolute inset-0 w-full h-full bg-[#05051a] flex flex-col will-change-transform origin-center z-[10000] shadow-[inset_0_0_150px_rgba(0,0,0,1)] pointer-events-auto overflow-hidden">
           
           {/* Scanlines / CRT Effect */}
@@ -562,7 +562,7 @@ export default function MissionList() {
              <div className="w-full h-full flex flex-col items-center justify-center font-gta-hud relative z-20 px-4">
                 <div className="flex flex-col items-center w-full max-w-2xl text-center">
                   <img src="/lcpd_hd_logo_by_interglobalfilms_d4eq983-375w-2x.png" className="w-24 h-32 md:w-40 md:h-48 mb-4 md:mb-8 drop-shadow-[4px_4px_0_rgba(0,0,0,1)]" />
-                  <h1 className="text-[#ffcc00] text-2xl md:text-5xl tracking-widest mb-2 drop-shadow-[2px_2px_0_#000]">LCPD SECURE NETWORK</h1>
+                  <h1 className="text-[#ffcc00] text-2xl md:text-5xl tracking-widest mb-2 drop-shadow-[2px_2px_0_#000]">MOBX SECURE NETWORK</h1>
                   <div className="text-[#3399ff] text-sm md:text-xl tracking-widest uppercase font-bold drop-shadow-[1px_1px_0_#000] mb-8 md:mb-16">
                     RESTRICTED ACCESS ONLY
                   </div>
@@ -623,51 +623,51 @@ export default function MissionList() {
              </div>
            ) : (
              <>
-               {/* LCPD Top Header (Yellow Line & Logo) */}
+               {/* MOBX Top Header (Yellow Line & Logo) */}
                <div className="w-full relative mt-12 md:mt-24 z-20 shrink-0">
                  <div className="w-full h-2 md:h-3 bg-[#ffcc00] relative drop-shadow-[0_2px_5px_rgba(0,0,0,0.5)]">
                    {/* Floating Police Badge */}
                    <div className="absolute top-1/2 -translate-y-1/2 left-4 md:left-12 w-[50px] h-[70px] md:w-[110px] md:h-[130px] z-30 drop-shadow-[4px_4px_0_rgba(0,0,0,0.8)]">
-                     <img src="/lcpd_hd_logo_by_interglobalfilms_d4eq983-375w-2x.png" alt="LCPD Badge" className="w-full h-full object-contain" />
+                     <img src="/lcpd_hd_logo_by_interglobalfilms_d4eq983-375w-2x.png" alt="MOBX Badge" className="w-full h-full object-contain" />
                    </div>
           
               {/* Header Text */}
               <div className="absolute bottom-2 md:bottom-3 right-4 md:right-16 flex flex-col items-end">
                 <h1 className="text-white text-sm md:text-5xl font-gta-hud tracking-[0.1em] drop-shadow-[3px_3px_0_#000]">
-                  LIBERTY CITY POLICE DEPT.
+                  MOBX POLICE DEPT.
                 </h1>
               </div>
             </div>
             <div className="flex justify-end pr-4 md:pr-16 mt-1 md:mt-2">
               <div className="text-[#3399ff] text-[8px] md:text-sm tracking-widest uppercase font-bold drop-shadow-[1px_1px_0_#000]">
-                PROTECTING LIBERTY CITY
+                PROTECTING MOBX CITY
               </div>
             </div>
           </div>
 
           {/* Main Content Area (Two Columns) */}
-          <div className="flex flex-col md:flex-row flex-1 w-full px-4 md:px-16 pt-4 md:pt-16 pb-32 md:pb-24 z-20 relative overflow-hidden">
+          <div className="flex flex-col md:flex-row flex-1 w-full px-4 md:px-16 pt-4 md:pt-16 pb-32 md:pb-24 z-20 relative overflow-y-auto overflow-x-hidden md:overflow-hidden custom-scrollbar">
             
             {/* ---------------- ROOT VIEW ---------------- */}
             {(currentView === 'ROOT' || currentView === 'HELP') && (
               <>
-                <div className="w-full md:w-1/2 flex flex-col md:pr-8 h-full mb-8 md:mb-0 shrink-0 overflow-y-auto custom-scrollbar">
+                <div className="w-full md:w-1/2 flex flex-col md:pr-8 h-full mb-8 md:mb-0 shrink-0 md:overflow-y-auto md:custom-scrollbar">
                   <div className="flex items-center gap-4 mb-4">
                     <button onClick={() => { setCurrentView('ROOT'); playHoverSound(); }} className="md:hidden px-3 py-1 border border-[#ffcc00] text-[#ffcc00] text-xs font-bold bg-black/50 tracking-widest">
                       &lt; BACK
                     </button>
                     <h2 className="text-[#ffcc00] text-2xl md:text-3xl font-gta-hud tracking-widest drop-shadow-[2px_2px_0_#000] m-0">
-                      {currentView === 'ROOT' ? 'LCPD MAIN TERMINAL' : 'EMERGENCY COMMS'}
+                      {currentView === 'ROOT' ? 'MOBX MAIN TERMINAL' : 'CONTACT METHODS'}
                     </h2>
                   </div>
                   <p className="text-white font-sans text-lg mb-8 max-w-lg leading-relaxed">
                     {currentView === 'ROOT' 
-                      ? 'Select a module to access LCPD secure networks. Unauthorized access will be traced and prosecuted.'
+                      ? 'Select a module to access MOBX secure networks. Unauthorized access will be traced and prosecuted.'
                       : 'Establish a secure connection with external operatives. (Press BACKSPACE to return)'}
                   </p>
 
                   <div className="flex flex-col font-sans text-xl font-bold">
-                    {currentView === 'ROOT' && ['EVIDENCE FILES', 'SYSTEM TERMINAL', 'CALL FOR HELP'].map((item, idx) => {
+                    {currentView === 'ROOT' && ['PROJECTS', 'CONTACT METHODS', 'TERMINAL'].map((item, idx) => {
                       const isActive = rootActiveIndex === idx;
                       return (
                         <button 
@@ -675,8 +675,8 @@ export default function MissionList() {
                           onClick={() => {
                             setRootActiveIndex(idx);
                             if (idx === 0) setCurrentView('FILES');
-                            else if (idx === 1) setCurrentView('TERMINAL');
-                            else if (idx === 2) setCurrentView('HELP');
+                            else if (idx === 1) setCurrentView('HELP');
+                            else if (idx === 2) setCurrentView('TERMINAL');
                             playHoverSound();
                           }}
                           onMouseEnter={() => { setRootActiveIndex(idx); playHoverSound(); }}
@@ -732,7 +732,7 @@ export default function MissionList() {
                     <button onClick={() => { setCurrentView('ROOT'); playHoverSound(); }} className="md:hidden px-2 py-1 border border-[#ffcc00] text-[#ffcc00] text-xs bg-black/50 whitespace-nowrap">
                       &lt; BACK
                     </button>
-                    <span>LCPD COMMAND LINE</span>
+                    <span>MOBX COMMAND LINE</span>
                   </div>
                   <span className="animate-pulse hidden md:inline">[BACKSPACE TO EXIT]</span>
                 </div>
@@ -746,7 +746,7 @@ export default function MissionList() {
                 </div>
                 
                 <div className="flex items-center mt-2 border-t border-[#3399ff]/30 pt-4">
-                  <span className="mr-3 font-bold">C:\LCPD&gt;</span>
+                  <span className="mr-3 font-bold">C:\MOBX&gt;</span>
                   <input
                     ref={terminalInputRef}
                     type="text"
@@ -756,7 +756,7 @@ export default function MissionList() {
                       if (e.key === 'Enter') {
                         playHoverSound();
                         const cmd = terminalInput.trim().toLowerCase();
-                        const newHistory = [...terminalHistory, `C:\\LCPD> ${terminalInput}`];
+                        const newHistory = [...terminalHistory, `C:\\MOBX> ${terminalInput}`];
                         if (cmd === 'help') newHistory.push('Commands: help, clear, ls, whoami, date, ping, exit');
                         else if (cmd === 'clear') { setTerminalHistory([]); setTerminalInput(''); return; }
                         else if (cmd === 'ls') newHistory.push('DIR: /projects\nDIR: /suspects\nDIR: /evidence');
@@ -786,7 +786,7 @@ export default function MissionList() {
             {currentView === 'FILES' && (
               <>
             {/* Left Column: Project List */}
-            <div className="w-full md:w-1/2 flex flex-col flex-1 md:h-full md:pr-8 shrink-0 order-last md:order-first overflow-y-auto custom-scrollbar border-t-2 md:border-t-0 border-[#ffcc00]/30 pt-4 md:pt-0 mt-4 md:mt-0">
+            <div className="w-full md:w-1/2 flex flex-col flex-1 md:h-full md:pr-8 shrink-0 order-last md:order-first md:overflow-y-auto md:custom-scrollbar border-t-2 md:border-t-0 border-[#ffcc00]/30 pt-4 md:pt-0 mt-4 md:mt-0">
               <div className="flex flex-col md:flex-row md:justify-between md:items-end mb-4 gap-2 shrink-0">
                 <div className="flex items-center gap-4">
                   <button 
@@ -800,7 +800,7 @@ export default function MissionList() {
                     &lt; BACK
                   </button>
                   <h2 className="text-[#ffcc00] text-2xl md:text-3xl font-gta-hud tracking-widest drop-shadow-[2px_2px_0_#000] m-0">
-                    {expandedMissionIndex !== null ? 'EVIDENCE FILES' : 'CURRENT CRIMES'}
+                    {expandedMissionIndex !== null ? 'PROJECT FILES' : 'PROJECTS'}
                   </h2>
                 </div>
                 <span className="text-[#3399ff] text-xs md:text-sm font-bold tracking-widest hidden md:block">[BACKSPACE: BACK]</span>
@@ -808,11 +808,11 @@ export default function MissionList() {
               <p className="text-white font-sans text-sm md:text-lg mb-4 md:mb-8 max-w-lg leading-relaxed">
                 {expandedMissionIndex !== null 
                   ? `Browsing restricted files for: ${MISSIONS[expandedMissionIndex].title}.` 
-                  : 'The following crimes have been reported. Select one to dispatch to.'}
+                  : 'The following projects are available in the archive. Select one to view.'}
               </p>
 
               <h3 className="text-[#ffcc00] text-xl font-sans mb-6">
-                {expandedMissionIndex !== null ? `// ROOT / ${MISSIONS[expandedMissionIndex].title.replace(/\s+/g, '_')} /` : 'Incident Reported'}
+                {expandedMissionIndex !== null ? `// ROOT / ${MISSIONS[expandedMissionIndex].title.replace(/\s+/g, '_')} /` : 'Available Projects'}
               </h3>
 
               <div className="flex flex-col font-sans text-lg font-bold pr-4 pb-10 relative">
@@ -868,7 +868,7 @@ export default function MissionList() {
             <div className="w-full md:w-1/2 flex flex-col shrink-0 md:h-full md:border-l-2 border-gray-800/50 pt-0 md:pt-0 pl-0 md:pl-12 relative group order-first md:order-last">
               <div className="absolute top-2 right-2 md:top-4 md:right-4 z-30 flex flex-col items-end">
                 <span className="text-red-500 font-gta-hud tracking-widest text-sm md:text-xl animate-pulse drop-shadow-[2px_2px_0_#000]">● REC</span>
-                <span className="text-white font-mono bg-black/50 px-2 mt-1 text-[10px] md:text-base">LCPD CCTV - CAM 04</span>
+                <span className="text-white font-mono bg-black/50 px-2 mt-1 text-[10px] md:text-base">MOBX CCTV - CAM 04</span>
               </div>
               
               <div className="relative w-full h-[180px] md:h-[400px] border-2 md:border-4 border-gray-800 bg-black overflow-hidden mt-0 md:mt-8 shadow-[5px_5px_0_rgba(0,0,0,0.5)] md:shadow-[10px_10px_0_rgba(0,0,0,0.5)] shrink-0">
@@ -884,8 +884,15 @@ export default function MissionList() {
                     <img 
                       src={encodeURI(`/${activeMissionData.images[0]}`)}
                       alt={activeMissionData.title}
-                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 z-10"
+                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 z-10 cursor-pointer"
                       style={{ filter: 'grayscale(30%) contrast(120%) brightness(0.9) sepia(20%)' }}
+                      onClick={() => {
+                        const missionIndex = visibleItems[activeIndex]?.type === 'MISSION' 
+                          ? visibleItems[activeIndex].index 
+                          : visibleItems[activeIndex]?.missionIndex ?? 0;
+                        setFullScreenState({ missionIndex, imageIndex: 0 });
+                        playHoverSound();
+                      }}
                     />
                   ) : null;
                 })()}
@@ -942,6 +949,14 @@ export default function MissionList() {
           </>
         )}
 
+        {/* Scroll bypass indicator */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[8000] pointer-events-none opacity-50 flex flex-col items-center gap-1">
+          <div className="text-[#ffcc00] font-gta-hud tracking-[0.2em] text-[10px] md:text-sm animate-pulse drop-shadow-[1px_1px_0_#000] whitespace-nowrap">
+            [ SCROLL DOWN TO BYPASS ]
+          </div>
+          <div className="text-[#ffcc00] animate-bounce text-xs md:text-sm">▼</div>
+        </div>
+
        </div>
 
        {/* Mobile Virtual D-Pad */}
@@ -964,16 +979,46 @@ export default function MissionList() {
            className="fixed inset-0 z-[99999] bg-[#020202] flex flex-col items-center justify-center p-8 cursor-pointer"
            onClick={() => { setFullScreenState(null); playHoverSound(); }}
          >
-           <div className="absolute top-4 right-4 md:top-8 md:right-8 text-[#ffcc00] font-gta-hud tracking-widest text-sm md:text-2xl animate-pulse z-50 drop-shadow-[2px_2px_0_#000] bg-black/80 p-2 md:p-0 md:bg-transparent border border-[#ffcc00] md:border-none">
+           <div className="absolute top-4 right-4 md:top-8 md:right-8 text-[#ffcc00] font-gta-hud tracking-widest text-sm md:text-2xl animate-pulse z-50 drop-shadow-[2px_2px_0_#000] bg-black/80 p-2 md:p-0 md:bg-transparent border border-[#ffcc00] md:border-none pointer-events-auto cursor-pointer" onClick={(e) => { e.stopPropagation(); setFullScreenState(null); playHoverSound(); }}>
              <span className="hidden md:inline">[ BACKSPACE ] TO CLOSE</span>
-             <span className="md:hidden">TAP ANYWHERE TO CLOSE</span>
+             <span className="md:hidden">[ TAP TO CLOSE ]</span>
            </div>
 
-           <div className="absolute bottom-4 md:bottom-8 text-white font-gta-hud tracking-widest text-sm md:text-xl z-50 flex gap-4 md:gap-8">
-             <span className="animate-pulse">◀ FLIP</span>
-             <span>IMAGE {fullScreenState.imageIndex + 1} OF {MISSIONS[fullScreenState.missionIndex].images.length}</span>
-             <span className="animate-pulse">FLIP ▶</span>
-           </div>
+            <div className="absolute bottom-4 md:bottom-8 w-full flex justify-center text-white font-gta-hud tracking-widest text-sm md:text-xl z-50 pointer-events-auto">
+              <span onClick={(e) => e.stopPropagation()} className="bg-black/50 px-4 py-2 rounded">IMAGE {fullScreenState.imageIndex + 1} OF {MISSIONS[fullScreenState.missionIndex].images.length}</span>
+            </div>
+
+            {/* FLIP LEFT BUTTON */}
+            <button 
+              className="absolute left-2 md:left-8 top-1/2 -translate-y-1/2 z-50 w-12 h-16 md:w-20 md:h-24 bg-black/80 border-2 border-[#ffcc00] flex items-center justify-center rounded-lg text-[#ffcc00] text-2xl md:text-5xl animate-pulse hover:scale-110 active:scale-95 transition-transform shadow-[0_0_15px_rgba(255,204,0,0.5)] pointer-events-auto"
+              onClick={(e) => {
+                e.stopPropagation();
+                setFullScreenState(prev => {
+                  if (!prev) return null;
+                  const images = MISSIONS[prev.missionIndex].images;
+                  return { ...prev, imageIndex: (prev.imageIndex - 1 + images.length) % images.length };
+                });
+                playHoverSound();
+              }}
+            >
+              ◀
+            </button>
+
+            {/* FLIP RIGHT BUTTON */}
+            <button 
+              className="absolute right-2 md:right-8 top-1/2 -translate-y-1/2 z-50 w-12 h-16 md:w-20 md:h-24 bg-black/80 border-2 border-[#ffcc00] flex items-center justify-center rounded-lg text-[#ffcc00] text-2xl md:text-5xl animate-pulse hover:scale-110 active:scale-95 transition-transform shadow-[0_0_15px_rgba(255,204,0,0.5)] pointer-events-auto"
+              onClick={(e) => {
+                e.stopPropagation();
+                setFullScreenState(prev => {
+                  if (!prev) return null;
+                  const images = MISSIONS[prev.missionIndex].images;
+                  return { ...prev, imageIndex: (prev.imageIndex + 1) % images.length };
+                });
+                playHoverSound();
+              }}
+            >
+              ▶
+            </button>
            
            {/* CRT Overlays for Fullscreen */}
            <div className="absolute inset-0 pointer-events-none opacity-30 bg-[url('/noise.png')] mix-blend-overlay z-10" />

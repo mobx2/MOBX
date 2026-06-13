@@ -202,7 +202,7 @@ export default function HeroSlider() {
             )}
 
             {/* Bold Typography */}
-            <div className="absolute inset-0 flex items-start md:items-center justify-center md:justify-start pt-32 sm:pt-40 md:pt-0 pl-0 md:pl-24 z-30 pointer-events-none w-full">
+            <div className="absolute inset-0 flex items-center justify-center md:justify-start pl-0 md:pl-24 z-30 pointer-events-none w-full">
               <h1 className="hero-text text-[14vw] sm:text-[12vw] md:text-[8vw] text-center md:text-left gta-title leading-[0.85] text-gta-sepia will-change-transform perspective-1000 drop-shadow-2xl">
                 {slide.title.split(" ").map((word, wIndex) => (
                   <span key={wIndex} className="block overflow-hidden pb-2 md:pb-4">
