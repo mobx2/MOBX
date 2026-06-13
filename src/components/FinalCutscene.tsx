@@ -5,7 +5,7 @@ import { gsap, useGSAP } from "@/lib/gsap";
 
 export default function FinalCutscene() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const formRef = useRef<HTMLFormElement>(null);
+  const formRef = useRef<HTMLDivElement>(null);
   const starRef = useRef<HTMLSpanElement>(null);
   const missionPassedRef = useRef<HTMLImageElement>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
