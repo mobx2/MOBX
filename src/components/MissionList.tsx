@@ -652,9 +652,11 @@ export default function MissionList() {
               <>
                 <div className="w-full md:w-1/2 flex flex-col md:pr-8 h-full mb-8 md:mb-0 shrink-0 md:overflow-y-auto md:custom-scrollbar">
                   <div className="flex items-center gap-4 mb-4">
-                    <button onClick={() => { setCurrentView('ROOT'); playHoverSound(); }} className="md:hidden px-3 py-1 border border-[#ffcc00] text-[#ffcc00] text-xs font-bold bg-black/50 tracking-widest">
-                      &lt; BACK
-                    </button>
+                    {currentView !== 'ROOT' && (
+                      <button onClick={() => { setCurrentView('ROOT'); playHoverSound(); }} className="px-3 py-1 border border-[#ffcc00] text-[#ffcc00] text-xs font-bold bg-black/50 tracking-widest">
+                        &lt; BACK
+                      </button>
+                    )}
                     <h2 className="text-[#ffcc00] text-2xl md:text-3xl font-gta-hud tracking-widest drop-shadow-[2px_2px_0_#000] m-0">
                       {currentView === 'ROOT' ? 'MOBX MAIN TERMINAL' : 'CONTACT METHODS'}
                     </h2>
@@ -728,7 +730,7 @@ export default function MissionList() {
               <div className="w-full flex flex-col h-full font-mono text-[#3399ff] text-sm md:text-xl bg-black/80 p-4 md:p-8 border border-[#3399ff]/30 shadow-[0_0_50px_rgba(51,153,255,0.1)] overflow-hidden">
                 <div className="mb-6 pb-2 border-b border-[#ffcc00]/30 text-[#ffcc00] flex justify-between tracking-widest font-bold">
                   <div className="flex items-center gap-4">
-                    <button onClick={() => { setCurrentView('ROOT'); playHoverSound(); }} className="md:hidden px-2 py-1 border border-[#ffcc00] text-[#ffcc00] text-xs bg-black/50 whitespace-nowrap">
+                    <button onClick={() => { setCurrentView('ROOT'); playHoverSound(); }} className="px-2 py-1 border border-[#ffcc00] text-[#ffcc00] text-xs bg-black/50 whitespace-nowrap">
                       &lt; BACK
                     </button>
                     <span>MOBX COMMAND LINE</span>
@@ -788,17 +790,16 @@ export default function MissionList() {
             <div className="w-full md:w-1/2 flex flex-col flex-1 md:h-full md:pr-8 shrink-0 order-last md:order-first md:overflow-y-auto md:custom-scrollbar border-t-2 md:border-t-0 border-[#ffcc00]/30 pt-4 md:pt-0 mt-4 md:mt-0">
               <div className="flex flex-col md:flex-row md:justify-between md:items-end mb-4 gap-2 shrink-0">
                 <div className="flex items-center gap-4">
-                  {expandedMissionIndex !== null && (
-                    <button 
-                      onClick={() => {
-                        setExpandedMissionIndex(null);
-                        playHoverSound();
-                      }} 
-                      className="px-3 py-1 border border-[#ffcc00] text-[#ffcc00] text-xs font-bold bg-black/50 tracking-widest whitespace-nowrap"
-                    >
-                      &lt; BACK
-                    </button>
-                  )}
+                  <button 
+                    onClick={() => {
+                      if (expandedMissionIndex !== null) setExpandedMissionIndex(null);
+                      else setCurrentView('ROOT');
+                      playHoverSound();
+                    }} 
+                    className="px-3 py-1 border border-[#ffcc00] text-[#ffcc00] text-xs font-bold bg-black/50 tracking-widest whitespace-nowrap"
+                  >
+                    &lt; BACK
+                  </button>
                   <h2 className="text-[#ffcc00] text-2xl md:text-3xl font-gta-hud tracking-widest drop-shadow-[2px_2px_0_#000] m-0">
                     {expandedMissionIndex !== null ? 'PROJECT FILES' : 'PROJECTS'}
                   </h2>
